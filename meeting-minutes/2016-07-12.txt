@@ -1,0 +1,229 @@
+[2016-07-12 08:59:21] <aepsil0n> shall we begin?
+[2016-07-12 08:59:38] <erickt> well then! sure!
+[2016-07-12 08:59:41] <erickt> let's go
+[2016-07-12 08:59:42] <erickt> !
+[2016-07-12 08:59:47] <erickt> agenda: https://github.com/rust-community/rustbridge/issues/8#issuecomment-232087776
+[2016-07-12 08:59:50] <erickt> it's a bit brief
+[2016-07-12 09:00:07] <erickt> so if anyone else has anything they want to add, please, well, add it ;)
+[2016-07-12 09:00:54] <aepsil0n> we can't edit it in-place though
+[2016-07-12 09:01:00] <erickt> just add comments
+[2016-07-12 09:01:11] <erickt> I'll give the rust bridge team admin bits on that repo...
+[2016-07-12 09:01:25] <aepsil0n> that would be nice
+[2016-07-12 09:01:30] <erickt> so first thing
+[2016-07-12 09:01:40] <aepsil0n> i was thinking about closing the issue about the first meeting at some point, but couldn't…
+[2016-07-12 09:02:04] <erickt> we need someone(s) to take some leadership on making sure that workshop content is actually produced
+[2016-07-12 09:02:23] <erickt> anyone want to volunteer to take ownership?
+[2016-07-12 09:03:14] <erickt> (btw, aepsil0n, it looks like the rustbridge team should have admin over the repo. what's your github username?)
+[2016-07-12 09:03:21] <aepsil0n> same as here
+[2016-07-12 09:04:05] <erickt> aepsil0n: looks like you were off the team for some reason
+[2016-07-12 09:04:35] <aepsil0n> oh, that explains it
+[2016-07-12 09:05:00] <aepsil0n> so, regarding the workshops… there were a few ideas and half-volunteers by topic
+[2016-07-12 09:05:05] <erickt> so, any takers on the content? I don't think you'd be signing up to make the content itself
+[2016-07-12 09:05:21] → carols10cents joined (carols10cen@moz-1kh55q.fios.verizon.net)
+[2016-07-12 09:05:33] → hannelita joined (hannelita@moz-fp6.oh4.120.189.IP)
+[2016-07-12 09:05:34] <aepsil0n> the idea here is to manage to get in touch with whoever wanted to contribute to individual workshops?
+[2016-07-12 09:05:35] <erickt> it's just taking point on making sure there's progress being made by poking people
+[2016-07-12 09:05:40] <hannelita> Hi
+[2016-07-12 09:05:43] — erickt waves at carols10cents and hannelita!
+[2016-07-12 09:05:46] <carols10cents> hi!
+[2016-07-12 09:05:55] <aepsil0n> hello!
+[2016-07-12 09:06:30] <erickt> hannelita / carols10cents: https://gist.github.com/erickt/d1809d50479e63a974f0023781612783
+[2016-07-12 09:06:33] <erickt> ^ minutes from before
+[2016-07-12 09:06:41] <erickt> because we don't have a auto-logger yet
+[2016-07-12 09:06:59] <erickt> and yes, aepsil0n that's the idea
+[2016-07-12 09:07:24] <erickt> also reaching out to people that already have created content and see if they'll let us use it
+[2016-07-12 09:07:35] <carols10cents> erickt: that link 404s for me :-/
+[2016-07-12 09:07:47] <erickt> wuh
+[2016-07-12 09:07:47] <hannelita> erickt I can't see this gist
+[2016-07-12 09:08:06] <erickt> weird. try https://gist.github.com/erickt/500a0edcdc276770dae5c36e5daa6711
+[2016-07-12 09:08:11] <carols10cents> nope
+[2016-07-12 09:08:18] <carols10cents> it's fine
+[2016-07-12 09:08:24] <carols10cents> post minutes on the repo later
+[2016-07-12 09:08:33] <carols10cents> i dont want to derail the meeting because i was late
+[2016-07-12 09:09:00] → mib_82cf57 joined (Mibbit@moz-qie.6p3.217.74.IP)
+[2016-07-12 09:09:06] <aepsil0n> guess, i could coordinate the workshops, if needed
+[2016-07-12 09:09:17] <erickt> wonderful!
+[2016-07-12 09:09:56] <erickt> aepsil0n: the other thing would be if you could try to attend the community team meetings, typically on wednesday at 4pm UTC in #rust-community
+[2016-07-12 09:10:11] <erickt> in case you need the broader team's help on anything
+[2016-07-12 09:10:22] ⇐ mib_82cf57 quit (Mibbit@moz-qie.6p3.217.74.IP): Quit: http://www.mibbit.com ajax IRC Client
+[2016-07-12 09:10:41] <aepsil0n> should be able to do that
+[2016-07-12 09:11:01] <erickt> great! okay so the next thing, has there been any progress made on the workshop content?
+[2016-07-12 09:11:06] — erickt hasn't :(
+[2016-07-12 09:11:14] <aepsil0n> (can't always guarantee though)
+[2016-07-12 09:11:27] <erickt> aepsil0n: no worries! just at your convenience
+[2016-07-12 09:11:48] <erickt> that doesn't go for Manishearth, who gets assigned work if he misses meetings
+[2016-07-12 09:12:15] <Manishearth> heh
+[2016-07-12 09:12:33] <erickt> hm. we should probably split up carols10cents into some more specific tasks: https://github.com/rust-community/rustbridge/issues/2
+[2016-07-12 09:12:41] <aepsil0n> (does somebody have the link to last meeting's minutes?)
+[2016-07-12 09:13:00] <erickt> aepsil0n: https://github.com/rust-lang/meeting-minutes/tree/master/rustbridge
+[2016-07-12 09:13:12] <erickt> specifically my poorly taken notes in https://github.com/rust-lang/meeting-minutes/blob/master/rustbridge/2016-06-22.txt
+[2016-07-12 09:13:24] <erickt> we ought to upload our minutes to that repo
+[2016-07-12 09:14:14] <aepsil0n> (thx)
+[2016-07-12 09:14:36] <carols10cents> please don't split me up too much
+[2016-07-12 09:14:49] <erickt> someone want to split up #2 into a few separate issues? there are a couple suggestions in that ticket and from last week
+[2016-07-12 09:15:15] <carols10cents> (split the issue all you want tho ;))
+[2016-07-12 09:15:16] <erickt> like a URL shortener workshop talk ticket
+[2016-07-12 09:16:06] <erickt> we'll try to keep the carols10cents partitions down to below 4
+[2016-07-12 09:17:09] <erickt> so, anyone make any progress? and if not, what can we do to make some progress over the next week?
+[2016-07-12 09:17:48] <aepsil0n> no progress, did not set time aside for it tbh 
+[2016-07-12 09:18:04] <erickt> and while we're at it, someone want to split up https://github.com/rust-community/rustbridge/issues/2 while we talk?
+[2016-07-12 09:18:12] <aepsil0n> -> on it
+[2016-07-12 09:18:15] <erickt> <3
+[2016-07-12 09:18:51] <booyaa> back!
+[2016-07-12 09:19:13] <erickt> aepsil0n: we could try to gather up an hour or so to just hash out some stuff as a group
+[2016-07-12 09:19:18] <erickt> this week or over the weekend
+[2016-07-12 09:19:22] — erickt waves at booyaa
+[2016-07-12 09:19:58] <erickt> we could also organize a little hackathons at our respective meetups
+[2016-07-12 09:20:12] → broesamle joined (Mibbit@moz-scqb07.rev.sfr.net)
+[2016-07-12 09:20:15] <aepsil0n> oh, sure that would be nice
+[2016-07-12 09:20:16] <erickt> I did a docathon and a gamathon at the sf meetup a year or so ago
+[2016-07-12 09:20:56] <erickt> skade / booyaa: think your communities would be interested in ^?
+[2016-07-12 09:21:04] <erickt> oh and carols10cents!
+[2016-07-12 09:21:10] <erickt> hm. anyone else run a meetup?
+[2016-07-12 09:21:36] <aepsil0n> i'll start with these: https://github.com/rust-community/rustbridge/issues/10
+[2016-07-12 09:21:40] <hannelita> WDYT of the idea that I gave for the last meetup? fetching and parsing content from a webpage, transforming the content and using it? (We did this for Amazon wishlist to fetch the book titles and compare it with an existing local list of titles to find duplicates)
+[2016-07-12 09:21:43] <booyaa> yes definitely!
+[2016-07-12 09:21:43] <aepsil0n> and fetch the details later
+[2016-07-12 09:22:03] <skade> erickt we have a monthly gamathon in berlin we can hop on, but docathon also sounds great
+[2016-07-12 09:22:22] <erickt> hannelita: I thought that sounded like a great idea
+[2016-07-12 09:22:39] <skade> hannelita I think it's great, works well on every platform and works with something people somehow know
+[2016-07-12 09:22:42] <erickt> and pretty achievable with our current ecosystem
+[2016-07-12 09:22:48] <aepsil0n> so web scraping workshop?
+[2016-07-12 09:23:00] <erickt> aepsil0n: +1
+[2016-07-12 09:23:22] <erickt> steveklabnik also mentioned a url shortener as a project
+[2016-07-12 09:23:53] <Manishearth> some simple coreutils could be fun
+[2016-07-12 09:23:56] <erickt> broesamle: oh you made it! I'm not quite sure what you meant by a mondriannpattern painter, but that seems fun
+[2016-07-12 09:23:57] <Manishearth> an ls clone, etc
+[2016-07-12 09:24:23] <erickt> +1
+[2016-07-12 09:24:24] <Manishearth> hannelita: +1 on scrapery things
+[2016-07-12 09:24:39] <Manishearth> scrapery things is usually the first project I give to folks I'm guiding
+[2016-07-12 09:24:56] <broesamle> basically its subdividing recursively -- to be painted in great colours
+[2016-07-12 09:24:59] <erickt> Manishearth: any chance it'd be easy to use servo to do the scraping?
+[2016-07-12 09:25:15] <Manishearth> erickt: you want kuchiki
+[2016-07-12 09:25:23] <booyaa> so would we testing the workshops on our meetup members? i think all of our members have experience in programming, would this be a fair test? 
+[2016-07-12 09:25:37] <broesamle> we should!
+[2016-07-12 09:25:38] <Manishearth> h5e is too complicated for a simple scraper
+[2016-07-12 09:25:48] <Manishearth> kuchiki gets you a selector-matchable dom
+[2016-07-12 09:25:50] <Manishearth> i think
+[2016-07-12 09:25:55] <Manishearth> unsure if it works that way
+[2016-07-12 09:25:59] <erickt> booyaa: I was thinking about getting people in to help write the workshops
+[2016-07-12 09:26:22] <erickt> and then we can review em at the end of the day
+[2016-07-12 09:26:54] <erickt> I don't think it'd quite get us completed materials, but it'd give us a good foundation
+[2016-07-12 09:27:07] <broesamle> did we already agree on how to collaborate on content
+[2016-07-12 09:27:19] <broesamle> (before I joined)
+[2016-07-12 09:27:31] <erickt> broesamle: nope
+[2016-07-12 09:27:34] <booyaa> ah gotcha, we're about to do a bit group coding next few meetups. i'll start asking the group if there's any of the topics suggested in issue #2
+[2016-07-12 09:27:39] <skade> by the way, if you want to write your stuff in markdown and compile it, I'm currently writing a library using https://github.com/pnkfelix/tango. I usually don't recommend such stuff, but it's working pretty painless.
+[2016-07-12 09:27:53] <booyaa> we've already been eyeing up using iron after the last talk about webservices
+[2016-07-12 09:28:05] <erickt> broesamle: basics are that we can put anythign we want into https://github.com/rust-community/rustbridge or another sub-repository
+[2016-07-12 09:28:09] <erickt> but not sure beyond that
+[2016-07-12 09:28:19] <erickt> skade: ha! i was trying to remember the name of tango
+[2016-07-12 09:28:37] — pnkfelix clearly needs to advertise more
+[2016-07-12 09:28:38] <broesamle> That's what I was hoping for :-)
+[2016-07-12 09:28:43] <erickt> oh hey pnkfelix!
+[2016-07-12 09:28:48] <broesamle> I mean using github
+[2016-07-12 09:29:02] <erickt> broesamle: I think github would be easiest
+[2016-07-12 09:29:20] <erickt> and tango would be nice to have a documented tutorials
+[2016-07-12 09:29:21] <booyaa> although the mondriannpattern painter thing really appeals to me
+[2016-07-12 09:29:43] <erickt> booyaa: I think we can have multiple tutorials being built at the same time
+[2016-07-12 09:30:23] <erickt> my initial thoughts for a workshopathon (bridgeathon?) would be to just have the attendees split up into teams of a few people
+[2016-07-12 09:30:29] <broesamle> Did I already sketch the idea of parallelizing the drawing on one canvas?
+[2016-07-12 09:30:44] <erickt> and prototype out an example project and tutorial for it
+[2016-07-12 09:31:16] <erickt> booyaa: we'd just have people claim a ticket when they start working on it
+[2016-07-12 09:31:17] <broesamle> Great (If we can find dates ...)
+[2016-07-12 09:31:27] <aepsil0n> mh… not an organizer, but could we test this idea in berlin? (looking at skade, johannh)
+[2016-07-12 09:31:34] <skade> aepsil0n sure
+[2016-07-12 09:32:00] <booyaa> erickt: i'll ping our group after this meeting!
+[2016-07-12 09:32:15] <erickt> broesamle: you mentioned parallel drawing I think in https://github.com/rust-community/rustbridge/issues/2#issuecomment-228448303
+[2016-07-12 09:32:19] <erickt> booyaa: \o/
+[2016-07-12 09:32:42] <broesamle> Yes
+[2016-07-12 09:33:01] <aepsil0n> there is https://github.com/rust-community/rustbridge/issues/15
+[2016-07-12 09:33:05] <johannh> yeah we'll definitely try to test ideas with newcomers at the Hack and Learns
+[2016-07-12 09:33:18] <booyaa> broesamle: haha like the idea of sections of the canvas changing ownership
+[2016-07-12 09:33:22] <erickt> huh. somethings messed up with github. https://github.com/rust-community/rustbridge/issues keeps showing me different counts of tickets each time I refresh
+[2016-07-12 09:33:22] <aepsil0n> i think i have an issue now for everything mentioned here or on github
+[2016-07-12 09:34:03] <booyaa> i think github is having issues, saw a comment by steve on the community channel
+[2016-07-12 09:34:03] <aepsil0n> yes, they are having technical issues atm
+[2016-07-12 09:34:04] <erickt> (hrm, github issues: https://status.github.com/)
+[2016-07-12 09:34:12] <aepsil0n> lol
+[2016-07-12 09:34:20] <hannelita> We can try with Sao Paulo Rust user group as well
+[2016-07-12 09:34:30] <erickt> great!
+[2016-07-12 09:35:14] <broesamle> github did silly things to me before as well!
+[2016-07-12 09:35:14] <hannelita> Even if we cant arrange a workshop, a walkthrough session with code examples could provide a good feedback
+[2016-07-12 09:35:15] <erickt> btw, I think I told everyone else this, but hannelita, you're welcome to use https://github.com/rust-community/talks if you want to track organizing events
+[2016-07-12 09:35:56] <hannelita> thanks!
+[2016-07-12 09:36:33] <erickt> my ticket to track a workshop for SF: https://github.com/rust-community/talks/issues/27
+[2016-07-12 09:36:35] <hannelita> erickt our meetups is already listed therer
+[2016-07-12 09:37:24] <erickt> hannelita: great! you can also file tickets there too: https://github.com/rust-community/talks/issues
+[2016-07-12 09:38:02] <erickt> nice benefit we end up building a great database of speakers from around the world, so it'll be easier for meetups to pass speakers around :)
+[2016-07-12 09:38:11] <hannelita> erickt is anyone presenting at RustConf? (rustconf) maybe we could fetch more ideas from there
+[2016-07-12 09:38:36] <hannelita> http://rustconf.com/training.html
+[2016-07-12 09:38:38] <erickt> hannelita: this is happening: http://rustconf.com/training.html
+[2016-07-12 09:38:49] <erickt> yeah, those are much more traditional language tutorials
+[2016-07-12 09:39:14] <hannelita> Yeah, I just saw it. They dont fit into bridge model very well :/
+[2016-07-12 09:39:38] <erickt> at the end of teh day you leave understanding lifetimes, but don't have a *thing* you can play with
+[2016-07-12 09:40:19] <skade> erickt as someone on the level we are aiming at, I would even skip covering traits for the first day :)
+[2016-07-12 09:40:26] <erickt> heh
+[2016-07-12 09:40:27] <erickt> yeah
+[2016-07-12 09:40:58] <erickt> hm. so anything else on the workshop topic
+[2016-07-12 09:40:59] <erickt> ?
+[2016-07-12 09:41:36] <erickt> ok then! next topic: website! https://github.com/rust-community/rustbridge/issues/1
+[2016-07-12 09:42:07] <skade> sonjaheinen is in canada and asked for two weeks time
+[2016-07-12 09:42:07] <erickt> skade: I saw you started building out some initial stuff
+[2016-07-12 09:42:17] <skade> na, just prepared stuff for sonja
+[2016-07-12 09:42:44] <erickt> oh ok. does she need us to prep anything for her?
+[2016-07-12 09:43:43] <skade> I don't think so, but I have no progress except this and her message to need another two weeks https://twitter.com/sonjaheinen/status/747571773193986048
+[2016-07-12 09:43:52] <erickt> heh
+[2016-07-12 09:43:53] <skade> so, would someone be on standby to take that over?
+[2016-07-12 09:44:59] <erickt> skade: I think waiting 2 weeks would be fine, unless someone else wants to start working on it now
+[2016-07-12 09:45:47] <erickt> alright, if there isn't more on the web stuff
+[2016-07-12 09:45:59] <broesamle> I don't see any reason to rush (terribly) -- we have a platform on github somewhat, for now
+[2016-07-12 09:46:06] <erickt> broesamle: +1
+[2016-07-12 09:46:45] <erickt> last item I know of is aepsil0n, you wanted to know how to communicate and track progress?
+[2016-07-12 09:47:10] <erickt> is here (and #rust-community) and github sufficient, or were you looking for more formal solutions?
+[2016-07-12 09:47:19] <aepsil0n> that's perfectly fine
+[2016-07-12 09:47:34] <aepsil0n> i think throughout this meeting we pretty much established that
+[2016-07-12 09:47:34] <erickt> I know skade evaluated a few options for rust-community, but we didn't end up using them :/
+[2016-07-12 09:47:46] <aepsil0n> i just wanted to clarify
+[2016-07-12 09:47:48] <erickt> (sorry skade, I dropped the ball on that)
+[2016-07-12 09:48:21] <erickt> alright, anyone else have agenda items?
+[2016-07-12 09:48:30] <skade> erickt no problem, I didn't feel a lot of them added that much value
+[2016-07-12 09:48:30] <aepsil0n> however… it would be nice if the rustbridge repo would be self-contained
+[2016-07-12 09:48:46] <aepsil0n> so that we don't have to look in a dozen different places to get back into context
+[2016-07-12 09:48:50] <aepsil0n> which is mostly true
+[2016-07-12 09:48:56] <erickt> aepsil0n: you mean for the examples?
+[2016-07-12 09:49:05] <erickt> when we get workshop content together?
+[2016-07-12 09:49:18] <aepsil0n> as long as there is a link, it's okay
+[2016-07-12 09:49:30] <aepsil0n> was thinking of meeting minutes being on another repo
+[2016-07-12 09:49:48] <aepsil0n> but maybe that's only an issue for me, as i haven't been involved in other rust-lang stuff
+[2016-07-12 09:49:54] <erickt> aepsil0n: oh, we could put our meeting minutes whereever we want
+[2016-07-12 09:50:09] <erickt> I just put them under rust-lang out of habit
+[2016-07-12 09:50:49] <erickt> ok so to summarize our meeting
+[2016-07-12 09:51:19] <erickt> 1) aepsil0n volunteered to track progress on workshops, and bug all us meetup organizers into actually getting workshop-a-thons happening
+[2016-07-12 09:51:29] <erickt> 2) workshop-a-thons!
+[2016-07-12 09:51:41] <erickt> 3) move meeting minutes into rustbridge
+[2016-07-12 09:51:58] <erickt> 4) check back in 2 weeks when sonja gets back online on web stuff
+[2016-07-12 09:52:12] <erickt> did I miss anything else?
+[2016-07-12 09:52:59] <erickt> oh and finally, is this day and time good for meetings for you all?
+[2016-07-12 09:53:39] <hannelita> Looks good for me
+[2016-07-12 09:53:40] <booyaa> it's good for me
+[2016-07-12 09:53:40] <broesamle> as before --- I can hardly promise but it is inside my flexible timinh
+[2016-07-12 09:53:47] <aepsil0n> i like the time…
+[2016-07-12 09:54:00] <aepsil0n> but if you ask that question here and now, you are bound to get a selection bias
+[2016-07-12 09:54:06] <erickt> \o/
+[2016-07-12 09:54:07] <erickt> :)
+[2016-07-12 09:54:19] <hannelita> lol, yeah, maybe we should ask on github
+[2016-07-12 09:54:37] <broesamle> :-)
+[2016-07-12 09:55:08] <aepsil0n> although the outcome of the spreadsheet you sent around was not that exhaustive
+[2016-07-12 09:55:19] <erickt> yeah
+[2016-07-12 09:55:21] <aepsil0n> but good that there are a lot more people here now than in that sheet
+[2016-07-12 09:55:40] <erickt> julia said this time wasn't perfect, so we can consider a 5pm UTC next time
+[2016-07-12 09:56:30] <erickt> I'll start a placeholder ticket for the next meeting
+[2016-07-12 09:56:36] <erickt> and that's all I got!
+[2016-07-12 09:56:48] <erickt> if there's nothing else, thank you all for attending!
+[2016-07-12 09:57:13] <skade> next meeting starting over at #rustcampeu \o/
+[2016-07-12 09:57:27] <erickt> :)
+[2016-07-12 09:57:50] <broesamle> fine ... see you soon
+[2016-07-12 09:58:19] <aepsil0n> see you all
+[2016-07-12 09:58:27] <aepsil0n> nice catching up :)
+[2016-07-12 09:58:55] <booyaa> oybyeee!
