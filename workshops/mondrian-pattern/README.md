@@ -30,3 +30,10 @@ Ownership of Canvas Regions
 * The superordinate thread will connect neighbouring regions by establishing `channel`s so that the subthreads can negotiate colours and split positions
 * Overlaps, which do not happen to be exactly mondrianish, make a case for shared resources and `locking` (so that we do not overpaint in an uncontrolled manner)
 * [cf. Fearless Concurrency](https://blog.rust-lang.org/2015/04/10/Fearless-Concurrency.html)
+
+Datastructure
+-------------
+* Patches or areas should be something like two-dimensional `slices`
+* They may be of a more abstract kind in order to later get painted or rendered
+* On the other hand, having truely parallel rendering would be nice!
+* [cf. Slices](http://rustbyexample.com/primitives/array.html)
