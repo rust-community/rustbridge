@@ -18,3 +18,15 @@ First sketch
 3) negotiation with neighbours
 * requires inter-process communication
 
+Ownership of Canvas Regions
+---------------------------
+
+* The root thread will `borrow` parts of the canvas to other threads which will then paint it.
+
+  * For an easy example we do not have to borrow but can simply hand over a reference to a part of the canvas, which will then be painted by the subordinate threads.
+
+  * If we want to post-process the results we may need borrowing, indeed.
+
+* The superordinate thread will connect neighbouring regions by establishing `channel`s so that the subthreads can negotiate colours and split positions
+* Overlaps, which do not happen to be exactly mondrianish, make a case for shared resources and `locking` (so that we do not overpaint in an uncontrolled manner)
+* [cf. Fearless Concurrency](https://blog.rust-lang.org/2015/04/10/Fearless-Concurrency.html)
