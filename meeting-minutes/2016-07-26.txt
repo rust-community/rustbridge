@@ -1,0 +1,181 @@
+[2016-07-26 09:00:21] <erickt> meeting time!
+[2016-07-26 09:00:30] <hannelita> sorry, I am also on a situation where I cant focus 100% on IRC 
+[2016-07-26 09:00:35] <aepsil0n> hello everybody!
+[2016-07-26 09:00:52] <erickt> heh, aren't we all. silly life getting in the way of important meetings!
+[2016-07-26 09:01:17] <aepsil0n> erickt: need 5 min to do that
+[2016-07-26 09:04:02] <erickt> (sorry, I got off hold)
+[2016-07-26 09:05:59] → broesamle joined (Mibbit@moz-a2n59m.dip0.t-ipconnect.de)
+[2016-07-26 09:06:37] <broesamle> ping
+[2016-07-26 09:06:59] <aepsil0n> hello
+[2016-07-26 09:07:07] <erickt> hello broesamle! unfortunately I'm on hold with my bank, and aepsil0n needs a moment to take over for me :)
+[2016-07-26 09:07:35] <broesamle> fine with me...
+[2016-07-26 09:10:19] <erickt> well hello everyone! I guess to just to get things started, how are you all doing?
+[2016-07-26 09:10:37] <erickt> did y'all make any progress over these past two weeks?
+[2016-07-26 09:11:10] <erickt> I personally wasn't able to get my meetup workshop-a-thon organized for this weekend, and am now trying to get it scheduled on 8/13
+[2016-07-26 09:11:23] <erickt> booyaa / hannelita: any luck with your meetups?
+[2016-07-26 09:11:44] <hannelita> Our meetup is scheduled for Aug 3
+[2016-07-26 09:12:27] <erickt> that's wonderful!
+[2016-07-26 09:12:39] <erickt> how many people do you expect to show up?
+[2016-07-26 09:13:06] <hannelita> Around 15-20
+[2016-07-26 09:13:10] <hannelita> That is our avg 
+[2016-07-26 09:13:56] <hannelita> We can test the acceptance for the subject of creating a parsing application for amazon wishlists or anything else 
+[2016-07-26 09:14:21] <hannelita> If the acceptance is good that definitely could be a workshop 
+[2016-07-26 09:15:06] <erickt> that sounds great
+[2016-07-26 09:16:19] <erickt> hannelita: are you going to have everyone working on the same workshop material?
+[2016-07-26 09:16:49] <aepsil0n> so…
+[2016-07-26 09:17:10] <aepsil0n> (now i'm ready, sorry was held up by work here)
+[2016-07-26 09:17:20] <hannelita> erickt sorry, not sure if I got what you mean 
+[2016-07-26 09:17:33] <erickt> hannelita: sorry :)
+[2016-07-26 09:18:47] <erickt> I mean, are you going to just be working on the amazon wishlist workshop, or are you going to split into subteams
+[2016-07-26 09:18:52] <aepsil0n> johannh, skade: did you have a chance to think about workshop-a-thon?
+[2016-07-26 09:19:19] <hannelita> Not sure 
+[2016-07-26 09:19:32] <hannelita> I mean, we sjhould check if it's viable first, I guess 
+[2016-07-26 09:19:54] <aepsil0n> (otherwise we can probably talk tomorrow?)
+[2016-07-26 09:20:05] <hannelita> I'll present this as a regular talk on the meetup. t
+[2016-07-26 09:21:54] <johannh> aepsil0n: for Berlin? Let's do it after RustFest, but we can create an issue for it already
+[2016-07-26 09:22:01] <johannh> And maybe a meetup page
+[2016-07-26 09:22:17] <aepsil0n> yes, for Berlin
+[2016-07-26 09:22:21] <aepsil0n> ok, sounds reasonable
+[2016-07-26 09:22:47] <aepsil0n> although that's like two months away
+[2016-07-26 09:22:48] ⇐ broesamle quit (Mibbit@moz-a2n59m.dip0.t-ipconnect.de): Quit: http://www.mibbit.com ajax IRC Client
+[2016-07-26 09:23:39] → broesamle joined (Mibbit@moz-a2n59m.dip0.t-ipconnect.de)
+[2016-07-26 09:24:16] <aepsil0n> does anybody have updates on any of the workshops?
+[2016-07-26 09:24:38] <booyaa> erickt: no, feedback as such for the shop-a-thon or workshop material development. but i plan on volunteering everyone at the next meetup
+[2016-07-26 09:24:42] <broesamle> I have (already two weaks ago) started on an outline
+[2016-07-26 09:25:02] <broesamle> I have discussed the topic with a coupple of colleagues
+[2016-07-26 09:25:28] <broesamle> they tend to like the idea ... them and I agree that half a day is tough
+[2016-07-26 09:26:21] <broesamle> (sorry if I popped into the middle of the discussion again -- I was disconnected)
+[2016-07-26 09:26:47] <aepsil0n> (broesamle: nothing was said in between)
+[2016-07-26 09:27:42] <aepsil0n> i myself wanted to do some workshop stuff last weekend but then got sick :(
+[2016-07-26 09:28:27] <broesamle> (@epsil0n not only you)
+[2016-07-26 09:29:30] <broesamle> A general question that I am always puzzled with is how conceptual/rust-non-specific it can be
+[2016-07-26 09:29:39] <hannelita> So, if a workshop involving simple web parsers is going to happen, who would be the people that would like to be involved? what is the workshop duration? is there any format that you would like to expect for the materials? 
+[2016-07-26 09:30:14] <hannelita> I guess broesamle just suggested half a day 
+[2016-07-26 09:30:27] <booyaa> just out of interest has anyone claimed any of workshop related issues specifically for their meetup/user group?
+[2016-07-26 09:30:45] <broesamle> not that I suggested it -- it was somehow my 'information'
+[2016-07-26 09:31:10] <erickt> oiy, sorry I'm late. Finally off the phone
+[2016-07-26 09:31:13] <hannelita> broesamle sorry! sed suggested/mentioned 
+[2016-07-26 09:31:22] <broesamle> but I think half a day would make sense, so you can do two of them if you like
+[2016-07-26 09:31:56] <erickt> hannelita: I thought I heard most bridge workshops aimed for 1/2 a day to a full yday 
+[2016-07-26 09:32:01] <hannelita> Yeah, I totally agree. Plus, full-day workshops usually make your brain exhausted 
+[2016-07-26 09:32:14] <broesamle> hannelita, no worries ... thats what I'd heard
+[2016-07-26 09:32:57] <erickt> hannelita: what did you mean by "who would be involved"
+[2016-07-26 09:33:11] <broesamle> From the robotics workshops I've seen, they tend to rely strongly on things that already work and then can be modified/extended
+[2016-07-26 09:33:32] <erickt> booyaa: on claiming workshop materials, I'm guessing it's first-come first-served
+[2016-07-26 09:33:54] <hannelita> erickt direct question - is there someone in this meeting who would like to help to make the workshop materials? 
+[2016-07-26 09:34:30] <aepsil0n> concerning format: i think it would be helpful to be able to quickly onboard Rust-proficient people for running the workshop
+[2016-07-26 09:35:39] <broesamle> agreed, it should be "good rust practices" we are teaching, at least in the back of our head
+[2016-07-26 09:36:28] <erickt> hannelita: I plan on helping out with making some workshop tutorials
+[2016-07-26 09:36:36] <broesamle> My Idea was to push the mondrian thing forward conceptually, but maybe be peered by someone with rust experience
+[2016-07-26 09:36:51] <erickt> are there more materials that need to be produced beyond the tutorials?
+[2016-07-26 09:36:51] <broesamle> I can also review some other materials
+[2016-07-26 09:37:12] <broesamle> Running examples
+[2016-07-26 09:37:23] <broesamle> Requirements/installation istructions
+[2016-07-26 09:37:39] <broesamle> download links ... stuff like this
+[2016-07-26 09:37:56] <broesamle> some sort of timing/schedule for each workshop 
+[2016-07-26 09:38:03] <broesamle> maybe homework
+[2016-07-26 09:38:43] <broesamle> It would be good, if people had their machines ready (installed all required software) before the workshop
+[2016-07-26 09:38:54] <broesamle> workshops
+[2016-07-26 09:39:19] <aepsil0n> broesamle: not sure how realistic that is, given that we are targetting people with potentially very little tech bg
+[2016-07-26 09:39:20] <erickt> that's a good point. steveklabnik did mention that any workshop should try to have a "get everyone together the night before and install software"
+[2016-07-26 09:39:28] <broesamle> A teaser that makes everyone love the thing!!!
+[2016-07-26 09:39:52] <broesamle> it usually takes at least 2-4 hours
+[2016-07-26 09:40:11] <aepsil0n> that long?
+[2016-07-26 09:40:24] <broesamle> my experience with total beginners
+[2016-07-26 09:40:39] <erickt> aepsil0n: I suspect that our first set of attendees will be a bit more technical due to our ecosystem not yet being fleshed out enough to make it as approachable as, say, rails
+[2016-07-26 09:40:44] <broesamle> they don't know how to recognise they have done the right/wrong thing
+[2016-07-26 09:41:07] <broesamle> how do I recognise a good text editor on mac if I don't have one?
+[2016-07-26 09:41:57] <booyaa> atom is nice
+[2016-07-26 09:42:06] <booyaa> especially for rust work
+[2016-07-26 09:42:28] <booyaa> sorry erickt i've surrended my vim badge for a bit ;)
+[2016-07-26 09:42:38] <erickt> vim4ever
+[2016-07-26 09:42:59] <broesamle> yes, but how should I as a teache find this out, if I am not using this particular OS
+[2016-07-26 09:43:13] <broesamle> (just an example)
+[2016-07-26 09:43:19] <hannelita> I guess for a workshop is not taht important being super-productive. I think it's more important to get engaged to complete a task by learning the concepts 
+[2016-07-26 09:43:25] <erickt> :) it would be cruel to start coding on vim though
+[2016-07-26 09:43:33] <erickt> hannelita: +1
+[2016-07-26 09:43:50] — aepsil0n does not find rails approachable.
+[2016-07-26 09:44:01] <broesamle> And people should learn to see it for themselves, what they need to achieve
+[2016-07-26 09:44:56] <erickt> aepsil0n: to be perfectly honest, it's been so long since I learned how to code I frankly have some trouble remembering what it was like learning how to do it. I don't really remember the pain points
+[2016-07-26 09:45:13] <aepsil0n> fair point
+[2016-07-26 09:45:38] <broesamle> That's why I keep stressing, that getting started takes time time time
+[2016-07-26 09:45:45] <erickt> yeah
+[2016-07-26 09:45:52] <aepsil0n> just saying, rails is a full blown MVC web framework, which for me even today is not an easy thing to get into compared with (just) a programming language
+[2016-07-26 09:46:04] <erickt> so really we ought to have a tutorial on how to just get a computer setup
+[2016-07-26 09:46:05] <broesamle> And you have to look over the shoulder of the failing beginner to help her/him out 
+[2016-07-26 09:47:00] <booyaa> erickt: sounds like it
+[2016-07-26 09:47:31] <booyaa> i'd be happy to work on that btw
+[2016-07-26 09:47:40] <aepsil0n> we are getting derailed into a very open discussion here btw
+[2016-07-26 09:47:48] <aepsil0n> not sure whether this is what we want
+[2016-07-26 09:48:03] <erickt> booyaa: +1 you should talk to steveklabnik about that, he might have materials
+[2016-07-26 09:48:18] <broesamle> What is the audience to be like?
+[2016-07-26 09:48:18] <booyaa> broesamle: wondering how we capture the teaser/laptop/pc health check night before?
+[2016-07-26 09:48:26] <erickt> aepsil0n: yeah you're right
+[2016-07-26 09:48:55] <aepsil0n> so in summary…
+[2016-07-26 09:48:57] <broesamle> maybe that can be done as something to do at home
+[2016-07-26 09:49:12] <broesamle> like: get this hello world to work, otherwise join us at the bar
+[2016-07-26 09:49:56] <erickt> booyaa: filed https://github.com/rust-community/rustbridge/issues/18 to get a tutorial on setting up a computer for rusting
+[2016-07-26 09:49:59] <booyaa> erickt: will do / broesamle: excellent smoke test
+[2016-07-26 09:50:05] <erickt> <3
+[2016-07-26 09:50:19] <aepsil0n> there is a need for to come up with a workshop format and requirements for workshop materials
+[2016-07-26 09:50:42] <aepsil0n> does somebody want to collect our initial thoughts from this chatlog and put them in separate issues for that?
+[2016-07-26 09:51:30] <aepsil0n> and am i missing some essential point from this discussion with that summary?
+[2016-07-26 09:51:33] <broesamle> If someone copies me the full chat (I had to reload) I can do it on the train tomorrow
+[2016-07-26 09:51:58] <aepsil0n> great
+[2016-07-26 09:52:10] <aepsil0n> we are saving the chatlog anyway
+[2016-07-26 09:52:17] <aepsil0n> just have to make sure
+[2016-07-26 09:53:03] <broesamle> How about more conceptual/less rust-specific parts?
+[2016-07-26 09:53:22] <broesamle> or  aspects
+[2016-07-26 09:53:49] <aepsil0n> how do we capture that?
+[2016-07-26 09:54:04] <booyaa> things like variables, control flow and data types?
+[2016-07-26 09:54:05] <aepsil0n> as in, what work do we derive from that?
+[2016-07-26 09:54:34] <broesamle> things like: We represent things a sdata structures which is basically numbers at addresses
+[2016-07-26 09:54:42] <broesamle> the numbers change, the address remains
+[2016-07-26 09:54:47] <broesamle> exactly
+[2016-07-26 09:54:53] <erickt> booyaa / broesamle: nmatsakis and aturon have some materials like that
+[2016-07-26 09:55:00] <broesamle> what is a line in a graphics display
+[2016-07-26 09:55:14] <erickt> maybe not quite that low level as describing memory layout
+[2016-07-26 09:55:34] <broesamle> no, but the principles
+[2016-07-26 09:55:43] <erickt> oh, interesting
+[2016-07-26 09:55:58] <erickt> I wonder if any of the other bridge projects have material on that
+[2016-07-26 09:56:19] <aepsil0n> not sure whether it fits… if the goal is to get out of the workshop with a thing that does something, teaching theory does not help towards that end
+[2016-07-26 09:56:44] <broesamle> I will check it out in the research anyway, but any hints are welcome
+[2016-07-26 09:57:08] <erickt> broesamle: some materials from gobridge: https://github.com/gobridge/workshops
+[2016-07-26 09:57:33] <broesamle> ok, but wouldn't you roughly need an idea of what ownership or memory access is
+[2016-07-26 09:57:36] <aepsil0n> esp. because Rust does not require you that much to think that deeply about memory layout, just about ressources in more abstract manner
+[2016-07-26 09:57:41] <hannelita> Meybe we could check if RustConf ppl have some setup materials 
+[2016-07-26 09:57:49] <hannelita> *Maybe 
+[2016-07-26 09:58:13] <aepsil0n> (as long as you don't touch unsafe code or FFI at least :P)
+[2016-07-26 09:58:15] <broesamle> I mean, no more than to understand the thing you are creating
+[2016-07-26 09:58:22] <erickt> hannelita: yeah. I pinged steve in https://github.com/rust-community/rustbridge/issues/18 who would know
+[2016-07-26 09:58:50] <hannelita> Oh, sorry eickt, I hadn't seen 
+[2016-07-26 09:58:55] <broesamle> but enough not to end up with a wrksop telling you how to move the wand  
+[2016-07-26 09:59:23] <aepsil0n> broesamle: exactly, but to me that sounds more like. you've got ressource A stored somewhere on your computer and you can move it and borrow it.
+[2016-07-26 09:59:33] <aepsil0n> that's good enough from a Rust perspective
+[2016-07-26 09:59:56] <aepsil0n> no need to talk about 64-bit memory addresses
+[2016-07-26 10:00:03] <erickt> hannelita: do you have a link to your 8/3 meetup?
+[2016-07-26 10:00:23] <aepsil0n> btw, i got to leave now
+[2016-07-26 10:00:30] <erickt> thanks aepsil0n!
+[2016-07-26 10:00:45] <aepsil0n> pls make sure to save the chatlog
+[2016-07-26 10:00:47] <erickt> fyi, I started gathering up the action items in https://github.com/rust-community/rustbridge/issues/17#issuecomment-235334122
+[2016-07-26 10:00:57] <aepsil0n> thx, erickt ^^
+[2016-07-26 10:00:58] <erickt> aepsil0n: already done :)
+[2016-07-26 10:01:05] <aepsil0n> you are awesome
+[2016-07-26 10:01:06] <erickt> any other action items?
+[2016-07-26 10:01:18] <hannelita> https://www.meetup.com/Rust-Sao-Paulo-Meetup/events/232369098/ - we close the speaker program 1 week before and announce the subject 
+[2016-07-26 10:01:19] <erickt> you all are even more awesome
+[2016-07-26 10:01:32] <booyaa> :D
+[2016-07-26 10:01:46] <aepsil0n> anyway, see you :)
+[2016-07-26 10:01:49] ← aepsil0n left (eduard@moz-dj7.knr.178.195.IP)
+[2016-07-26 10:01:50] <broesamle> thanks to all of you!
+[2016-07-26 10:02:17] <erickt> hannelita: please let us know if there's anything else we can help out with to get your workshop-a-thon running
+[2016-07-26 10:02:55] <hannelita> I'll need help, yep. I'll let you know.
+[2016-07-26 10:03:08] <erickt> great! just let us know
+[2016-07-26 10:03:29] <hannelita> my goal for the next 2 weeks - run the meetup in Sao Paulo and see if people get engaged with the topic that we proposed (a simple parser app in Rust). Then write a list of topics to be covered into the workshop and how the tasks and concepts will be presented and taught. Also Describe an example app and propose the app that will be built. Does it sound good? 
+[2016-07-26 10:03:49] <erickt> thanks everyone! I need to now go pay attention to real work :) ping me if you need me
+[2016-07-26 10:03:56] <erickt> hannelita: that sounds great
+[2016-07-26 10:04:04] <hannelita> Thanks everyone! 
+[2016-07-26 10:04:33] <hannelita> erickt Can I create an issue with that and assign to myself?
+[2016-07-26 10:04:48] <erickt> hannelita: don't forget to ask your attendees to keep track of what's working and any problems they run into making the workshop
+[2016-07-26 10:04:57] <erickt> hannelita: of course!
+[2016-07-26 10:05:17] <erickt> this is everyone's project ;)
