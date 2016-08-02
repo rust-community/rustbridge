@@ -1,0 +1,65 @@
+16:57 <@booyaa> meeting agenda if anyone missed it: https://github.com/rust-community/rustbridge/issues/19
+17:10 < broesamle> ((sorry for being late))
+17:14 < badboy> broesamle: you did not miss anything yet
+17:14 < broesamle> ok good :)
+17:14 < broesamle> hi!
+17:20 <@booyaa> greetings!
+17:21 < hannelita> Just a heads up based on the agenda, I crated https://github.com/rust-community/rustbridge/issues/20 . The meetup did not happen yet, so I will get abck to you in the next meeting.
+17:22 <@booyaa> no progress on the setting up machine, but i'm going use ruby bridge' installfest as a guide
+17:23 <@booyaa> i'm planning to nudge my meetup group on the 11th, we should narrow down our choices on workshop material. i've been eyeing up the url shortener
+17:24 <@booyaa> broesamle: any progress on teachig material for data structures and pointers?
+17:25 < broesamle> started a minimal example on multi-threadding
+17:25 < broesamle> basically documenting every step I was doing
+17:26 < broesamle> can serve as a basis for required concepts to be explained
+17:26 < broesamle> (and what to abstract away from)
+17:26 <@booyaa> do you need any reviewers?
+17:27 < broesamle> not yet, I would say ... I consider it too rough for now -- its more a collection of essential moves for to achieve a minimal client-server scheme example
+17:28 < broesamle> If it goes well it will be turned into a mutli-threaded [[recursive]] mondrian painter.
+17:28 <@booyaa> okay :) / has anyone had a chance to give sonja any feedback on the logos? https://github.com/rust-community/rustbridge/issues/21
+17:30 < broesamle> I think there were quite some replies in the thread .. sonja did not sound like she wanted to urge a final decision
+17:31 <@booyaa> yeah really like the first iterations, were the 2nd set motifs? i'm afraid i'm not au fait with design terminology
+17:33 < broesamle> her last post says: "I'm still happy to iterate further."
+17:33 < broesamle> so i think she is 'still fiddling'
+17:33 < broesamle> which is perfectly fine from my pov
+17:34 < broesamle> Another thing that I tend to be puzzled with is: How beginnersbeginners are our beginners?
+17:34 <@booyaa> absolute beginners, no programming experience.
+17:35 < broesamle> But would they know what a text file is?
+17:35 < broesamle> would they know what a file is?
+17:35 < broesamle> a console
+17:35 <@booyaa> i can't remember if it extends to limited IT experience, in which case explan what a text file is might be a problem.
+17:35 < broesamle> a command
+17:36 < broesamle> (I know that I might have sounded a bit over-dramatic in the last meeting, but this could really slow down getting started, dramatically)
+17:37 < broesamle> In the last course I was giving, we needed two sessions (of ~70 minutes) to get everybody have python installed, recognize it as such and being able to use it
+17:38 < broesamle> they were certainly not exactly tech affine
+17:39 < broesamle> ??
+17:39 <@booyaa> sorry mobile data
+17:39 < broesamle> ah
+17:40 < broesamle> otherwise that's it for now from my side
+17:41 < broesamle> anything I cen help out with on other strands?
+17:42 <@booyaa> here's an example go bridge's prior experience expectations: https://github.com/gobridge/workshops/blob/master/available_courses.md
+17:43 < broesamle> thx ... I'll have a lool
+17:43 < broesamle> thx ... I'll have a look
+17:43 < broesamle> maybe also a lol *lol*
+17:44 <@booyaa>  also rails bridge have a foundational skills (what if you're new to the concept of files and consoles): http://docs.railsbridge.org/workshop/foundational_skills#foundational_programming_skills
+17:44 <@booyaa> and new programmers http://docs.railsbridge.org/workshop/ruby_for_beginners#application
+17:45 <@booyaa> i would hope maybe the later is who we're aiming the workshops at
+17:46 <@booyaa> who's our guiding light for this? i kinda understand it's difficult to develop material until you know what level of experience you're aiming at
+17:47 < broesamle> guiding light -- well I have an idea in mind what I want to build
+17:48 < broesamle> I try to make it as dense and as reduced (hence clear) as possible
+17:48 < broesamle> and then let's face the complexity that cannot be hidden/removed
+17:49 < broesamle> (I have good experiences with a bit more complexity than you feel comfortable with) -- as long as the example as a whole has an intuitive thing behind you can grasp
+17:50 < broesamle> and you can "experience" and modify it
+17:51 < broesamle> if you have too much time, you can follow the development here https://github.com/broesamle/RustWorkshop
+17:52 < broesamle> but it certainly needs revisions
+17:52 <@booyaa> cool will do
+17:55 <@booyaa> right 5 more minutes left, anything else to add?
+17:55 < broesamle> sorry -- connection interrupted
+17:57 <@booyaa> heh know that feeling
+17:57 < broesamle> as I said befor .. any place where I can help out?
+17:57 <@booyaa> thankfully usig mosh so  at worse i have a frozen session
+17:59 <@booyaa> not from me, will add as an action so the rest of the team can see. i don't think there were any new actions asides this?
+18:00 < broesamle> not from me .. I'm pretty much fine with everything for now.
+18:00 < broesamle> good
+18:00 <@booyaa> k thanks everyone
+18:00 < broesamle> then thanks to you
+18:00 < broesamle> see ya
