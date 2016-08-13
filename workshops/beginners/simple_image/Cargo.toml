@@ -1,0 +1,7 @@
+[package]
+name = "ellsworth"
+version = "0.1.0"
+authors = ["Max Holder <mxhold@gmail.com>"]
+
+[dependencies]
+image = "*"
