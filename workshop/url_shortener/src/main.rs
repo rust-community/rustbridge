@@ -12,9 +12,6 @@ mod db;
 use db::{LinksDB};
 use server::start_server;
 
-//
-// WEB SERVER
-//
 fn main() {
     for i in 0..300 {
         serdes::encode(i);

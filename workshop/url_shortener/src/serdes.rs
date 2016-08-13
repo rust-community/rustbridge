@@ -1,4 +1,3 @@
-
 use byteorder::{ReadBytesExt, WriteBytesExt, BigEndian};
 use rustc_serialize::base64::ToBase64;
 use rustc_serialize::base64::FromBase64;
@@ -7,7 +6,7 @@ use rustc_serialize::base64::CharacterSet::*;
 use rustc_serialize::base64::Config;
 use std::io::Cursor;
 
-const C : Config = Config {
+const C: Config = Config {
         char_set: UrlSafe,
         newline: LF,
         pad: false,
