@@ -21,8 +21,12 @@ like {link to tutorial} first before attempting this one.
 Goal 1 - a plain red square
 ===========================
 
-The first step to writing a program that will generate a random image
-is writing a program that will generate an image at all. Go ahead and run
+The first step to writing a program that will generate a random image is
+writing a program that will generate any image at all. We're going to generate
+an image that is plain red with nothing else (the exact color doesn't matter,
+the important thing is that there's no complexity, it's just one color).
+
+Go ahead and run
 
 `cargo new --bin image-generator`
 
@@ -86,5 +90,88 @@ an image file and write it to the filesystem, we'll need something like this.
 `C:/Users/` in Windows or `/usr/bin/` in a Unix-like operating system). We'll need this
 to tell `File` where we should put the image file that we're going to generate.
 
+Using the image crate
+---------------------
+
+Okay, now that we have our dependencies set up, it's time to actually make an
+image happen!  Let's look at the entire contents of the `main()` function -
+remember, when you run a Rust program, execution starts at the beginning of the
+`main()` function, and the program quits when it gets to the end of `main()`.
+
+    fn main() {
+        let image_size = 400;
+
+        let mut imgbuf = image::ImageBuffer::new(image_size, image_size);
+
+        let red = [255, 0, 0];
+
+        for (_, _, pixel) in imgbuf.enumerate_pixels_mut() {
+            *pixel = image::Rgb(red);
+        }
+
+        let ref mut fout = File::create(&Path::new("image.png")).unwrap();
+
+        let _ = image::ImageRgb8(imgbuf).save(fout, image::PNG);
+    }
+
+`let image_size = 400;` we decided (arbitrarily) that 400x400 pixels is a good
+size for an image, so let's assign that number to a variable with a name that
+makes sense. `let` is the keyword for assigning a value to a variable.
+
+It's important that we end this line with a semicolon - some
+programming languages use a newline to indicate that we are done with one
+statement and will move onto the next one, but in Rust we use a semicolon for
+this, and the newline isn't meaningful in and of itself.  Later on, we'll talk
+about some cases where a line of code *doesn't* end in a semicolon, and why
+that is, but for now you can think of a semicolon as the thing that separates one
+statement from another in Rust.
+
+`let mut imgbuf = image::ImageBuffer::new(image_size, image_size);` Remember
+how we included the external crate image? Well, here's where we use it.
+`image::ImageBuffer::new` is a function on the ImageBuffer struct within the
+image crate to make a new, default image of a given width and height. How did
+we know what function we needed to call to do this?  [The documentation for the
+image crate says
+so](http://www.piston.rs/image/image/struct.ImageBuffer.html#method.new).
+
+And what's this `mut` business? In Rust, when you declare a variable with
+`let`, it is *immutable*. You cannot change the value stored in the variable,
+and your program will not compile if you try. Sometimes, however, you do want
+to be able to change the value stored in a variable after you define it, and in
+these cases you can declare the variable with `let mut` to indicate that you
+want the variable to be *mutable*.
+
+`let red = [255, 0, 0]`. Rust, like most programming languages, has a way to
+talk about a group of several values. In Rust, this is called a *slice*. We
+declare a slice by putting any number of comma-separated values in between `[
+]`, and then we can treat the entire slice as a unit when we assign it to a
+variable or pass it to a function.
+
+It's very common in programming languages to represent a specific color as a
+tuple of three numbers between 0 and 255, which represent the amount of pure
+red, pure green, and pure blue in the color, in that order. [0, 0, 0] is
+completely black, [255, 255, 255] is completely white, [128, 128, 128] is a
+neutral grey, and [255, 0, 0] is red. And red is exactly what we want right
+now. We'll use more interesting colors later.
+
+Iterators and References
+-----------------------
+
+These next three lines of code aren't very long, but they introduce a number of concepts
+that are pervasive in Rust. Let's take it slow:
+
+    for (_, _, pixel) in imgbuf.enumerate_pixels_mut() {
+        *pixel = image::Rgb(red);
+    }
+
+You're probably familiar with the concept of a for loop - *for* every item in a collection
+of items, { *do something* with each item in turn }. `imgbuf.enumerate_pixels_mut()`
+
+
+(NOTE: right here, we *could* put in a long discussion about how to read a type
+signature. this would be kind of a long and complicated digression, but it *is*
+relevant to understanding what `.enumerate_pixels_mut()` does, and this is the
+place in the source code where someone using the image library needs to know
+that)
 
 
