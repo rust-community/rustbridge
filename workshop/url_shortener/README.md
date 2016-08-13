@@ -28,6 +28,9 @@ URL shortening will be done using the following algorithm:
   ID by transforming it using rustc\_serialize::Base64.  This is not
   as efficient as a custom ser-des, but it easy.
 
+# TODO
+- Use better SQL library, e.g. [diesel](http://diesel.rs/guides/getting-started/).
+
 # Data Design Notes
 
 We'll record:

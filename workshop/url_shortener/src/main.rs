@@ -24,5 +24,5 @@ fn main() {
     let link = links_db.link_for_url("example.com").unwrap();
     println!("Encoded ID: {}", serdes::encode(link.id as u64));
 
-    start_server();
+    start_server(links_db);
 }

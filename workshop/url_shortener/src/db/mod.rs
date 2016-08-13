@@ -30,6 +30,21 @@ impl LinksDB {
     }
 
     /// Returns the Link object that is associated with the target URL
+    pub fn find_link(&self, id: i64) -> Result<Link> {
+        let conn = self.conn.lock().unwrap();
+        let mut stmt = try!(conn.prepare("SELECT * FROM link WHERE id = $1"));
+        let mut rows = try!(stmt.query_map(&[&id], |row| {
+            Link {
+                id: row.get(0),
+                target: row.get(1),
+                created_at: row.get(2),
+            }
+        }));
+
+        rows.next().unwrap()
+    }
+
+    /// Returns the Link object that is associated with the target URL
     pub fn link_for_url(&self, target: &str) -> Result<Link> {
         let conn = self.conn.lock().unwrap();
         let mut stmt = try!(conn.prepare("SELECT * FROM link WHERE target = $1"));
