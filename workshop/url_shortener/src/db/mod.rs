@@ -43,25 +43,6 @@ impl LinksDB {
 
         rows.next().unwrap()
     }
-
-    pub fn list_links(&self) -> Result<Vec<Link>> {
-        let conn = self.conn.lock().unwrap();
-        let mut stmt = try!(conn.prepare("SELECT * FROM link"));
-        let rows = try!(stmt.query_map(&[], |row| {
-            Link {
-                id: row.get(0),
-                target: row.get(1),
-                created_at: row.get(2),
-            }
-        }));
-
-        let mut links = Vec::new();
-        for link_result in rows {
-            links.push(try!(link_result));
-        }
-
-        Ok(links)
-    }
 }
 
 //
@@ -69,9 +50,9 @@ impl LinksDB {
 //
 #[derive(Debug)]
 pub struct Link {
-    id: i64,
-    target: String,
-    created_at: Timespec
+    pub id: i64,
+    pub target: String,
+    pub created_at: Timespec
 }
 
 #[cfg(test)]
@@ -79,17 +60,12 @@ mod tests {
     use super::*;
 
     #[test]
-    fn insert_and_list() {
+    fn insert_links() {
         let db = LinksDB::with_tables().unwrap();
         let id = db.insert_link("example.com").unwrap();
         assert_eq!(id, 1);
         let id = db.insert_link("example2.com").unwrap();
         assert_eq!(id, 2);
-
-        let links = db.list_links().unwrap();
-        assert_eq!(links.len(), 2);
-        assert_eq!(links[0].target, String::from("example.com"));
-        assert_eq!(links[1].target, String::from("example2.com"));
     }
 
     #[test]
