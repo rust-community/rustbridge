@@ -165,7 +165,10 @@ that are pervasive in Rust. Let's take it slow:
     }
 
 You're probably familiar with the concept of a for loop - *for* every item in a collection
-of items, { *do something* with each item in turn }. `imgbuf.enumerate_pixels_mut()`
+of items, { *do something* with each item in turn }. `imgbuf.enumerate_pixels_mut()` returns a
+value called an *Iterator*, and, put simply, an Iterator is something that you can loop over
+in a for loop. In this case, `.enumerate_pixels_mut()` is a method we can call on an ImageBuffer
+(remember, we created this ImageBuffer a few lines up).
 
 
 (NOTE: right here, we *could* put in a long discussion about how to read a type
@@ -174,4 +177,30 @@ relevant to understanding what `.enumerate_pixels_mut()` does, and this is the
 place in the source code where someone using the image library needs to know
 that)
 
+(TODO: finish this section)
+
+
+`let ref mut fout = File::create(&Path::new("image.png")).unwrap();`
+Now that we've gone through every pixel in our image and set it to red, we're ready to save it to a file.
+`Path::new("image.png")` creates a *path* relative to the current directory whose name is "image.png" - this is
+the file we will save our image to, and that's why we had to `use std::path::Path`. `File::create()` takes a path
+as an argument and creates a file there. Why the `&`? That creates a reference.
+
+Errors and unwrapping
+---------------------
+
+`.unwrap()` is a very common idiom in Rust code. TODO explain more about unwrap() and when to use it and when not to use it
+
+
+
+`let _ = image::ImageRgb8(imgbuf).save(fout, image::PNG);` Finally, now that we've prepared the `fout` file handler, we use
+the image crate's `.save()` functionality to save it to a file. Our program is complete. 
+
+Run the program with `cargo run`, and, if all went well, you should see a file in teh current directory called "image.png". If you
+open it up in an image viewing program, you should see a completely red square.
+
+It's sorta like "hello world" for images. Now, let's make some more interesting stuf!
+
+Goal 2
+======
 
