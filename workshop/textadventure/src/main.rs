@@ -1,22 +1,8 @@
 mod board;
+mod players;
 
 use board::build_board;
-use std::io;
-
-struct Player {}
-
-impl Player {
-    fn take_turn(&self) -> bool {
-        let mut input = String::new();
-
-        io::stdin().read_line(&mut input)
-            .expect("Failed to read line");
-
-        // TODO parse and process input
-
-        return true;
-    }
-}
+use players::Player;
 
 fn main() {
     println!("Welcome to Gnomes! Let's begin.");
