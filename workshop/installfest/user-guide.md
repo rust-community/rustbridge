@@ -1,70 +1,173 @@
 # RustBridge InstallFest: User Guide
 
-* Introduction
-  * Goals of InstallFest / what you will achieve by the end of this process
-    * You have Rust and Cargo installed on your computer and a text editor ready to create Rust programs.
-  * Prerequisites / assumed knowledge
-    * You have a modern computer capable of connecting to the Internet.
-    * You are running an operating system that Rust supports:
-      * macOS
-      * Linux
-      * Windows
-    * You don't need any experience programming at all.
-      You do need to be familiar with basic operation of your computer.
-      You must have administrator access to your computer (the ability to install files to system-wide directories.)
-* Using the terminal
-  * What is a terminal? Why are we using it?
-  * macOS and Linux have terminals by default. Does Windows?
-  * Opening the terminal
-    * macOS: Select from Spotlight menu (click on magnifying glass or hit command-space)
-  * Explain prompt and command entering
-  * Verify curl is installed: `which curl`
-    * If you get output that looks like "/usr/bin/curl", it is installed. The text it prints is where the program is stored on your system.
-    * If there is no output (the prompt simply appears again), or you get a message saying something like "curl not found" you must install curl.
-      * How do you install it?
-* Installing Rust
-  * Installing rustup, rustc, and cargo
-    * Explain what rustup is. Why use it instead of installing Rust directly?
-    * User goes to rustup.rs website.
-    * Explain what the command is going to do.
-    * Copy/paste paste the command into your terminal and press return.
-    * rustup will display a bunch of info about what it's going to do.
-      You should read this, but don't worry if you don't understand it all.
-      Press the return/enter key to proceed with the default installation, which will install the latest stable version of Rust.
-    * It will take anywhere from a few seconds to a few minutes to download Rust depending on your Internet connection's speed.
-    * Eventually, you will see a message saying Rust is installed.
-    * Follow the message about configuring your current shell (terminal) by running `source $HOME/.cargo/env`. There will not be any output, you'll just see the prompt again.
-    * Run `cargo` and `rustc` (notice the "c" on the end). If you see help output for each of these programs, they are installed!
-    * Very briefly explain why it's `rustc` and not `rust`.
-* Installing an editor
-  * Choosing a text editor
-    * A text editor (also commonly just called "an editor") is a program used to change the content of files containing text. Examples of common editors are Atom, Sublime Text, Microsoft Visual Studio Code, Vim, and Emacs.
-    * Word processors are not the same as text editors. Word processors like Microsoft Word are intended for other types of documents and not program source code.
-    * If you already have an editor installed that you prefer, use that.
-    * If you don't have an editor installed or you're not sure if you have one installed, we recommend installing Atom.
-  * Installing Atom
-    * Go to [Atom website](https://atom.io).
-    * Click the big download button.
-    * Find the download in your downloads directory or click the file in your browser's download section.
-    * Extract the zip archive by double clicking it.
-    * Move Atom.app to your applications directory. (Drag and drop)
-    * Go to your applications directory and double click the Atom app.
-    * If you get a security message about having downloaded it from the Internet, it is okay. Click "Open".
-    * The first time you run Atom you will get a welcome page and guide.
-      You may browse this guide at your leisure if you wish.
-  * Installing the Rust package for your editor
-    * Explain a package is in the context of the editor. (Differentiate from "rust/cargo package" and packages in general.)
-    * Explain why we want the Rust package.
-    * Atom > Preferences > Install > search for "Rust".
-    * Select the package "language-rust" by the user "zargony" and click install.
-    * Wait for the package to download and install.
-    * Click on the "Packages" tab and you should see the language-rust package you just installed under the "Community Packages" section.
-  * Trying out the editor
-    * Open a new text file (File > New File) if you don't already have an "Untitled" document open.
-    * In the bottom right corner of the window, click "Plain Text" to change the type of file you're editing.
-    * Search for "rust" and then click on "Rust" in the search results.
-    * The text in the bottom right corner of the window should now say "Rust" instead of "Plain Text".
-    * To test that Rust package is working, type: `fn main() {}` in the window. You should see "fn" and "main" appear in different colors.
-* Conclusion
-  * Review what you've done
-  * Reiterate what you can now do
+## Introduction
+
+Welcome!
+This tutorial walks you through the process of installing Rust on your computer and setting up a text editor to start programming with Rust.
+You don't need to have any programming experience to use this tutorial.
+However, an understanding of basic operations of your computer, such as downloading an app, is assumed.
+The entire process should take you less than 30 minutes.
+
+Before you begin, make sure you have a computer with:
+
+* Access to the Internet
+* An operating system that supports Rust, including macOS, Linux, or Windows.
+
+Let's get started!
+
+## Using the Terminal
+
+A terminal is a text-based way of interacting with your computer without a graphical interface.
+We're using a terminal because it's the standard method of installing and working with programming tools.
+Your computer already has a terminal tool installed by default.
+Review the instructions for the operating system of your choice.
+
+### macOS
+
+1.  Open Terminal by either selecting the Spotlight menu (magnifying glass in the upper right) or by pressing the command and space keys together, then typing "Terminal".)
+
+    When you first open Terminal, you'll see a prompt.
+    You type commands to the computer after the prompt.
+
+    It'll look something like this:
+
+    ```
+    Last login: Some Date on console
+    Janes-MacBookPro:~ jane$
+    ```
+
+### Windows
+
+(TODO)
+
+### Linux
+
+1.  Ensure `curl` is installed.
+
+    ```
+    which curl
+    ```
+
+    Installation is successful if you see any output.
+    It will look something like this:
+
+    ```
+    /usr/bin/curl
+    ```
+
+    Curl is used to download files from the Internet.
+    We need to make sure it's installed on your computer before attempting to download Rust files.
+
+    If there is no output (the prompt simply appears again), or you get a message saying something like "curl not found" you must install curl.
+    Use your system's package manager to install it.
+
+    On a Debian-based system like Ubuntu, this would be:
+
+    ```
+    apt-get install curl
+    ```
+
+## Installing Rust
+
+The next step after opening the terminal is installing rustup, which installs Rust and Cargo, which is a package management (installing software written in Rust) and build tool (converting code into a usable program).
+
+### macOS
+
+1.  In your web browser, navigate to [rustup.rs](https://rustup.rs).
+
+2.  To download and run a program that installs the correct version of rustup for your computer, copy and paste the text on the webpage into your terminal.
+It should look something like this:
+
+    ```
+    Janes-MacBookPro:~ curl https://sh.rustup.rs -sSf | sh
+    ```
+
+3.  Press return.
+
+    The output describes how Rust and Cargo will be installed on your computer.
+
+4.   After you've read through the output, press return to accept the default installation settings.
+    It may take up to a couple minutes to install.
+    Once it's done installing, you'll see an installation is complete message.
+
+5.  Follow the instructions to configure the terminal.
+    Copy and paste the text.
+    It'll look something like this:
+
+    ```
+    Janes-MacBookPro:~ source $HOME/.cargo/env
+    ```
+
+    There won't be any output or confirmation. You'll just see the prompt again.
+
+6.  To confirm that cargo installed correctly, type `cargo` at the prompt and press return.
+    If it installed correctly, you'll see an output with help content.
+
+## Setting up a text editor
+
+A text editor (also commonly just called an editor) is a program used to edit text files.
+Examples of common editors used to program are Atom, Sublime Text, Microsoft Visual Studio Code, Vim, and Emacs.
+
+Word processors, like Microsoft Word, aren't the same as text editors and aren't designed for editing source code.
+
+If you already installed and use a text editor, skip to the "Installing the Rust package for your editor" section.
+If you don't have a text editor or are not sure if you have one, we recommend installing Atom.
+The next section walks you through the installation.
+
+### Installing Atom
+
+1.  In your web browser, navigate to [Atom website](https://atom.io).
+
+2.  Click the Download button to download a zip file.
+
+3.  Browse to the zip file in your Downloads directory or click the file the your browser's download bar.
+
+4.  Extract the zip file by double clicking the .zip file.
+
+5.  Move the Atom.app file to your Applications directory.
+    You can drag and drop the file.
+
+6.  In the Applications directory, open the Atom app by double clicking.
+
+    If you get a security message about opening an application downloaded from the Internet, it's okay to proceed. Click Open.
+
+    When Atom opens, you'll see a Welcome and Welcome Guide pages as tabs.
+
+### Installing the Rust package for your text editor
+
+The final step is installing a Rust language package for a text editor.
+The package makes it easier to code with Rust with features like colored text and auto-formatting.
+
+1.  In Atom, navigate to Preferences, then Install.
+
+2.  Search for "rust".
+
+3.  Select the "language-rust" package by the user "zargony".
+    Click Install.
+
+    Wait for the package to download and install.
+
+4.  Still in Atom, click on the Packages tab.
+    Under the Community Packages section, verify that "language-rust" is listed.
+
+5.  Open a new text file by selecting New File under File.
+    You may already have an untitled file already open.
+
+6.  In the bottom right, click Plain Text to change the file type.
+
+7.  Search for "rust".
+    Click "Rust" in the search results.
+    "Rust" should replace "Plain Text" now.
+
+8.  To test the language package, type the following:
+
+    ```
+    fn main() {}
+    ```
+
+    Notice that "fn" and "main" appear in different colors.
+
+## Conclusion
+
+You've now installed Rust and optimized your text editor for Rust.
+You're ready to start learning Rust!
