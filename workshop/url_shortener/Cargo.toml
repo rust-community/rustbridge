@@ -4,3 +4,7 @@ version = "0.1.0"
 authors = ["Alson Kemp <alson@alsonkemp.com>"]
 
 [dependencies]
+rustc-serialize = "0.3"
+rust-sqlite = "0.2.0"
+
+
