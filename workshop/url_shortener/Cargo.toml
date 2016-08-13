@@ -4,3 +4,4 @@ version = "0.1.0"
 authors = ["Alson Kemp <alson@alsonkemp.com>"]
 
 [dependencies]
+nickel = "*"
