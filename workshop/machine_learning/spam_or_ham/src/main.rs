@@ -4,7 +4,6 @@ extern crate rustlearn;
 
 use std::io::{Cursor, Read};
 
-
 use hyper::client::Client;
 use zip::read::ZipArchive;
 use rustlearn::prelude::*;
@@ -52,7 +51,7 @@ fn parse(data: &str) -> (SparseRowArray, Array) {
         } else {
             1.0
         });
-        
+
         let text = tokens.last().unwrap();
 
         for token in text.split(' ') {
@@ -87,7 +86,7 @@ fn fit(X: &SparseRowArray, y: &Array) -> f32 {
         for _ in 0..num_epochs {
             model.fit(&X_train, &y_train);
         }
-            
+
         let fold_accuracy = accuracy_score(&y_test, &model.predict(&X_test).unwrap());
 
         accuracy += fold_accuracy;
@@ -100,8 +99,10 @@ fn fit(X: &SparseRowArray, y: &Array) -> f32 {
 fn main() {
     println!("Hello, world!");
 
-    let zipped = download("https://archive.ics.uci.edu/ml/machine-learning-databases/00228/smsspamcollection.zip");
+    let zipped = download("https://archive.ics.uci.\
+                           edu/ml/machine-learning-databases/00228/smsspamcollection.zip");
     let raw_data = unzip(zipped);
     let (X, y) = parse(&raw_data);
     println!("Accuracy: {}", fit(&X, &y));
+
 }

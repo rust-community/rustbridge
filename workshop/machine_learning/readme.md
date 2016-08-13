@@ -89,60 +89,47 @@ This means cargo has downloaded and compiled `hyper` (and all of its dependencie
 Our download function will look something like this
 
 ```rust
-fn download(url: String) -> Result<Vec<u8>>, String> {
+fn download(url: &str) -> Vec<u8> {
    // snip
 }
 ```
 
-We download a resource by its URL and return an array of bytes (a `Vec<u8>>`). There is one interesting thing about this function. Instead of just returning a `Vec<u8>` with our data, we return `Result<Vec<u8>, ()>` --- why is that? Rust uses `Result` types to handle the results of computations that can fail. In this instance, downloading the data can succeed (in which case we would get and `Ok<Vec<u8>>` variant of `Result<Vec<u8>, ()>`) or fail (due to network issues, a moved resource and so on). In that case, we'd get an `Err(())` variant. The compiler then forces us to properly handle both cases. This is part of Rust's focus on safety.
-
-In order to start writing the body of the function, we need to impor the `hyper` dependency. We do this by putting `extern crate hyper` at the top of `main.rs`. This imports the `hyper` module into the scope of our project.
+We download a resource by its URL and return an array of bytes (a `Vec<u8>>`). In order to start writing the body of the function, we need to impor the `hyper` dependency. We do this by putting `extern crate hyper` at the top of `main.rs`. This imports the `hyper` module into the scope of our project.
 
 Looking at the GET example in the `hyper` [documentation](http://hyper.rs/hyper/v0.9.10/hyper/client/index.html#get), we should be able to write somthing along the lines of
 ```rust
 let client = Client::new();
-let response_or_error = client.get(&url).send();
+let mut response = client.get(url).send().unwrap();
 ```
 
-The first line instantiates a HTTP client; the second one makes the request. There are two interesting things about it:
-1. The `get` method on the client takes a reference to a `String`, not a `String` itself. We use the reference operator `&` to obtain that.
-2. The [return type](http://hyper.rs/hyper/v0.9.10/hyper/client/struct.RequestBuilder.html#method.send) of `send()` is `Result<Response>`: the request could fail and there could be no response.
+The first line instantiates a HTTP client; the second one makes the request. There are two interesting things about it.
 
-So how do we handle a `Result` type? Rust provides an extremely powerful [pattern matching](https://doc.rust-lang.org/book/patterns.html) paradigm, but in this simple case we're just going to check the state of the result like so:
-```rust
-if let Ok(mut response) = response_or_error {
-   <snip>
-}
-```
-Let's unwrap this. An `if let` [construct](https://doc.rust-lang.org/book/if-let.html) checks if a `Result` is an `Ok`; if yes, it binds the inner value of `Result` for use within the `if body.
+Firstly, the [return type](http://hyper.rs/hyper/v0.9.10/hyper/client/struct.RequestBuilder.html#method.send) of `send()` is `Result<Response>` --- why is that? Rust uses `Result` types to handle the results of computations that can fail. In this instance, downloading the data can succeed (in which case we would get an `Ok<Response>` variant of `Result<Response>`), or fail (due to network issues, a moved resource and so on). In that case, we'd get an `Err` variant. That the compiler then forces us to properly handle both cases is part of Rust's focus on safety.
 
-In this case, we want to bind the response to a mutable variable, and so we use the `mut` modifier when binding the response variable. While Rust's [mutability](https://doc.rust-lang.org/book/mutability.html) system is simple, it is somewhat beyond the scope of this tutorial. All we need to know is that we modify the response when reading from it, so we need to declare it as mutable.
+So how do we handle a `Result` type? Rust provides an extremely powerful [pattern matching](https://doc.rust-lang.org/book/patterns.html) paradigm, but in this simple case we're just going to skip error handling and call `unwrap` on all of the `Result`s we encounter. This causes the program to abort whenever there is an error.
 
-Because we're returning a byte array, we want to convert our response with something like the following:
+Secondly, we want to bind the resulting response to a mutable variable, and so we use the `mut` modifier when binding the response variable. While Rust's [mutability](https://doc.rust-lang.org/book/mutability.html) system is simple, it is somewhat beyond the scope of this tutorial. All we need to know is that we modify the response when reading from it, so we need to declare it as mutable.
+
+
+Once we have our response we want to convert it to a byte array with something like the following:
+
 ```rust
 let mut data = Vec::new();
-response.read_to_end(&mut data);
+response.read_to_end(&mut data).unwrap()
 ```
+
 For this to work, we also need to import the `Read` [trait](https://doc.rust-lang.org/book/traits.html) into our scope by adding `use std::io::Read;` at the top of the file. The reasons for this are somewhat arcane so we'll skip them here.
 
-Once that's completed we can return an `Ok(data)` if successful, and `Err(())` otherwise, completing the download function:
+Once that's completed we simply return the `data` variable by including it on the last line of the function (the last line of any expression is its return value):
 ```rust
-fn download(url: String) -> Result<Vec<u8>, ()> {
+fn download(url: &str) -> Vec<u8> {
 
     let client = Client::new();
-    let response_or_error = client.get(&url).send();
+    let mut response = client.get(url).send().unwrap();
 
-    if let Ok(mut response) = response_or_error {
-        let mut data = Vec::new();
-        response.read_to_end(&mut data).unwrap();
-        return Ok(data)
-    }
+    let mut data = Vec::new();
+    response.read_to_end(&mut data).unwrap();
 
-    Err(())
+    data
 }
 ```
-
-
-
-
-Firstly, we take `&str` as our URL argument, but return a `String` --- what is the difference? In Rust, every object has an owner. A `String` is an owned string: passing it around involves tranferring ownership. If our function accepted a `String` for the URL argument, its caller would not be able to use it again after it's called `download`: it would have transferred ownership of the URL string to the `download` function.
