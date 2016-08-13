@@ -73,8 +73,8 @@ need to include an external crate to make use of it. Instead, we use the `use` c
 
 Go ahead and type:
 
-        use std::fs::File;
-        use std::path::Path;
+    use std::fs::File;
+    use std::path::Path;
 
 at the top of your main.rs, right below the `extern crate image;` line (note
 the semicolons!).  This tells Rust that in your source file, you want to
