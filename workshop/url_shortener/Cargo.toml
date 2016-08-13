@@ -4,6 +4,7 @@ version = "0.1.0"
 authors = ["Alson Kemp", "Ki Chjang"]
 
 [dependencies]
+byteorder = "*"
 nickel = "*"
 rusqlite = "*"
 rustc-serialize = "0.3"

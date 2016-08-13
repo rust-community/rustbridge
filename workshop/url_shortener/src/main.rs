@@ -1,15 +1,13 @@
+extern crate byteorder;
 extern crate rustc_serialize;
 extern crate rusqlite;
 extern crate time;
 #[macro_use]
 extern crate nickel;
 
-use nickel::{Nickel, HttpRouter};
-use rustc_serialize::base64::ToBase64;
-use rustc_serialize::base64::Newline::*;
-use rustc_serialize::base64::CharacterSet::*;
-use rustc_serialize::base64::Config;
+mod serdes;
 
+use nickel::{Nickel, HttpRouter};
 use rusqlite::SqliteConnection;
 use time::Timespec;
 
@@ -36,16 +34,10 @@ struct LinkUse {
 // WEB SERVER
 //
 fn main() {
-    let c = Config {
-        char_set: UrlSafe,
-        newline: LF,
-        pad: false,
-        line_length: None
-    };
-    for s in 0..255 {
-        println!("B64: {:?}", [s].to_base64(c));
+    for i in 0..300 {
+        serdes::encode(i);
+        serdes::decode(serdes::encode(i));
     }
-
     let mut server = Nickel::new();
     server.get("**", middleware!("Hello World"));
     server.listen("127.0.0.1:6767");
