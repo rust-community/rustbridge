@@ -1,0 +1,9 @@
+[package]
+name = "random_image"
+version = "0.1.0"
+authors = ["Max Holder <mxhold@gmail.com>"]
+
+[dependencies]
+image = "*"
+rand = "0.3.0"
+
