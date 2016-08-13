@@ -10,7 +10,7 @@ fn main() {
 
     let red = [255, 0, 0];
 
-    for (x, y, pixel) in imgbuf.enumerate_pixels_mut() {
+    for (_, _, pixel) in imgbuf.enumerate_pixels_mut() {
         *pixel = image::Rgb(red);
     }
 
