@@ -6,10 +6,17 @@ extern crate time;
 extern crate nickel;
 
 mod serdes;
+mod server;
+
+use rustc_serialize::base64::ToBase64;
+use rustc_serialize::base64::Newline::*;
+use rustc_serialize::base64::CharacterSet::*;
+use rustc_serialize::base64::Config;
 
 use nickel::{Nickel, HttpRouter};
 use rusqlite::SqliteConnection;
 use time::Timespec;
+use server::start_server;
 
 //
 // DATA MODELS
@@ -38,7 +45,6 @@ fn main() {
         serdes::encode(i);
         serdes::decode(serdes::encode(i));
     }
-    let mut server = Nickel::new();
-    server.get("**", middleware!("Hello World"));
-    server.listen("127.0.0.1:6767");
+
+    start_server();
 }

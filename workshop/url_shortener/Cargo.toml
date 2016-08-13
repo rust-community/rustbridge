@@ -1,7 +1,7 @@
 [package]
 name = "url_shortener"
 version = "0.1.0"
-authors = ["Alson Kemp", "Ki Chjang"]
+authors = ["Alson Kemp", "Keith Yeung"]
 
 [dependencies]
 byteorder = "*"
