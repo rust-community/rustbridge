@@ -1,3 +1,7 @@
+mod board;
+
+use board::Room;
+use board::Side;
 use std::io;
 
 struct Player {}
@@ -18,6 +22,8 @@ impl Player {
 fn main() {
     println!("Welcome to Gnomes! Let's begin.");
 
+    //let board = [[Room; 5]; 5];  // 5 by 5 game board
+    let room = Room {up: Side::Solid, right: Side::Opening, down: Side::Solid, left: Side::Magic};
     let player = Player {};  // user
     let gnome = Player {};  // NPC
     let leprechaun = Player {};  // NPC
