@@ -1,10 +1,11 @@
 [package]
 name = "url_shortener"
 version = "0.1.0"
-authors = ["Alson Kemp <alson@alsonkemp.com>"]
+authors = ["Alson Kemp", "Ki Chjang"]
 
 [dependencies]
+nickel = "*"
+rusqlite = "*"
 rustc-serialize = "0.3"
-rust-sqlite = "0.2.0"
-
+time = "0.1"
 
