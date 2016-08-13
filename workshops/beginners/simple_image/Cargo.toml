@@ -1,5 +1,5 @@
 [package]
-name = "ellsworth"
+name = "simple_image"
 version = "0.1.0"
 authors = ["Max Holder <mxhold@gmail.com>"]
 
