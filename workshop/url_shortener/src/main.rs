@@ -10,10 +10,6 @@ mod server;
 mod db;
 
 use db::{LinksDB};
-
-use nickel::{Nickel, HttpRouter};
-use rusqlite::SqliteConnection;
-use time::Timespec;
 use server::start_server;
 
 //
