@@ -1,18 +1,21 @@
-pub enum Side {
+pub enum Wall {
     Opening,
     Solid,
-    Magic,
+    Magical,
 }
 
 pub struct Room {
-    up: Side,
-    right: Side,
-    down: Side,
-    left: Side,
+    up: Wall,
+    right: Wall,
+    down: Wall,
+    left: Wall,
 }
 
-// TODO Need 5 by 5 not 2 by 1 game board
-pub fn build_board() -> [[Room; 1]; 2] {
-    [[Room {up: Side::Solid,   right: Side::Solid,   down: Side::Opening, left: Side::Solid}],
-     [Room {up: Side::Opening, right: Side::Opening, down: Side::Solid,   left: Side::Solid}]]
+// TODO Need 5 by 5 not 2 by 1 game board.
+pub type Board = [[Room; 1]; 2];
+
+// TODO Construct a maze.
+pub fn build_board() -> Board {
+    [[Room {up: Wall::Opening, right: Wall::Solid,   down: Wall::Opening, left: Wall::Solid}],
+     [Room {up: Wall::Opening, right: Wall::Opening, down: Wall::Solid,   left: Wall::Solid}]]
 }
