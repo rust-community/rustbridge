@@ -3,6 +3,7 @@
 In this tutorial we'll try to carry out a simple classification task using Rust, starting with setting up a new project, through collecting and parsing data, to fitting the model and evaluation.
 
 We'll proceed through the following steps:
+
 1. Setting up a new Rust project
 2. Programmatically downloading the data
 3. Unpacking and parsing the data
@@ -15,6 +16,7 @@ cargo new spam_or_ham --bin
 ```
 
 This does a couple of things:
+
 1. Creates a new directory, `spam_or_ham` that contains the structure of a typical Rust project.
 2. It initializes a new Git repository in that directory.
 3. It creates a file called `Cargo.toml` which contains the metadata describing our new package (called a `crate` in Rust) as well as the specification of it dependencies.
@@ -48,12 +50,13 @@ spam	Free entry in 2 a wkly comp to win FA Cup final tkts 21st May 2005.
 ham	U dun say so early hor... U c already then say...
 ```
 
-## Downloading the data
+### Downloading the data
 Let's write a function to download the data.
 
 To do this, we need to talk about dependencies: the Rust standard library has a fairly narrow focus, and a lot of key tasks are delegated to third-party libraries (called crates). For downloading the dataset we'll use a package called `hyper`.
 
 The package repository is [crates.io](crates.io). The crates.io `hyper` [page](https://crates.io/crates/hyper) gives us a couple of pieces of information about the package
+
 1. A link to its [documentation](http://hyperium.github.io/hyper)
 2. A link to its [repository](https://github.com/hyperium/hyper)
 3. Its download statistics. This is a good guide to figuring out which library is the standard way of doing a given thing in Rust.
@@ -133,3 +136,122 @@ fn download(url: &str) -> Vec<u8> {
     data
 }
 ```
+
+### Unzipping the data
+We have downloaded a zipped archive: the next step is to unzip it. We'll need another dependency to do that, the [zip](https://crates.io/crates/zip) crate. As before, we add it to the `Cargo.toml` file
+
+```
+[dependencies]
+hyper = "0.9.10"
+zip = "0.1.18"
+```
+
+and then import it in `main.rs`, together with the `ZipArchive` struct:
+
+```rust
+extern crate zip;
+<snip>
+use zip::read::ZipArchive;
+```
+
+Our unzip function will take the vector of bytes from the download function, and return a `String`. It could look like this:
+
+```rust
+// We need to add the Cursor import 
+use std::io::{Cursor, Read};
+
+<snip>
+
+fn unzip(zipped: Vec<u8>) -> String {
+    let mut archive = ZipArchive::new(Cursor::new(zipped)).unwrap();
+    let mut file = archive.by_name("SMSSpamCollection").unwrap();
+
+    let mut data = String::new();
+    file.read_to_string(&mut data).unwrap();
+
+    data
+}
+```
+
+We open the archive, select the file we want from it, and read it into a `String` which we then return (dealing with `Result` types by unwrapping them.
+
+We can print some lines as a quick sanity check:
+
+```rust
+fn main() {
+    let zipped = download("https://archive.ics.uci.\
+                           edu/ml/machine-learning-databases/00228/smsspamcollection.zip");
+    let raw_data = unzip(zipped);
+
+    for line in raw_data.lines().take(3) {
+        println!("{}", line);
+    }
+}
+```
+
+This gives us a first look at Rust iterators `raw_data.lines()` creates an iterator over slices of the string, separates by newlines; we then take 3 elements from it and print them. Rust's functional features manifest themselves in a a large array of powerful [iterator adapters](https://doc.rust-lang.org/book/iterators.html#iterator-adaptors) which are not only convenient but also compile to efficient machine code equivalent to traditional C and C++ for loops.
+
+### Building training matrices
+We're going to use a package called [rustlearn](https://crates.io/crates/rustlearn) for model fitting an evaluation. As before, we add it to `Cargo.toml` and import it:
+```
+[dependencies]
+hyper = "0.9.10"
+zip = "0.1.18"
+rustlearn = "0.4.0"
+```
+
+```rust
+extern crate rustlearn;
+
+<snip>
+
+use rustlearn::prelude::*;
+```
+
+The first step is to transform the data into a feature matrix and a target array. We'll transform every label into either a 1 (ham) or 0 (spam), and use one-hot-encoded bag of words features. For one-hot-encoding we're going to use [DictVectorizer](https://maciejkula.github.io/rustlearn/doc/rustlearn/feature_extraction/dict_vectorizer/struct.DictVectorizer.html), and return a sparse array for features and a dense array for labels:
+
+```rust
+fn parse(data: &str) -> (SparseRowArray, Array) {
+
+    // Initialise the vectorizer
+    let mut vectorizer = DictVectorizer::new();
+    let mut labels = Vec::new();
+
+    // Like Python enumerate(), this will iterate
+    // over pairs of (row_number, line).
+    for (row_num, line) in data.lines().enumerate() {
+        // The label and text message content is separated by a tab.
+        // We split the line in two here.
+        let (label, text) = line.split_at(line.find('\t').unwrap());
+
+        // Convert the labels to binary
+        labels.push(if label == "Spam" {
+            0.0
+        } else {
+            1.0
+        });
+
+        // The vectorizer will keep a mapping from tokens
+        // to column indices.
+        for token in text.split_whitespace() {
+            vectorizer.partial_fit(row_num, token, 1.0);
+        }
+    }
+
+    (vectorizer.transform(), Array::from(labels))
+}
+```
+
+Calling the function
+
+```rust
+let (X, y) = parse(&raw_data);
+
+println!("X: {} rows, {} columns, {} non-zero entries",
+          X.rows(), X.cols(), X.nnz());
+```
+
+should print `X: 5574 rows, 15733 columns, 81085 non-zero entries`.
+
+
+### Fitting and evaluating the model

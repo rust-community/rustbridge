@@ -1,3 +1,4 @@
+#![allow(non_snake_case)]
 extern crate hyper;
 extern crate zip;
 extern crate rustlearn;
@@ -38,23 +39,27 @@ fn unzip(zipped: Vec<u8>) -> String {
 
 fn parse(data: &str) -> (SparseRowArray, Array) {
 
+    // Initialise the vectorizer
     let mut vectorizer = DictVectorizer::new();
     let mut labels = Vec::new();
 
+    // Like Python enumerate(), this will iterate
+    // over pairs of (row_number, line).
     for (row_num, line) in data.lines().enumerate() {
-        let tokens = line.split('\t').collect::<Vec<&str>>();
+        // The label and text message content is separated by a tab.
+        // We split the line in two here.
+        let (label, text) = line.split_at(line.find('\t').unwrap());
 
-        let label = tokens.first().unwrap();
-
-        labels.push(if *label == "Spam" {
+        // Convert the labels to binary
+        labels.push(if label == "Spam" {
             0.0
         } else {
             1.0
         });
 
-        let text = tokens.last().unwrap();
-
-        for token in text.split(' ') {
+        // The vectorizer will keep a mapping from tokens
+        // to column indices.
+        for token in text.split_whitespace() {
             vectorizer.partial_fit(row_num, token, 1.0);
         }
     }
@@ -97,12 +102,19 @@ fn fit(X: &SparseRowArray, y: &Array) -> f32 {
 
 
 fn main() {
-    println!("Hello, world!");
-
     let zipped = download("https://archive.ics.uci.\
                            edu/ml/machine-learning-databases/00228/smsspamcollection.zip");
     let raw_data = unzip(zipped);
+
+    for line in raw_data.lines().take(3) {
+        println!("{}", line);
+    }
+    
     let (X, y) = parse(&raw_data);
+
+    println!("X: {} rows, {} columns, {} non-zero entries.",
+             X.rows(), X.cols(), X.nnz());
+    
     println!("Accuracy: {}", fit(&X, &y));
 
 }
