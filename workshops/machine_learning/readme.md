@@ -9,6 +9,11 @@ We'll proceed through the following steps:
 3. Unpacking and parsing the data
 4. Fitting a model and evaluating it
 
+(If you're impatient, [here](spam_or_ham/src/main.rs) is the finished article.)
+
+## Preliminaries: getting Rust
+If you haven't installed Rust yet, don't fret. [Rustup.rs](https://rustup.rs/) is a very quick and painless way of installing Rust. Executing `curl https://sh.rustup.rs -sSf | sh` will download and install a Rust distribution and you'll be ready to go.
+
 ## Setting up a new project
 We can set up a new project using Cargo, the Rust package manager. We can do that by executing
 ```
@@ -86,6 +91,8 @@ That's it! If we run `cargo run`, we should see output similar to the following:
 >>> Running `target/debug/spam_or_ham`
 >>> Hello, world!
 ```
+
+(If you're on a Mac, you may need to [install OpenSSL](http://apple.stackexchange.com/questions/126830/how-to-upgrade-openssl-in-os-x) via Homebrew.
 
 This means cargo has downloaded and compiled `hyper` (and all of its dependencies) before building our project. We are now set to start using it!
 
@@ -224,11 +231,13 @@ fn parse(data: &str) -> (SparseRowArray, Array) {
         // We split the line in two here.
         let (label, text) = line.split_at(line.find('\t').unwrap());
 
-        // Convert the labels to binary
-        labels.push(if label == "Spam" {
-            0.0
-        } else {
-            1.0
+        // Convert the labels to binary. We use pattern matching
+        // to ensure that the program is aborted if an unexpected
+        // label is encountered.
+        labels.push(match label {
+            "spam" => 0.0,
+            "ham" => 1.0,
+            _ => panic!(format!("Invalid label: {}", label))
         });
 
         // The vectorizer will keep a mapping from tokens
@@ -251,7 +260,97 @@ println!("X: {} rows, {} columns, {} non-zero entries",
           X.rows(), X.cols(), X.nnz());
 ```
 
-should print `X: 5574 rows, 15733 columns, 81085 non-zero entries`.
+should print `X: 5574 rows, 15733 columns, 81085 non-zero entries. Y: 86.60% positive class`.
 
 
 ### Fitting and evaluating the model
+Once we have the data, model fitting is easy. We can create a [logistic regression model](https://maciejkula.github.io/rustlearn/doc/rustlearn/linear_models/sgdclassifier/index.html) like so:
+
+```rust
+use rustlearn::linear_models::sgdclassifier;
+
+<snip>
+
+let mut model = sgdclassifier::Hyperparameters::new(X.cols())
+            .learning_rate(0.05)
+            .l2_penalty(0.01)
+            .build();
+```
+
+Adding cross validation and evaluation gives us:
+
+
+```rust
+use rustlearn::cross_validation::CrossValidation;
+use rustlearn::metrics::accuracy_score;
+
+<snip>
+
+n fit(X: &SparseRowArray, y: &Array) -> (f32, f32) {
+
+    let num_epochs = 10;
+    let num_folds = 10;
+
+    let mut test_accuracy = 0.0;
+    let mut train_accuracy = 0.0;
+
+    // The cross validation interator returns indices of train and test rows
+    for (train_indices, test_indices) in CrossValidation::new(y.rows(), num_folds) {
+
+        // Slice the feature matrices
+        let X_train = X.get_rows(&train_indices);
+        let X_test = X.get_rows(&test_indices);
+
+        // Slice the target vectors
+        let y_train = y.get_rows(&train_indices);
+        let y_test = y.get_rows(&test_indices);
+
+        let mut model = sgdclassifier::Hyperparameters::new(X.cols())
+            .learning_rate(0.05)
+            .l2_penalty(0.01)
+            .build();
+
+        // Repeated calls to `fit` perform epochs of training
+        for _ in 0..num_epochs {
+            model.fit(&X_train, &y_train).unwrap();
+        }
+
+        let fold_test_accuracy = accuracy_score(&y_test, &model.predict(&X_test).unwrap());
+        let fold_train_accuracy = accuracy_score(&y_train, &model.predict(&X_train).unwrap());
+
+        test_accuracy += fold_test_accuracy;
+        train_accuracy += fold_train_accuracy;
+    }
+
+    (test_accuracy / num_folds as f32,
+     train_accuracy / num_folds as f32)
+}
+```
+
+Calling it
+
+```rust
+let (test_accuracy, train_accuracy) = fit(&X, &y);
+
+println!("Test accuracy: {:.3}, train accuracy: {:.3}",
+         test_accuracy, train_accuracy);
+```
+
+should print `Test accuracy: 0.974, train accuracy: 0.994`: slight overfitting, but still a pretty decent model.
+
+We can also try timing the model fitting be using the `time` crate:
+
+```rust
+extern crate time;
+
+<snip>
+
+let start_time = time::precise_time_ns();
+let (test_accuracy, train_accuracy) = fit(&X, &y);
+let duration = time::precise_time_ns() - start_time;
+
+println!("Training time: {:.3} seconds",
+         duration as f64 / 1.0e+9);
+```
+
+On my machine, this prints `Training time: 5.519 seconds`, which is pretty slow --- and that's because we have so far been compiling in debug mode. To compile in release mode, run `cargo run --release`. This brings the execution time down to just over 1 second.
