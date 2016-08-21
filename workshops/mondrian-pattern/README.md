@@ -38,8 +38,10 @@ Implementation Outline
 * handles a part of the canvas
 * makes further subdevisions
 * may check on neighbours and negotiate with them [subdivisions and colours](mondrian-rules_avoid-unlucky-encounters.png) etc
-3) negotiation with neighbours
+3) negotiation with neighbours to avoid unlucky encounters
 * requires inter-process communication
+
+![unlucky encounters](mondrian-rules_avoid-unlucky-encounters.png)
 
 Ownership of Canvas Regions
 ---------------------------
