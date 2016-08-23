@@ -49,11 +49,37 @@ pub fn take_turn(players: &mut Players, board: &Board) {
 }
 
 fn play_explorer(data: ExplorerData, others: &Players, board: &Board) -> ExplorerData {
-    ExplorerData { x: data.x, y: data.y, energy: data.energy }
+    let mut _data = data;
+    let mut input = String::new();
+
+    loop {
+        println!("Enter letter command: [U]p [R]ight [D]own [L]eft [T]eleport");
+
+        io::stdin().read_line(&mut input)
+            .expect("Failed to read line");
+
+        match input.trim().chars().nth(0) {
+            Some(command) => {
+                match command {
+                    'U' => { move_explorer_up(&mut _data, board); break; },
+                    'R' => { move_explorer_right(&mut _data, board); break; },
+                    'D' => { move_explorer_down(&mut _data, board); break; },
+                    'L' => { move_explorer_left(&mut _data, board); break; },
+                    'T' => if teleport_explorer(&mut _data, board) { break; },
+                    _ => println!("Invalid command"),
+                }
+            },
+            None => println!("Ignoring leading whitespace"),
+        }
+    }
+
+    _data
 }
 
 fn play_gnome(data: GnomeData, others: &Players, board: &Board) -> GnomeData {
-    GnomeData { x: data.x, y: data.y }
+    let mut _data = data;
+    move_gnome(&mut _data, board);
+    _data
 }
 
 fn play_leprechaun(data: LeprechaunData, others: &Players, board: &Board) -> LeprechaunData {
@@ -62,11 +88,35 @@ fn play_leprechaun(data: LeprechaunData, others: &Players, board: &Board) -> Lep
     _data
 }
 
+fn move_explorer_up(data: &mut ExplorerData, board: &Board) -> bool {
+    unimplemented!();
+    false
+}
+
+fn move_explorer_right(data: &mut ExplorerData, board: &Board) -> bool {
+    unimplemented!();
+    false
+}
+
+fn move_explorer_down(data: &mut ExplorerData, board: &Board) -> bool {
+    unimplemented!();
+    false
+}
+
+fn move_explorer_left(data: &mut ExplorerData, board: &Board) -> bool {
+    unimplemented!();
+    false
+}
+
+fn move_gnome(data: &mut GnomeData, board: &Board) {
+    unimplemented!();
+}
+
 fn teleport_explorer(data: &mut ExplorerData, board: &Board) -> bool {
+    unimplemented!();    
     false
 }
 
 fn teleport_leprechaun(data: &mut LeprechaunData, board: &Board) {
-    data.x = 4;
-    data.y = 0;
+    unimplemented!();
 }
