@@ -35,6 +35,8 @@ fn main() {
 }
 ```
 
+The exclamation mark denotes [marcos](https://doc.rust-lang.org/book/macros.html): in the case of `println!`, this allows variadic calls.
+
 We can run it to verify that it works through invoking Cargo:
 ```
 > cargo run
@@ -104,7 +106,7 @@ fn download(url: &str) -> Vec<u8> {
 }
 ```
 
-We download a resource by its URL and return an array of bytes (a `Vec<u8>>`). In order to start writing the body of the function, we need to impor the `hyper` dependency. We do this by putting `extern crate hyper` at the top of `main.rs`. This imports the `hyper` module into the scope of our project.
+We download a resource by its URL and return an array of bytes (a `Vec<u8>>`). In order to start writing the body of the function, we need to impor the `hyper` dependency. We do this by putting `extern crate hyper;` at the top of `main.rs`. This imports the `hyper` module into the scope of our project.
 
 Looking at the GET example in the `hyper` [documentation](http://hyper.rs/hyper/v0.9.10/hyper/client/index.html#get), we should be able to write somthing along the lines of
 ```rust
@@ -143,6 +145,18 @@ fn download(url: &str) -> Vec<u8> {
     data
 }
 ```
+
+We can check that it works by calling it in the `main` function:
+
+```rust
+fn main() {
+    let zipped = download("https://archive.ics.uci.\
+                           edu/ml/machine-learning-databases/00228/smsspamcollection.zip");
+    println!("Downloaded {} bytes of data", zipped.len());
+}
+```
+
+At this stage, we should have something like [this](step_1).
 
 ### Unzipping the data
 We have downloaded a zipped archive: the next step is to unzip it. We'll need another dependency to do that, the [zip](https://crates.io/crates/zip) crate. As before, we add it to the `Cargo.toml` file
@@ -198,6 +212,8 @@ fn main() {
 
 This gives us a first look at Rust iterators `raw_data.lines()` creates an iterator over slices of the string, separates by newlines; we then take 3 elements from it and print them. Rust's functional features manifest themselves in a a large array of powerful [iterator adapters](https://doc.rust-lang.org/book/iterators.html#iterator-adaptors) which are not only convenient but also compile to efficient machine code equivalent to traditional C and C++ for loops.
 
+The source at this stage should look like [this](step_2).
+
 ### Building training matrices
 We're going to use a package called [rustlearn](https://crates.io/crates/rustlearn) for model fitting an evaluation. As before, we add it to `Cargo.toml` and import it:
 ```
@@ -218,6 +234,10 @@ use rustlearn::prelude::*;
 The first step is to transform the data into a feature matrix and a target array. We'll transform every label into either a 1 (ham) or 0 (spam), and use one-hot-encoded bag of words features. For one-hot-encoding we're going to use [DictVectorizer](https://maciejkula.github.io/rustlearn/doc/rustlearn/feature_extraction/dict_vectorizer/struct.DictVectorizer.html), and return a sparse array for features and a dense array for labels:
 
 ```rust
+use rustlearn::feature_extraction::DictVectorizer;
+
+<snip>
+
 fn parse(data: &str) -> (SparseRowArray, Array) {
 
     // Initialise the vectorizer
@@ -262,6 +282,8 @@ println!("X: {} rows, {} columns, {} non-zero entries",
 
 should print `X: 5574 rows, 15733 columns, 81085 non-zero entries. Y: 86.60% positive class`.
 
+The code should look like [this](step_3).
+
 
 ### Fitting and evaluating the model
 Once we have the data, model fitting is easy. We can create a [logistic regression model](https://maciejkula.github.io/rustlearn/doc/rustlearn/linear_models/sgdclassifier/index.html) like so:
@@ -286,7 +308,7 @@ use rustlearn::metrics::accuracy_score;
 
 <snip>
 
-n fit(X: &SparseRowArray, y: &Array) -> (f32, f32) {
+fn fit(X: &SparseRowArray, y: &Array) -> (f32, f32) {
 
     let num_epochs = 10;
     let num_folds = 10;
@@ -354,3 +376,5 @@ println!("Training time: {:.3} seconds",
 ```
 
 On my machine, this prints `Training time: 5.519 seconds`, which is pretty slow --- and that's because we have so far been compiling in debug mode. To compile in release mode, run `cargo run --release`. This brings the execution time down to just over 1 second.
+
+The final source is [here](spam_or_ham/src/main.rs).
