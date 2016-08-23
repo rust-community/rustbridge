@@ -83,8 +83,10 @@ fn play_explorer(data: ExplorerData, others: &Players, board: &Board) -> Explore
     loop {
         println!("Enter letter command: [U]p [R]ight [D]own [L]eft [T]eleport");
 
-        io::stdin().read_line(&mut input)
-            .expect("Failed to read line");
+        match io::stdin().read_line(&mut input) {
+            Ok(n) => (),
+            Err(why) => { println!("Failed to read line: {:?}", why); continue; }
+        }
 
         match input.trim().chars().nth(0) {
             Some(command) => {
