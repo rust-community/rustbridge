@@ -2,9 +2,21 @@ use board::Board;
 use std::collections::VecDeque;
 use std::io;
 
-struct ExplorerData { x: u32, y: u32, energy: i32 }
-struct GnomeData { x: u32, y: u32 }
-struct LeprechaunData { x: u32, y: u32 }
+struct ExplorerData {
+    x: u32, y: u32,
+    gold: u32, pyrite: u32,
+    energy: i32
+}
+
+struct GnomeData {
+    x: u32, y: u32,
+    gold: u32, pyrite: u32
+}
+
+struct LeprechaunData {
+    x: u32, y: u32,
+    gold: u32, pyrite: u32
+}
 
 enum Player {
     Explorer(ExplorerData),  // actual player
@@ -17,9 +29,25 @@ pub type Players = VecDeque<Player>;
 pub fn build_players() -> Players {
     let mut players: Players = VecDeque::new();
 
-    players.push_back(Player::Explorer(ExplorerData { x: 0, y: 0, energy: 99 }));
-    players.push_back(Player::Gnome(GnomeData { x: 0, y: 4 }));
-    players.push_back(Player::Leprechaun(LeprechaunData { x: 4, y: 4 }));
+    let explorer = Player::Explorer(ExplorerData {
+        x: 0, y: 0,
+        gold: 5, pyrite: 0,
+        energy: 99
+    });
+
+    let gnome = Player::Gnome(GnomeData {
+        x: 0, y: 4,
+        gold: 11, pyrite: 3
+    });
+
+    let leprechaun = Player::Leprechaun(LeprechaunData {
+        x: 4, y: 4,
+        gold: 32, pyrite: 45
+    });
+
+    players.push_back(explorer);
+    players.push_back(gnome);
+    players.push_back(leprechaun);
 
     players
 }
@@ -40,9 +68,9 @@ pub fn take_turn(players: &mut Players, board: &Board) {
             Player::Leprechaun(data) => {
                 let _data = play_leprechaun(data, players, board);
                 _player = Player::Leprechaun(_data);
-            },
+            }
         },
-        None => return,
+        None => return
     }
 
     players.push_back(_player)
@@ -66,10 +94,10 @@ fn play_explorer(data: ExplorerData, others: &Players, board: &Board) -> Explore
                     'D' => { move_explorer_down(&mut _data, board); break; },
                     'L' => { move_explorer_left(&mut _data, board); break; },
                     'T' => if teleport_explorer(&mut _data, board) { break; },
-                    _ => println!("Invalid command"),
+                    _ => println!("Invalid command")
                 }
             },
-            None => println!("Ignoring leading whitespace"),
+            None => println!("Ignoring leading whitespace")
         }
     }
 
