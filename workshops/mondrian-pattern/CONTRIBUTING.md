@@ -4,6 +4,7 @@ Contributing and Teaching
 This document is _not_ dedicated learners new to rust. Developers and teachers using and contributing to the workshop material will find relevant background here.
 It outlines how the material is organised and how this serves the overall concept underlying the workshop.
 
+
 Implementation Outline
 ----------------------
 
@@ -22,7 +23,29 @@ Implementation Outline
 ![unlucky encounters](mondrian-rules_avoid-unlucky-encounters.png)
 
 
-###Ownership of Canvas Regions
+### Roadmap and Architecture
+
+![architecture sketch 1](architecture-sketch1.jpg)
+
+Ideally, learners will only have to work on the highlighted parts.
+The Minimals should not be part of the workshop itself but serve as backend for those who want to do follow-up research on what is going on "behind the scenes".
+
+Numbers indicate the priorities of components:
+
+(1) a server thread for doing actual basic painting in a window
+
+(2) a `main` that would create initial threads (1) and (3) as well as a canvas (6) for coordinating child tasks
+
+(3) The mondrian patternizer parent
+
+(4) Have (3) send painting messages to (1)
+
+(5) Have (3) create children which also send messages to (1)
+
+(6) Have a coordinating data structure for organising the canvas across painters (3 and 5)
+
+
+### Ownership of Canvas Regions
 
 * The root thread will `borrow` parts of the canvas to other threads which will then paint it.
 
@@ -34,6 +57,7 @@ Implementation Outline
 * Overlaps, which do not happen to be exactly mondrianish, make a case for shared resources and `locking` (so that we do not overpaint in an uncontrolled manner)
 * [cf. Fearless Concurrency](https://blog.rust-lang.org/2015/04/10/Fearless-Concurrency.html)
 * [cf. multiple mutable slices of one vector](https://coderwall.com/p/w1yuza/take-two-or-more-mutable-slices-from-a-vector-in-rust)
+
 
 ### Datastructure
 
