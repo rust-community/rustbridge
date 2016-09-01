@@ -53,7 +53,7 @@ fn main() {
     });
     let chn = paintsend.clone();
     let clientthread = thread::spawn(move ||
-        elementarymondrian([20.0, 20.0, 300.0, 250.0], chn)
+        delegatemondrian([20.0, 20.0, 300.0, 250.0], chn)
     );
     println!("Started master painter.");
 
