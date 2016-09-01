@@ -1,5 +1,4 @@
-// Based on the final version of the multiprint client/server/shared queue example.
-// https://github.com/broesamle/RustWorkshop/blob/master/minimals/multiprint.md
+// Combines the multiprint and graphout https://github.com/broesamle/RustWorkshop/blob/master/minimals/multiprint.md examples into a minimal multithreaded 'paint server' scheme.
 
 extern crate piston;
 extern crate glutin_window;
@@ -11,13 +10,13 @@ use piston::window::WindowSettings;
 use opengl_graphics::{GlGraphics, OpenGL};
 use piston::event_loop::Events;
 use piston::input::RenderEvent;
-use graphics::rectangle;
+use graphics::clear;
 
 use std::thread;
 use std::sync::{Arc, Mutex};
 use std::time::Duration;
 
-const RED:   [f32; 4] = [1.0, 0.0, 0.0, 1.0];
+const WHITE:   [f32; 4] = [1.0, 1.0, 1.0, 1.0];
 
 fn main() {
     // prepare queue for inter-process communication
@@ -27,6 +26,7 @@ fn main() {
     let serverqueue = printqueue_mutex_arc.clone();
 
     let server = thread::spawn(move || {
+        let mut pleaseinit = true;
         // prepare graphics output + window management
         let mut window: Window =
             WindowSettings::new("Hello World!", [512; 2])
@@ -35,15 +35,15 @@ fn main() {
         let mut gl = GlGraphics::new(opengl);
         let mut events = window.events();
 
-        let mut events = window.events();
         while let Some(e) = events.next(&mut window) {
             if let Some(r) = e.render_args() {
-                gl.draw(r.viewport(), |c, gl| {
+                gl.draw(r.viewport(), |_, gl| {
+                    if pleaseinit {
+                        clear(WHITE, gl);
+                        pleaseinit = false;
+                    }
                     if let Ok(mut guard) = serverqueue.try_lock() {
-                        if let Some((x, y)) = (*guard).pop() {
-                            println!("position {}, {}", x, y);
-                            let square = rectangle::square(x*5.0, y*5.0, 4.0);
-                            rectangle(RED, square, c.transform, gl);
+                        if let Some(_) = (*guard).pop() {
                         }
                     }
                 });
