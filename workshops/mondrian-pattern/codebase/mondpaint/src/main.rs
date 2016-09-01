@@ -61,8 +61,27 @@ fn main() {
     let _ = serverthread.join();
 }
 
+fn delegatemondrian(r: Rectangle, chn: mpsc::Sender<(Rectangle, Color)>) {
+    let (x, y, w, h) = (r[0], r[1], r[2], r[3]);
+    let leftsection: Rectangle = [x, y, w/2.0, h];
+    let rightsection: Rectangle = [x+w/2.0, y, w/2.0, h];
+
+    let chnleft = chn.clone();
+    let leftpainter = thread::spawn(move ||
+        elementarymondrian(leftsection, chnleft)
+    );
+    thread::sleep(Duration::from_millis(500));
+    println!("Delegated left.");
+    let chnright = chn.clone();
+    let rightpainter = thread::spawn(move ||
+        elementarymondrian(rightsection, chnright)
+    );
+    println!("Delegated right.");
+    let _ = leftpainter.join();
+    let _ = rightpainter.join();
+}
+
 fn elementarymondrian(r: Rectangle, chn: mpsc::Sender<(Rectangle, Color)>) {
     println! ( "putting: {:?}", (r, RED) );
     chn.send( (r, RED) ).unwrap();
-    thread::sleep(Duration::from_millis(500));
 }
