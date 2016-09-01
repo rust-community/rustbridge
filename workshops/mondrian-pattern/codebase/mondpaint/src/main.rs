@@ -11,19 +11,23 @@ use opengl_graphics::{GlGraphics, OpenGL};
 use piston::event_loop::Events;
 use piston::input::RenderEvent;
 use graphics::clear;
+//use graphics::draw_state::DrawState;
 
 use std::thread;
-use std::sync::{Arc, Mutex};
+use std::sync::mpsc;
 use std::time::Duration;
 
 const WHITE:   [f32; 4] = [1.0, 1.0, 1.0, 1.0];
+const RED:     [f32; 4] = [1.0, 0.0, 0.0, 1.0];
+const BLACK:   [f32; 4] = [0.0, 0.0, 0.0, 1.0];
+
+const SCALE: f64 = 20.0;
+
 
 fn main() {
     // prepare queue for inter-process communication
     let mut threads = Vec::new();
-    let queue: Vec<(f64, f64)> = Vec::new();
-    let printqueue_mutex_arc = Arc::new(Mutex::new(queue));
-    let serverqueue = printqueue_mutex_arc.clone();
+    let (paintsend, paintrecv) = mpsc::channel();
 
     let server = thread::spawn(move || {
         let mut pleaseinit = true;
@@ -37,29 +41,30 @@ fn main() {
 
         while let Some(e) = events.next(&mut window) {
             if let Some(r) = e.render_args() {
-                gl.draw(r.viewport(), |_, gl| {
+                gl.draw(r.viewport(), |c, gl| {
+                    let redrect = graphics::Rectangle::new(WHITE).border(graphics::rectangle::Border{color :BLACK, radius :2.0});
+
                     if pleaseinit {
                         clear(WHITE, gl);
                         pleaseinit = false;
                     }
-                    if let Ok(mut guard) = serverqueue.try_lock() {
-                        if let Some(_) = (*guard).pop() {
-                        }
+                    if let Ok( (rct, col) ) = paintrecv.recv() {
+                        println!("Received: {:?}", (rct, col) );
+                        redrect.color(col).draw(rct, &c.draw_state, c.transform, gl);
                     }
                 });
             }
         }
     });
     for num in 0..10 {
-        let clientqueue = printqueue_mutex_arc.clone();
+        let chn = paintsend.clone();
         let handle = thread::spawn(move || {
             let mut i = 0.0;
             loop {
-                if let Ok(mut guard) = clientqueue.try_lock() {
-                    println!("putting: {:?}", (i, num));
-                    (*guard).push((i, num as f64));
-                    i += 1.0;
-                }
+                println!("putting: {:?}", (i, num));
+                let (x, y, w, h) = (i*SCALE, (num as f64)*SCALE, 15.0, 15.0);
+                chn.send( ([x, y, w, h], RED) ).unwrap();
+                i += 1.0;
                 thread::sleep(Duration::from_millis(500*(num+1)));
             }
         });
