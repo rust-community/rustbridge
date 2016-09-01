@@ -22,7 +22,6 @@ const RED:     [f32; 4] = [1.0, 0.0, 0.0, 1.0];
 const BLACK:   [f32; 4] = [0.0, 0.0, 0.0, 1.0];
 
 fn main() {
-    // prepare queue for inter-process communication
     let (paintsend, paintrecv) = mpsc::channel();
 
     let serverthread = thread::spawn(move || {
