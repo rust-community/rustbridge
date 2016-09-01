@@ -11,7 +11,7 @@ use opengl_graphics::{GlGraphics, OpenGL};
 use piston::event_loop::Events;
 use piston::input::RenderEvent;
 use graphics::clear;
-//use graphics::draw_state::DrawState;
+use graphics::types::{Rectangle, Color};
 
 use std::thread;
 use std::sync::mpsc;
@@ -21,15 +21,11 @@ const WHITE:   [f32; 4] = [1.0, 1.0, 1.0, 1.0];
 const RED:     [f32; 4] = [1.0, 0.0, 0.0, 1.0];
 const BLACK:   [f32; 4] = [0.0, 0.0, 0.0, 1.0];
 
-const SCALE: f64 = 20.0;
-
-
 fn main() {
     // prepare queue for inter-process communication
-    let mut threads = Vec::new();
     let (paintsend, paintrecv) = mpsc::channel();
 
-    let server = thread::spawn(move || {
+    let serverthread = thread::spawn(move || {
         let mut pleaseinit = true;
         // prepare graphics output + window management
         let mut window: Window =
@@ -56,25 +52,18 @@ fn main() {
             }
         }
     });
-    for num in 0..10 {
-        let chn = paintsend.clone();
-        let handle = thread::spawn(move || {
-            let mut i = 0.0;
-            loop {
-                println!("putting: {:?}", (i, num));
-                let (x, y, w, h) = (i*SCALE, (num as f64)*SCALE, 15.0, 15.0);
-                chn.send( ([x, y, w, h], RED) ).unwrap();
-                i += 1.0;
-                thread::sleep(Duration::from_millis(500*(num+1)));
-            }
-        });
-        threads.push(handle);
-        println!("Started thread number {:?}.", num);
-    }
-    for num in (0..10).rev() {
-        let thr = threads.remove(num);
-        let joinresult = thr.join();
-        println!("Joined thread number {:?}, {:?}.", num, joinresult);
-    }
-    let _ = server.join();
+    let chn = paintsend.clone();
+    let clientthread = thread::spawn(move ||
+        elementarymondrian([20.0, 20.0, 300.0, 250.0], chn)
+    );
+    println!("Started master painter.");
+
+    let _ = clientthread.join();
+    let _ = serverthread.join();
+}
+
+fn elementarymondrian(r: Rectangle, chn: mpsc::Sender<(Rectangle, Color)>) {
+    println! ( "putting: {:?}", (r, RED) );
+    chn.send( (r, RED) ).unwrap();
+    thread::sleep(Duration::from_millis(500));
 }
