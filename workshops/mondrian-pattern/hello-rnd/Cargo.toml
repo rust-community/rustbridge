@@ -1,0 +1,7 @@
+[package]
+name = "hello-rnd"
+version = "0.1.0"
+authors = ["Martin Broesamle <m@minusbroe.de>"]
+
+[dependencies]
+rand="0.3"
