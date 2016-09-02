@@ -4,6 +4,7 @@ extern crate piston;
 extern crate glutin_window;
 extern crate opengl_graphics;
 extern crate graphics;
+extern crate rand;
 
 use glutin_window::GlutinWindow as Window;
 use piston::window::WindowSettings;
@@ -12,6 +13,8 @@ use piston::event_loop::Events;
 use piston::input::RenderEvent;
 use graphics::clear;
 use graphics::types::{Rectangle, Color};
+
+use rand::Rng;
 
 use std::thread;
 use std::sync::mpsc;
@@ -62,9 +65,12 @@ fn main() {
 }
 
 fn delegatemondrian(r: Rectangle, chn: mpsc::Sender<(Rectangle, Color)>) {
+    let mut rng = rand::thread_rng();   //init a random number generator
+
     let (x, y, w, h) = (r[0], r[1], r[2], r[3]);
-    let leftsection: Rectangle = [x, y, w/2.0, h];
-    let rightsection: Rectangle = [x+w/2.0, y, w/2.0, h];
+    let splitpos = rng.gen_range(0.0, w);
+    let leftsection: Rectangle = [x, y, splitpos, h];
+    let rightsection: Rectangle = [x+splitpos, y, w-splitpos, h];
 
     let chnleft = chn.clone();
     let leftpainter = thread::spawn(move ||
