@@ -37,34 +37,34 @@ Not incredibly complex, yet, too complex and vague for a straight-forward inform
 ### What to focus on?
 ![](images/mondrian-associations-focus.jpg)
 
-**What are we not interested in?** At least not for our little project here. His biography. The techniques of painting.
+**What are we not interested in?** (At least not for our little project here.) His biography. The techniques of painting. And so on.
 
 **What are we interested in?** The paintings of Piet Mondrian. They are oil paintings on canvas. The canvas is made of some fabric (linen) which is a plant... The paint is some colourful substances mixed with oil as a suspension -- **STOP!** We could continue like this for ever.
 
-**What aspect(s) of his paintings are we interested in?** The distinctive visual pattern. For us as humans all these things are often immediately clear but for the machines we want to program it is not.
+**What aspect(s) of his paintings are we interested in?** The distinctive visual patterns. For us as humans all these things are often immediately clear but for the machines we want to program it is not.
 
 
 ### Mondrian Patterns
 
-What makes this pattern _this_ pattern.
+What makes this type of pattern _this_ type of pattern?
 
-With this description we will certainly make an over-simplification omitting many aspects of the composition, geometry, and colour choices he made. We will see more complexity the further we proceed.
+With this description we will certainly make an over-simplification, omitting many aspects of the choices he made regarding composition, geometry, colour... We will see more of the complexity the further we proceed.
 
-* We see the _canvas_ as a rectangular surface that has a colour at each location. Initially it is white or some other more or less uniform coulour.
+* We see the _canvas_ as a rectangular surface that has a colour at each location. Initially it is white or some other more or less uniform colour.
 
 * The Mondrian Painting is a canvas filled with coloured rectangular areas bounded by black borders.
 
-This is not enough to define the distinctive pattern we are after. It could also mean something like [random rectangles](https://williamaadams.wordpress.com/2013/12/12/multitask-ui-like-its-1995/).
+This is (still) not precise enough to define the distinctive pattern we are interested in. It could also mean something like [random rectangles](https://williamaadams.wordpress.com/2013/12/12/multitask-ui-like-its-1995/).
 
-Up to now, dothing in our _definition_ makes sure the rectangles
+Up to now, nothing in our _definition_ makes sure the rectangles
 
 * are aligned with the edge of the canvas,
 * cover the whole canvas,
-* do not overlap, producing non-rectangular remainders
+* do not overlap, producing non-rectangular remainders.
 
 TODO: Add more odd examples
 
-**Definition:** With _Mondrian Pattern_ we will refer to a rectangular area, the _canvas_, that is completely filled with differently _coloured rectangles_. The rectangles are oriented 'upright' so that their edges are aligned with the borders of the canvas.
+**Definition:** With _Mondrian Pattern_ we will refer to a rectangular area, the _canvas_, that is filled _completely_ with differently _coloured rectangles_. The rectangles are oriented 'upright' so that their edges are aligned with the borders of the canvas.
 
 
 Processing Mondrian Patterns
@@ -79,7 +79,7 @@ TODO: Second most simple example: One Subdivision
 TODO: Complex example: More subdivisions
 
 
-To fill a given rectangular _canvas_ we can fill it with a pattern that satisfies the criteria of the definition via these steps:
+To fill a given rectangular _canvas_ with a pattern that satisfies the criteria of the definition we can use these steps:
 
 1. Make vertical/horizontal subdivisions so that rectangular sub-regions emerge.
 2. Paint each sub-region with a coloured rectangle and paint a black border around it.
@@ -100,8 +100,6 @@ TODO: finalise instructions as sketched-out here
 ![](images/exercises-b.jpg)
 
 TODO: **Exercise 9:** Avoiding infinite recursive patterns.
-
-
 
 
 
