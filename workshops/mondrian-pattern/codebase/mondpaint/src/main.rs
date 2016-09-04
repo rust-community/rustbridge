@@ -1,21 +1,22 @@
-// Combines the multiprint and graphout https://github.com/broesamle/RustWorkshop/blob/master/minimals/multiprint.md examples into a minimal multithreaded 'paint server' scheme.
-
 extern crate graphics;
 extern crate piston_window;
 extern crate rand;
 
 use piston_window::*;
 
-use graphics::types::{Color};
-
-use rand::Rng;
+//use rand::Rng;
 
 use std::thread;
 use std::sync::mpsc;
 use std::time::Duration;
 
+type SendChannel = mpsc::Sender<(types::Rectangle, types::Color)>;
+
 const WHITE:   [f32; 4] = [1.0, 1.0, 1.0, 1.0];
 const RED:     [f32; 4] = [1.0, 0.0, 0.0, 1.0];
+const GREEN:   [f32; 4] = [0.0, 1.0, 0.0, 1.0];
+const BLUE:    [f32; 4] = [0.0, 0.0, 1.0, 1.0];
+const YELLOW:  [f32; 4] = [1.0, 1.0, 0.0, 1.0];
 const BLACK:   [f32; 4] = [0.0, 0.0, 0.0, 1.0];
 
 fn main() {
@@ -27,7 +28,7 @@ fn main() {
 
         // Construct the window.
         let mut window: PistonWindow =
-            WindowSettings::new("Primitives Demo", [400, 720])
+            WindowSettings::new("RustBridge / Mondrian Pattern Generator", [400, 720])
                 .opengl(opengl).samples(4).exit_on_esc(true).build().unwrap();
         window.set_ups(60);
 
@@ -35,7 +36,7 @@ fn main() {
         while let Some(e) = window.next() {
             if let Ok( tobepainted ) = paintrecv.try_recv() {
                 canvas.push( tobepainted );
-                println!("Received: {:?}", tobepainted );
+                println!("Painter received: {:?}", tobepainted );
             }
             window.draw_2d(&e, |c, gl| {
                 clear(WHITE, gl);
@@ -48,39 +49,34 @@ fn main() {
         }
     });
     let chn = paintsend.clone();
-    let clientthread = thread::spawn(move ||
-        delegatemondrian([20.0, 20.0, 300.0, 250.0], chn)
+    let painterthread = thread::spawn(move ||
+        paint_rectangle(20.0, 20.0, 300.0, 250.0, chn)
     );
-    println!("Started master painter.");
-
-    let _ = clientthread.join();
-    let _ = serverthread.join();
+    painterthread.join().unwrap();
+    serverthread.join().unwrap();
 }
 
-fn delegatemondrian(r: types::Rectangle, chn: mpsc::Sender<(types::Rectangle, Color)>) {
-    let mut rng = rand::thread_rng();   //init a random number generator
 
-    let (x, y, w, h) = (r[0], r[1], r[2], r[3]);
-    let splitpos = rng.gen_range(0.0, w);
-    let leftsection = [x, y, splitpos, h];
-    let rightsection = [x+splitpos, y, w-splitpos, h];
+fn vsplit_and_paint(x :f64, y :f64, width :f64, height :f64, chn: SendChannel) {
+    // let mut rng = rand::thread_rng();   //init a random number generator
+    println!("vsplit_and_paint: {:}, {:}, {:}, {:}", x, y, width, height);
 
+    let splitpos = width / 2.0;
     let chnleft = chn.clone();
-    let leftpainter = thread::spawn(move ||
-        elementarymondrian(leftsection, chnleft)
+    let leftpainterthread = thread::spawn(move ||
+        paint_rectangle(x, y, splitpos, height, chnleft)
     );
     thread::sleep(Duration::from_millis(500));
-    println!("Delegated left.");
     let chnright = chn.clone();
-    let rightpainter = thread::spawn(move ||
-        elementarymondrian(rightsection, chnright)
+    let rightpainterthread = thread::spawn(move ||
+        paint_rectangle(x+splitpos, y, width-splitpos, height, chnright)
     );
-    println!("Delegated right.");
-    let _ = leftpainter.join();
-    let _ = rightpainter.join();
+    leftpainterthread.join().unwrap();
+    rightpainterthread.join().unwrap();
 }
 
-fn elementarymondrian(r: types::Rectangle, chn: mpsc::Sender<(types::Rectangle, Color)>) {
-    println! ( "putting: {:?}", (r, RED) );
-    chn.send( (r, RED) ).unwrap();
+fn paint_rectangle(x :f64, y :f64, width :f64, height :f64, chn: SendChannel)
+{
+    println!("paint_rectangle: {:}, {:}, {:}, {:}", x, y, width, height);
+    chn.send( ([x, y, width, height], RED) ).unwrap();
 }
