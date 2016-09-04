@@ -57,7 +57,7 @@ fn main() {
     });
     let chn = paintsend.clone();
     let patternpainterthread = thread::spawn(move ||
-        vsplit_and_paint(20.0, 20.0, 300.0, 250.0, chn)
+        hsplit_and_paint(20.0, 20.0, 300.0, 250.0, chn)
     );
 
     patternpainterthread.join().unwrap();
@@ -82,7 +82,7 @@ fn vsplit_and_paint(x :f64, y :f64, width :f64, height :f64, chn: mpsc::Sender<(
     thread::sleep(Duration::from_millis(500));
     let chnright = chn.clone();
     let rightpainterthread = thread::spawn(move ||
-        hsplit_and_paint(x+splitpos, y, width-splitpos, height, chnright)
+        paint_rectangle(x+splitpos, y, width-splitpos, height, BLUE, chnright)
     );
     let _ = leftpainterthread.join();
     let _ = rightpainterthread.join();
@@ -95,12 +95,12 @@ fn hsplit_and_paint(x :f64, y :f64, width :f64, height :f64, chn: mpsc::Sender<(
 
     let chnleft = chn.clone();
     let upperpainterthread = thread::spawn(move ||
-        paint_rectangle(x, y, width, splitpos, YELLOW, chnleft)
+        vsplit_and_paint(x, y, width, splitpos, chnleft)
     );
     thread::sleep(Duration::from_millis(500));
     let chnright = chn.clone();
     let lowerpainterthread = thread::spawn(move ||
-        paint_rectangle(x, y+splitpos, width, height-splitpos, GREEN, chnright)
+        vsplit_and_paint(x, y+splitpos, width, height-splitpos, chnright)
     );
     let _ = upperpainterthread.join();
     let _ = lowerpainterthread.join();
