@@ -64,10 +64,10 @@ fn main() {
     gfxserverthread.join().unwrap();
 }
 
-fn paint_rectangle(x :f64, y :f64, width :f64, height :f64, chn: mpsc::Sender<(Rectangle, Color)>)
+fn paint_rectangle(x :f64, y :f64, width :f64, height :f64, c: Color, chn: mpsc::Sender<(Rectangle, Color)>)
 {
     println! ( "paint_rectangle: {:}, {:}, {:}, {:}", x, y, width, height);
-    chn.send( ([x, y, width, height], RED) ).unwrap();
+    chn.send( ([x, y, width, height], c) ).unwrap();
 }
 
 fn vsplit_and_paint(x :f64, y :f64, width :f64, height :f64, chn: mpsc::Sender<(Rectangle, Color)>) {
@@ -77,12 +77,12 @@ fn vsplit_and_paint(x :f64, y :f64, width :f64, height :f64, chn: mpsc::Sender<(
 
     let chnleft = chn.clone();
     let leftpainterthread = thread::spawn(move ||
-        paint_rectangle(x, y, splitpos, height, chnleft)
+        paint_rectangle(x, y, splitpos, height, RED, chnleft)
     );
     thread::sleep(Duration::from_millis(500));
     let chnright = chn.clone();
     let rightpainterthread = thread::spawn(move ||
-        paint_rectangle(x+splitpos, y, width-splitpos, height, chnright)
+        paint_rectangle(x+splitpos, y, width-splitpos, height, BLUE, chnright)
     );
     let _ = leftpainterthread.join();
     let _ = rightpainterthread.join();
