@@ -59,7 +59,8 @@ fn vsplit_and_paint(x :f64, y :f64, width :f64, height :f64, chn: SendChannel) {
     // let mut rng = rand::thread_rng();   //init a random number generator
     println!("vsplit_and_paint: {:}, {:}, {:}, {:}", x, y, width, height);
 
-    let splitpos = width / 2.0;
+
+    let splitpos = width / 3.0;
     let chnleft = chn.clone();
     let leftpainterthread = thread::spawn(move ||
         paint_rectangle(x, y, splitpos, height, chnleft)
