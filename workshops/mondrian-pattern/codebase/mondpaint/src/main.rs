@@ -66,7 +66,7 @@ fn vsplit_and_paint(x :f64, y :f64, width :f64, height :f64, chn: SendChannel) {
     thread::sleep(Duration::from_millis(500));
     let chnright = chn.clone();
     let rightpainterthread = thread::spawn(move ||
-        paint_rectangle(x+splitpos, y, width-splitpos, height, BLUE, chnright)
+        hsplit_and_paint(x+splitpos, y, width-splitpos, height, chnright)
     );
     leftpainterthread.join().unwrap();
     rightpainterthread.join().unwrap();
