@@ -54,7 +54,6 @@ fn main() {
     painterthread.join().unwrap();
 }
 
-
 fn vsplit_and_paint(x :f64, y :f64, width :f64, height :f64, chn: SendChannel) {
     // let mut rng = rand::thread_rng();   //init a random number generator
     println!("vsplit_and_paint: {:}, {:}, {:}, {:}", x, y, width, height);
@@ -63,18 +62,18 @@ fn vsplit_and_paint(x :f64, y :f64, width :f64, height :f64, chn: SendChannel) {
     let splitpos = width / 3.0;
     let chnleft = chn.clone();
     let leftpainterthread = thread::spawn(move ||
-        paint_rectangle(x, y, splitpos, height, chnleft)
+        paint_rectangle(x, y, splitpos, height, RED, chnleft)
     );
     thread::sleep(Duration::from_millis(500));
     let chnright = chn.clone();
     let rightpainterthread = thread::spawn(move ||
-        paint_rectangle(x+splitpos, y, width-splitpos, height, chnright)
+        paint_rectangle(x+splitpos, y, width-splitpos, height, BLUE, chnright)
     );
     leftpainterthread.join().unwrap();
     rightpainterthread.join().unwrap();
 }
 
-fn paint_rectangle(x :f64, y :f64, width :f64, height :f64, chn: SendChannel)
+fn paint_rectangle(x :f64, y :f64, width :f64, height :f64, c: types::Color, chn: SendChannel)
 {
     println!("paint_rectangle: {:}, {:}, {:}, {:}", x, y, width, height);
     chn.send( ([x, y, width, height], RED) ).unwrap();
