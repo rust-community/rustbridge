@@ -90,11 +90,76 @@ There are other ways of achieving similar or the same type of pattern. Also, we 
 Exercises
 ---------
 
+### TODO: Create clean step by step instructions. . .
+. . . that go thogether with the code examples in https://github.com/rust-community/rustbridge/commits/mondrian_learners-code-examples/workshops/mondrian-pattern/codebase/mondpaint/src
+
+
 * Make a new project (TODO: link to installfest instructuins)
 * Replace main.rs and Cargo.toml with the following starting point (TODO: link)
 * Execute the program and make sure you see a minimal mondrian pattern, i.e. a red rectangle.
 
+Error message after adding an extra parameter to `paint_rectangle`:
+```
+Compiling mondpaint v0.1.0 (file:///home/broe/projets/rustbridge/workshops/mondrian-pattern/codebase/mondpaint)
+src/main.rs:80:9: 80:57 error: this function takes 6 parameters but 5 parameters were supplied [E0061]
+src/main.rs:80         paint_rectangle(x, y, splitpos, height, chnleft)
+                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/main.rs:80:9: 80:57 help: run `rustc --explain E0061` to see a detailed explanation
+src/main.rs:80:9: 80:57 note: the following parameter types were expected: f64, f64, f64, f64, [f32; 4], std::sync::mpsc::Sender<([f64; 4], [f32; 4])>
+src/main.rs:85:9: 85:73 error: this function takes 6 parameters but 5 parameters were supplied [E0061]
+src/main.rs:85         paint_rectangle(x+splitpos, y, width-splitpos, height, chnright)
+                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/main.rs:85:9: 85:73 help: run `rustc --explain E0061` to see a detailed explanation
+src/main.rs:85:9: 85:73 note: the following parameter types were expected: f64, f64, f64, f64, [f32; 4], std::sync::mpsc::Sender<([f64; 4], [f32; 4])>
+error: aborting due to 2 previous errors
+error: Could not compile `mondpaint`.
+```
+
+For Exercice 5 (?) we will use random numbers to make things more interesting.
+
+A coupple of things are already prepared in the example, but currently deactivated by placing them in a _comment_:
+
+```
+// the remainder of a line after a double forward slash will be ignored
+
+/*
+Furthermore, everything between slash star and
+star slash is also ignored, even over multiple lines
+*/
+```
+
+* Uncomment lines 15: `use rand::Rng;` and 74 `let mut rng = rand::thread_rng();   //init a random number generator`
+
+Now there is a new operation for generating random numbers available: `rng.gen_range(0.0, 20.0)` will produce a random number between `0.0` and `20.0`.
+
+* Modify the operation `vsplit_and_paint` to generate a random split position. The value to be used as split position is calculated in line 76 `let splitpos = rng.gen_range(0.0, width);` Use the operation we just activated `rng.gen_range(...)`.
+
+
+After defininf the new operation `vsplit_and_paint`, build output should look like this:
+```
+Compiling mondpaint v0.1.0 (file:///home/broe/projets/rustbridge/workshops/mondrian-pattern/codebase/mondpaint)
+src/main.rs:23:1: 23:48 warning: constant item is never used: `GREEN`, #[warn(dead_code)] on by default
+src/main.rs:23 const GREEN:   [f32; 4] = [0.0, 1.0, 0.0, 1.0];
+            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/main.rs:25:1: 25:48 warning: constant item is never used: `YELLOW`, #[warn(dead_code)] on by default
+src/main.rs:25 const YELLOW:  [f32; 4] = [1.0, 1.0, 0.0, 1.0];
+            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/main.rs:91:1: 107:2 warning: function is never used: `hsplit_and_paint`, #[warn(dead_code)] on by default
+src/main.rs:91 fn hsplit_and_paint(x :f64, y :f64, width :f64, height :f64, chn: mpsc::Sender<(Rectangle, Color)>) {
+            ^
+ Finished debug [unoptimized + debuginfo] target(s) in 2.88 secs
+```
+
+* Time to test the new operation! Currently, `hsplit_and_paint` triggers `paint_rectangle` for both sides of the split: lines 79 (?) and 85 (?): `paint_rectangle(x, y, splitpos . . .` and `paint_rectangle(x+splitpo, y, . . .`. Modify `hsplit_and_paint` so that it triggers `paint_rectangle` on the left side of the split and `hsplit_and_paint` on the right side.
+
 TODO: finalise instructions as sketched-out here
+
+#### Exercise 8:
+
+Option 1: Introduce more special operations
+Option 2:
+Try to use only the operations we have defined so far -- you will fail in a funny way!
+;-)
 
 ![](images/exercises-a.jpg)
 ![](images/exercises-b.jpg)
