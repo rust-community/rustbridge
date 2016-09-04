@@ -81,9 +81,15 @@ fn vsplit_and_paint(x :f64, y :f64, width :f64, height :f64, chn: mpsc::Sender<(
     );
     thread::sleep(Duration::from_millis(500));
     let chnright = chn.clone();
-    let rightpainterthread = thread::spawn(move ||
-        hsplit_and_paint(x+splitpos, y, width-splitpos, height, chnright)
-    );
+    let coin = rng.gen_range(0.0, 1.0);
+    let rightpainterthread = thread::spawn(move || {
+        if coin < 0.3 {
+            hsplit_and_paint(x+splitpos, y, width-splitpos, height, chnright);
+        }
+        else {
+            paint_rectangle(x+splitpos, y, width-splitpos, height, BLUE, chnright);
+        }
+    });
     let _ = leftpainterthread.join();
     let _ = rightpainterthread.join();
 }
