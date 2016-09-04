@@ -90,17 +90,189 @@ There are other ways of achieving similar or the same type of pattern. Also, we 
 Exercises
 ---------
 
+Get rusty fingers now!
+
 * Make a new project (TODO: link to installfest instructuins)
-* Replace main.rs and Cargo.toml with the following starting point (TODO: link)
+* Open the files `main.rs` (in the subfoler `src`) and `Cargo.toml` in your text editor.
+* Replace all content in the open files with the content of the respective files linked here:
+    * [new main.rs](https://raw.githubusercontent.com/rust-community/rustbridge/389c0502113503eccae6626561920083959cbe07/workshops/mondrian-pattern/codebase/mondpaint/src/main.rs)
+    * [new Cargo.toml](https://raw.githubusercontent.com/rust-community/rustbridge/389c0502113503eccae6626561920083959cbe07/workshops/mondrian-pattern/codebase/mondpaint/Cargo.toml)
+* Save the files in your editor.
 * Execute the program and make sure you see a minimal mondrian pattern, i.e. a red rectangle.
 
-TODO: finalise instructions as sketched-out here
+![](images/fig00_exercise-start.jpg)
 
+
+### Exercise 1: Make one vertical split
+![](images/fig01_onevertical.jpg)
+
+
+#### [Instruction] 1
+
+
+#### [Snapshot] 1
+[view changes](https://github.com/rust-community/rustbridge/commit/754dc60730f0fd16f6001785aee533128326d6b5)
+|
+[download main.rs](https://raw.githubusercontent.com/rust-community/rustbridge/754dc60730f0fd16f6001785aee533128326d6b5/workshops/mondrian-pattern/codebase/mondpaint/src/main.rs)
+
+
+### Exercise 2:
+![](images/fig02_onevertical-1third-2thirds.jpg)
+
+#### [Snapshot] 2
+[view changes](https://github.com/rust-community/rustbridge/commit/1dcdf3125943137fb231e9514c73b5136e1206cb)
+|
+[download main.rs](https://github.com/rust-community/rustbridge/commit/1dcdf3125943137fb231e9514c73b5136e1206cb/workshops/mondrian-pattern/codebase/mondpaint/src/main.rs)
+
+
+### Exercise 3:
+
+TODO: Check example for exercise 3/4 -- there is one snapshot for two exercises, currently.
+
+![](images/fig03_colour-as-parameter.jpg)
+
+#### [Snapshot] 3
+[view changes](https://github.com/rust-community/rustbridge/commit/c24797b80d1f0c9039c722159e137dc531f140fb)
+|
+[download main.rs](https://github.com/rust-community/rustbridge/commit/c24797b80d1f0c9039c722159e137dc531f140fb/workshops/mondrian-pattern/codebase/mondpaint/src/main.rs)
+
+
+### Exercise 4:
+![](images/fig04_two-different-colours.jpg)
+
+#### [Snapshot] 4
+[view changes](https://github.com/rust-community/rustbridge/commit/c24797b80d1f0c9039c722159e137dc531f140fb)
+|
+[download main.rs](https://github.com/rust-community/rustbridge/commit/c24797b80d1f0c9039c722159e137dc531f140fb/workshops/mondrian-pattern/codebase/mondpaint/src/main.rs)
+
+
+#### [Testing] Exercise 4:  
+Error message after adding an extra parameter to `paint_rectangle`:
+```
+Compiling mondpaint v0.1.0 (file:///home/broe/projets/rustbridge/workshops/mondrian-pattern/codebase/mondpaint)
+src/main.rs:80:9: 80:57 error: this function takes 6 parameters but 5 parameters were supplied [E0061]
+src/main.rs:80         paint_rectangle(x, y, splitpos, height, chnleft)
+                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/main.rs:80:9: 80:57 help: run `rustc --explain E0061` to see a detailed explanation
+src/main.rs:80:9: 80:57 note: the following parameter types were expected: f64, f64, f64, f64, [f32; 4], std::sync::mpsc::Sender<([f64; 4], [f32; 4])>
+src/main.rs:85:9: 85:73 error: this function takes 6 parameters but 5 parameters were supplied [E0061]
+src/main.rs:85         paint_rectangle(x+splitpos, y, width-splitpos, height, chnright)
+                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/main.rs:85:9: 85:73 help: run `rustc --explain E0061` to see a detailed explanation
+src/main.rs:85:9: 85:73 note: the following parameter types were expected: f64, f64, f64, f64, [f32; 4], std::sync::mpsc::Sender<([f64; 4], [f32; 4])>
+error: aborting due to 2 previous errors
+error: Could not compile `mondpaint`.
+```
+
+
+### Exercise 5:
+![](images/fig05_random-splitpostition.jpg)
+
+For Exercice 5 we will use random numbers to make things more interesting.
+
+A coupple of things are already prepared in the example.
+There is a new operation for generating random numbers available: `rng.gen_range(0.0, 20.0)` will produce a random number between `0.0` and `20.0`.
+
+
+Currently this is deactivated by placing them in a _comment_:
+```
+// the remainder of a line after a double forward slash will be ignored
+
+/*
+Furthermore, everything between slash star and
+star slash is also ignored, even over multiple lines
+*/
+```
+
+#### [Instruction] 5
+1. Uncomment lines ____: `use rand::Rng;` and ____ `let mut rng = rand::thread_rng();   //init a random number generator`.
+
+2. Modify the operation `vsplit_and_paint` to generate a random split position. The value to be used as split position is calculated in line 76 `let splitpos = rng.gen_range(0.0, width);` Use the operation we just activated `rng.gen_range(...)`.
+
+#### [Snapshot] 5
+[view changes](https://github.com/rust-community/rustbridge/commit/30c7b9c62453ab456029ca480e07d7e33b5c0f93)
+|
+[download main.rs](https://github.com/rust-community/rustbridge/commit/30c7b9c62453ab456029ca480e07d7e33b5c0f93/workshops/mondrian-pattern/codebase/mondpaint/src/main.rs)
+
+
+
+### Exercise 6:
+![](images/fig06_horizontal-split.jpg)
+
+#### [Snapshot] 6
+[view changes](https://github.com/rust-community/rustbridge/commit/aae0b114be1d8996f18db88998d4fe0b3c047201)
+|
+[download main.rs](https://github.com/rust-community/rustbridge/commit/aae0b114be1d8996f18db88998d4fe0b3c047201/workshops/mondrian-pattern/codebase/mondpaint/src/main.rs)
+
+
+#### [Testing]
+After defininf the new operation `vsplit_and_paint`, build output should look like this:
+```
+Compiling mondpaint v0.1.0 (file:///home/broe/projets/rustbridge/workshops/mondrian-pattern/codebase/mondpaint)
+src/main.rs:23:1: 23:48 warning: constant item is never used: `GREEN`, #[warn(dead_code)] on by default
+src/main.rs:23 const GREEN:   [f32; 4] = [0.0, 1.0, 0.0, 1.0];
+            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/main.rs:25:1: 25:48 warning: constant item is never used: `YELLOW`, #[warn(dead_code)] on by default
+src/main.rs:25 const YELLOW:  [f32; 4] = [1.0, 1.0, 0.0, 1.0];
+            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/main.rs:91:1: 107:2 warning: function is never used: `hsplit_and_paint`, #[warn(dead_code)] on by default
+src/main.rs:91 fn hsplit_and_paint(x :f64, y :f64, width :f64, height :f64, chn: mpsc::Sender<(Rectangle, Color)>) {
+            ^
+ Finished debug [unoptimized + debuginfo] target(s) in 2.88 secs
+```
+
+
+### Exercise 7a:
+
+It is now time to test the new operation! Currently, `hsplit_and_paint` triggers `paint_rectangle` for both sides of the split: lines 79 (?) and 85 (?): `paint_rectangle(x, y, splitpos . . .` and `paint_rectangle(x+splitpo, y, . . .`. Modify `hsplit_and_paint` so that it triggers `paint_rectangle` on the left side of the split and `hsplit_and_paint` on the right side.
+
+![](images/fig07_vertical+horizontal-split.jpg)
+![](images/fig08_vertical+2horizontal-splits.jpg)
+
+#### [Snapshot] 7a
+[view changes](https://github.com/rust-community/rustbridge/commit/3249caaa11f91b34344999809294c1d05493b597)
+|
+[download main.rs](https://github.com/rust-community/rustbridge/commit/3249caaa11f91b34344999809294c1d05493b597/workshops/mondrian-pattern/codebase/mondpaint/src/main.rs)
+
+
+### Exercise 7b:
+![](images/fig09_nontricial-nested.jpg)
+
+#### [Snapshot] 7b
+[view changes](https://github.com/rust-community/rustbridge/commit/e84d28afedec182ac5d1a148f7602ce756c246bd)
+|
+[download main.rs](https://github.com/rust-community/rustbridge/commit/e84d28afedec182ac5d1a148f7602ce756c246bd/workshops/mondrian-pattern/codebase/mondpaint/src/main.rs)
+
+
+### Exercise 8:
+
+Option 1: Introduce more special operations
+Option 2:
+Try to use only the operations we have defined so far -- you will fail in a funny way!
+;-)
+
+#### [Snapshot] 8
+[view changes](https://github.com/rust-community/rustbridge/commit/560ef8cf6a9df67151bfa65bdab7a07655fcd77d)
+|
+[download main.rs](https://github.com/rust-community/rustbridge/commit/560ef8cf6a9df67151bfa65bdab7a07655fcd77d/workshops/mondrian-pattern/codebase/mondpaint/src/main.rs)
+
+
+
+### Exercise 9: Avoiding the infinite pattern generation process.
+
+#### [Snapshot] 9
+[view changes](https://github.com/rust-community/rustbridge/commit/6a51b31a396e7a9200ac21a0cc5ab574915a3b2f)
+|
+[download main.rs](https://github.com/rust-community/rustbridge/commit/6a51b31a396e7a9200ac21a0cc5ab574915a3b2f/workshops/mondrian-pattern/codebase/mondpaint/src/main.rs)
+
+
+
+### TODO: Integrate text instructions above.
 ![](images/exercises-a.jpg)
 ![](images/exercises-b.jpg)
 
-TODO: **Exercise 9:** Avoiding infinite recursive patterns.
 
+### TODO: Add instructions to keep track of operations executed. -- This may be better placed in the beginning, before coding.
 
 
 Beyond this Workshop
