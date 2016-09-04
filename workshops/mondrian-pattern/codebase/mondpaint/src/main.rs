@@ -73,7 +73,7 @@ fn paint_rectangle(x :f64, y :f64, width :f64, height :f64, chn: mpsc::Sender<(R
 fn vsplit_and_paint(x :f64, y :f64, width :f64, height :f64, chn: mpsc::Sender<(Rectangle, Color)>) {
     // let mut rng = rand::thread_rng();   //init a random number generator
 
-    let splitpos = width / 2.0;
+    let splitpos = width / 3.0;
 
     let chnleft = chn.clone();
     let leftpainterthread = thread::spawn(move ||
