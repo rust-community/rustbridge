@@ -12,7 +12,7 @@ use piston::input::RenderEvent;
 use graphics::clear;
 use graphics::types::{Rectangle, Color};
 
-//use rand::Rng;
+use rand::Rng;
 
 use std::thread;
 use std::sync::mpsc;
@@ -71,9 +71,9 @@ fn paint_rectangle(x :f64, y :f64, width :f64, height :f64, c: Color, chn: mpsc:
 }
 
 fn vsplit_and_paint(x :f64, y :f64, width :f64, height :f64, chn: mpsc::Sender<(Rectangle, Color)>) {
-    // let mut rng = rand::thread_rng();   //init a random number generator
+    let mut rng = rand::thread_rng();   //init a random number generator
 
-    let splitpos = width / 3.0;
+    let splitpos = rng.gen_range(0.0, width);
 
     let chnleft = chn.clone();
     let leftpainterthread = thread::spawn(move ||
