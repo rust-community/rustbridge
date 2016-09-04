@@ -57,7 +57,7 @@ fn main() {
     });
     let chn = paintsend.clone();
     let patternpainterthread = thread::spawn(move ||
-        paint_rectangle(20.0, 20.0, 300.0, 250.0, chn)
+        vsplit_and_paint(20.0, 20.0, 300.0, 250.0, chn)
     );
 
     patternpainterthread.join().unwrap();
