@@ -1,0 +1,15 @@
+[package]
+name = "portmond"
+version = "0.1.0"
+authors = ["Martin Broesamle <m@minusbroe.de>"]
+
+[dependencies]
+conrod = "0.43"
+piston2d-graphics = { version = "0.17", optional = true }
+piston_window = { version = "0.52", optional = true }
+rand = "0.3.13"
+find_folder = "0.3.0"
+
+[features]
+default = ["piston", "piston_window"]
+piston = ["piston2d-graphics"]
