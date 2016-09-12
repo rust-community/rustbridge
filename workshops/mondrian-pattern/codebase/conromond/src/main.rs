@@ -3,7 +3,7 @@ extern crate find_folder;
 extern crate piston_window;
 
 use piston_window::*;
-
+use std::thread;
 
 // Generate a type that will produce a unique `widget::Id` for each widget.
 widget_ids! {
@@ -22,7 +22,11 @@ widget_ids! {
 
 
 fn main() {
+    let serverthread = thread::spawn(move || { serve_canvas () });
+    serverthread.join().unwrap();
+}
 
+fn serve_canvas () {
     // Change this to OpenGL::V2_1 if not working.
     let opengl = OpenGL::V3_2;
 
@@ -66,7 +70,6 @@ fn main() {
             }
         });
     }
-
 }
 
 
