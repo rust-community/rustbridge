@@ -1,9 +1,9 @@
 #[macro_use] extern crate conrod;
 extern crate find_folder;
 extern crate piston_window;
-
 use piston_window::*;
 use std::thread;
+use std::sync::mpsc;
 
 // Generate a type that will produce a unique `widget::Id` for each widget.
 widget_ids! {
@@ -20,13 +20,36 @@ widget_ids! {
     }
 }
 
+//const WHITE:   types::Color = [1.0, 1.0, 1.0, 1.0];
+const RED:     types::Color = [1.0, 0.0, 0.0, 1.0];
+//const GREEN:   types::Color = [0.0, 1.0, 0.0, 1.0];
+//const BLUE:    types::Color = [0.0, 0.0, 1.0, 1.0];
+//const BLACK:   types::Color = [0.0, 0.0, 0.0, 1.0];
 
 fn main() {
-    let serverthread = thread::spawn(move || { serve_canvas () });
+    let (paintsend, paintrecv) = mpsc::channel();
+    let serverthread = thread::spawn(move || { serve_canvas (paintrecv) });
+    let chn = paintsend.clone();
+    let clientthread = thread::spawn(move || {
+        elementarymondrian ([20.0, 20.0, 300.0, 250.0], chn)
+    });
+    let chn = paintsend.clone();
+    let clientthread2 = thread::spawn(move || {
+        elementarymondrian ([120.0, 220.0, 300.0, 250.0], chn)
+    });
     serverthread.join().unwrap();
+    clientthread.join().unwrap();
+    clientthread2.join().unwrap();
 }
 
-fn serve_canvas () {
+fn elementarymondrian(r: types::Rectangle, chn: mpsc::Sender<(types::Rectangle, types::Color)>) {
+    println! ( "putting: {:?}", (r, RED) );
+    chn.send( (r, RED) ).unwrap();
+}
+
+fn serve_canvas (chn: mpsc::Receiver<(types::Rectangle, types::Color)>) {
+    let mut canvas: Vec<(types::Rectangle, types::Color)> = Vec::new();
+
     // Change this to OpenGL::V2_1 if not working.
     let opengl = OpenGL::V3_2;
 
@@ -50,6 +73,10 @@ fn serve_canvas () {
 
     // Poll events from the window.
     while let Some(event) = window.next() {
+        if let Ok( tobepainted ) = chn.try_recv() {
+            canvas.push( tobepainted );
+            println!("Received: {:?}", tobepainted );
+        }
 
         // Convert the piston event to a conrod event.
         if let Some(e) = conrod::backend::piston_window::convert_event(event.clone(), &window) {
