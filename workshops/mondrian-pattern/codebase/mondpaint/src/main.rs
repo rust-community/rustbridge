@@ -22,8 +22,6 @@ fn main() {
     let (paintsend, paintrecv) = mpsc::channel();
 
     let serverthread = thread::spawn(move || {
-        let mut pleaseinit = true;
-
         // Change this to OpenGL::V2_1 if not working.
         let opengl = OpenGL::V3_2;
 
@@ -33,16 +31,17 @@ fn main() {
                 .opengl(opengl).samples(4).exit_on_esc(true).build().unwrap();
         window.set_ups(60);
 
+        let mut canvas: Vec<(types::Rectangle, types::Color)> = Vec::new();
         while let Some(e) = window.next() {
-                window.draw_2d(&e, |c, gl| {
+            if let Ok( tobepainted ) = paintrecv.try_recv() {
+                canvas.push( tobepainted );
+                println!("Received: {:?}", tobepainted );
+            }
+            window.draw_2d(&e, |c, gl| {
+                clear(WHITE, gl);
                 let redrect = graphics::Rectangle::new(WHITE).border(graphics::rectangle::Border{color :BLACK, radius :2.0});
-
-                if pleaseinit {
-                    clear(WHITE, gl);
-                    pleaseinit = false;
-                }
-                if let Ok( (rct, col) ) = paintrecv.recv() {
-                    println!("Received: {:?}", (rct, col) );
+                for item in (&canvas).iter() {
+                    let (rct, col) = *item;
                     redrect.color(col).draw(rct, &c.draw_state, c.transform, gl);
                 }
             });
