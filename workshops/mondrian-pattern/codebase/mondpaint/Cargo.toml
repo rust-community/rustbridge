@@ -4,15 +4,9 @@ version = "0.1.0"
 authors = ["Martin Br:osamle <m@minusbroe.de>"]
 
 [dependencies]
-#piston = "0.24.0"
-#pistoncore-glutin_window = "0.28.0"
-#piston2d-opengl_graphics = "0.31.0"
-#piston2d-graphics = "0.16.0"
-rand="0.3"
-
-
 piston2d-graphics = { version = "0.17", optional = true}
 piston_window = { version = "0.52", optional = true }
+rand="0.3"
 
 
 [features]
