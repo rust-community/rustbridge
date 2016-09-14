@@ -8,3 +8,5 @@ This project is in it's very early stages, so if you would like to participate, 
 or commenting on [RustBridge issues](https://github.com/rust-community/rustbridge/issues), starting a conversation
 in [users.rust-lang.org/c/community](https://users.rust-lang.org/c/community), or joining us on
 [#rustbridge](https://client00.chat.mibbit.com/?server=irc.mozilla.org&channel=%23rustbridge).
+
+Early visitors can [have a look at workshop materials](workshops.md) currently beeing developed.
