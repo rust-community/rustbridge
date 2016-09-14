@@ -1,18 +1,12 @@
 // Combines the multiprint and graphout https://github.com/broesamle/RustWorkshop/blob/master/minimals/multiprint.md examples into a minimal multithreaded 'paint server' scheme.
 
-extern crate piston;
-extern crate glutin_window;
-extern crate opengl_graphics;
 extern crate graphics;
+extern crate piston_window;
 extern crate rand;
 
-use glutin_window::GlutinWindow as Window;
-use piston::window::WindowSettings;
-use opengl_graphics::{GlGraphics, OpenGL};
-use piston::event_loop::Events;
-use piston::input::RenderEvent;
-use graphics::clear;
-use graphics::types::{Rectangle, Color};
+use piston_window::*;
+
+use graphics::types::{Color};
 
 use rand::Rng;
 
@@ -28,30 +22,29 @@ fn main() {
     let (paintsend, paintrecv) = mpsc::channel();
 
     let serverthread = thread::spawn(move || {
-        let mut pleaseinit = true;
-        // prepare graphics output + window management
-        let mut window: Window =
-            WindowSettings::new("Hello World!", [512; 2])
-                .build().unwrap();
+        // Change this to OpenGL::V2_1 if not working.
         let opengl = OpenGL::V3_2;
-        let mut gl = GlGraphics::new(opengl);
-        let mut events = window.events();
 
-        while let Some(e) = events.next(&mut window) {
-            if let Some(r) = e.render_args() {
-                gl.draw(r.viewport(), |c, gl| {
-                    let redrect = graphics::Rectangle::new(WHITE).border(graphics::rectangle::Border{color :BLACK, radius :2.0});
+        // Construct the window.
+        let mut window: PistonWindow =
+            WindowSettings::new("Primitives Demo", [400, 720])
+                .opengl(opengl).samples(4).exit_on_esc(true).build().unwrap();
+        window.set_ups(60);
 
-                    if pleaseinit {
-                        clear(WHITE, gl);
-                        pleaseinit = false;
-                    }
-                    if let Ok( (rct, col) ) = paintrecv.recv() {
-                        println!("Received: {:?}", (rct, col) );
-                        redrect.color(col).draw(rct, &c.draw_state, c.transform, gl);
-                    }
-                });
+        let mut canvas: Vec<(types::Rectangle, types::Color)> = Vec::new();
+        while let Some(e) = window.next() {
+            if let Ok( tobepainted ) = paintrecv.try_recv() {
+                canvas.push( tobepainted );
+                println!("Received: {:?}", tobepainted );
             }
+            window.draw_2d(&e, |c, gl| {
+                clear(WHITE, gl);
+                let redrect = graphics::Rectangle::new(WHITE).border(graphics::rectangle::Border{color :BLACK, radius :2.0});
+                for item in (&canvas).iter() {
+                    let (rct, col) = *item;
+                    redrect.color(col).draw(rct, &c.draw_state, c.transform, gl);
+                }
+            });
         }
     });
     let chn = paintsend.clone();
@@ -64,13 +57,13 @@ fn main() {
     let _ = serverthread.join();
 }
 
-fn delegatemondrian(r: Rectangle, chn: mpsc::Sender<(Rectangle, Color)>) {
+fn delegatemondrian(r: types::Rectangle, chn: mpsc::Sender<(types::Rectangle, Color)>) {
     let mut rng = rand::thread_rng();   //init a random number generator
 
     let (x, y, w, h) = (r[0], r[1], r[2], r[3]);
     let splitpos = rng.gen_range(0.0, w);
-    let leftsection: Rectangle = [x, y, splitpos, h];
-    let rightsection: Rectangle = [x+splitpos, y, w-splitpos, h];
+    let leftsection = [x, y, splitpos, h];
+    let rightsection = [x+splitpos, y, w-splitpos, h];
 
     let chnleft = chn.clone();
     let leftpainter = thread::spawn(move ||
@@ -87,7 +80,7 @@ fn delegatemondrian(r: Rectangle, chn: mpsc::Sender<(Rectangle, Color)>) {
     let _ = rightpainter.join();
 }
 
-fn elementarymondrian(r: Rectangle, chn: mpsc::Sender<(Rectangle, Color)>) {
+fn elementarymondrian(r: types::Rectangle, chn: mpsc::Sender<(types::Rectangle, Color)>) {
     println! ( "putting: {:?}", (r, RED) );
     chn.send( (r, RED) ).unwrap();
 }
