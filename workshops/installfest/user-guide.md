@@ -38,7 +38,19 @@ Review the instructions for the operating system of your choice.
 
 ### Windows
 
-(TODO)
+On windows the terminal is called a command prompt. You can access it by opening
+the start menu and typing `cmd.exe` or `command prompt`. Windows should find it
+for you.
+
+After starting the command prompt, you can see a black screen saying something
+like this:
+
+    C:\Users\yourname>
+
+Try typing commands like `dir`.
+
+Well done!
+
 
 ### Linux
 
@@ -103,6 +115,41 @@ It should look something like this:
 6.  To confirm that cargo installed correctly, type `cargo` at the prompt and press return.
     If it installed correctly, you'll see an output with help content.
 
+
+### Windows
+
+Visit the [Rust website](https://rust-lang.org) and click on *Install* to
+download the Rust installer. Follow through with the installation procedure and
+confirm any warnings and dialogs that may come up. When finished, you should
+have Rust installed on your machine.
+
+To verify, open the command prompt (cmd.exe) from the start menu. Type in the
+command `rustc --version`. The Rust compiler will tell you its current version.
+
+    C:\Users\yourname>rustc --version
+    rustc 1.11.0 (9b21dcd6a 2016-08-15)
+
+    C:\Users\yourname>
+
+Now you are ready to go!
+
+You can create a new Rust project using `cargo`, Rust's package manager, like
+this:
+
+    C:\Users\yourname>cargo new my-rust-project --bin
+
+    C:\Users\yourname>cd my-rust-project
+
+    C:\Users\yourname\my-rust-project>cargo run
+       Compiling my-rust-project v0.1.0 (file:///C:/Users/yourname/my-rust-project)
+         Running `target\debug\my-rust-project.exe`
+    Hello, world!
+
+    C:\Users\yourname\my-rust-project>
+
+Well done! You just compiled and executed your first Rust program.
+
+
 ## Setting up a text editor
 
 A text editor (also commonly just called an editor) is a program used to edit text files.
@@ -115,6 +162,8 @@ If you don't have a text editor or are not sure if you have one, we recommend in
 The next section walks you through the installation.
 
 ### Installing Atom
+
+#### MacOSX
 
 1.  In your web browser, navigate to [Atom website](https://atom.io).
 
@@ -132,6 +181,15 @@ The next section walks you through the installation.
     If you get a security message about opening an application downloaded from the Internet, it's okay to proceed. Click Open.
 
     When Atom opens, you'll see a Welcome and Welcome Guide pages as tabs.
+
+#### Windowsx
+
+In your web browser, navigate to the [Atom website](https://atom.io). Hit
+*Download Windows Installer* to download `AtomSetup.exe`. Open it to install
+Atom.
+
+Follow the installation dialog. At the end, Atom should start. You can always
+access it using the start menu.
 
 ### Installing the Rust package for your text editor
 
