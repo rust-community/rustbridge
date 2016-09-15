@@ -207,6 +207,7 @@ The final step is installing a Rust language package for a text editor.
 The package makes it easier to code with Rust with features like colored text and auto-formatting.
 
 1.  In Atom, navigate to Preferences, then Install.
+    (On Windows, you can find this under File, then Settings; or hit Ctrl+,)
 
 2.  Search for "rust".
 
