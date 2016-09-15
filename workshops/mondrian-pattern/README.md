@@ -87,23 +87,80 @@ To fill a given rectangular _canvas_ with a pattern that satisfies the criteria 
 There are other ways of achieving similar or the same type of pattern. Also, we are far from a level of precision that would suit programming a machine to do it. But for us, we have gained a lot of precision already.
 
 
-Exercises
+Practice
 ---------
 
-Get rusty fingers now!
+### Getting started with coding
 
-* Make a new project (TODO: link to installfest instructuins)
-* Open the files `main.rs` (in the subfoler `src`) and `Cargo.toml` in your text editor.
-* Replace all content in the open files with the content of the respective files linked here:
-    * [new main.rs](https://raw.githubusercontent.com/rust-community/rustbridge/389c0502113503eccae6626561920083959cbe07/workshops/mondrian-pattern/codebase/mondpaint/src/main.rs)
-    * [new Cargo.toml](https://raw.githubusercontent.com/rust-community/rustbridge/389c0502113503eccae6626561920083959cbe07/workshops/mondrian-pattern/codebase/mondpaint/Cargo.toml)
-* Save the files in your editor.
-* Execute the program and make sure you see a minimal mondrian pattern, i.e. a red rectangle.
+Make a new project named `mondpaint`:
+
+* type `cargo new --bin mondpaint` into the console and hit the `Enter` key.
+
+* type `cd mondpaint` into the console, and hit the `Enter` key.
+
+* For the time being you can find more detailed instructions at [Step 1 of these instructions](https://github.com/broesamle/RustWorkshop/blob/master/minimals/countinghands.md#step1-your-first-project)
+
+* TODO: link to installfest instructuins as soon as they are ready
+
+#### [Testing]
+
+Create an executable program and execute it:
+
+* type `cargo run` into the console and hit the `Enter` key.
+
+Your console should now look like this:
+![](images/console_run-hello-world.jpg)
+
+
+### Exercise 0: Start with a prepared minimal mondrian pattern
 
 ![](images/fig00_exercise-start.jpg)
 
+At this point, you have executed a minimal `Hello World` rust project already!
+Now, replace that first project with the minimal mondrian pattern generator:
+
+* Open the files `main.rs` (in the subfoler `src`) and `Cargo.toml` in your text editor.
+    * Again, if you are unsure where to find the files and/or how to open them in a text editor there are [very detailed instructions in Step 2 and 3 here](https://github.com/broesamle/RustWorkshop/blob/master/minimals/countinghands.md#step-2-where-is-the-program).
+    * TODO: link to installfest instructuins as soon as they are ready
+
+* Clicking the links will show the file content in the browser window.
+    + [new main.rs](https://raw.githubusercontent.com/rust-community/rustbridge/389c0502113503eccae6626561920083959cbe07/workshops/mondrian-pattern/codebase/mondpaint/src/main.rs)
+    + [new Cargo.toml](https://raw.githubusercontent.com/rust-community/rustbridge/389c0502113503eccae6626561920083959cbe07/workshops/mondrian-pattern/codebase/mondpaint/Cargo.toml)
+
+What you see looks quite complex and like a foreign language. True, it is rust, the language you will learn now! At this point, you don't need to understand it. You just have to copy and paste it :-)
+
+![](images/main-rs_in-browser.jpg)
+
+* Copy and paste it from there into the file in the text editor. (Do it for both files in the same way.)
+
+* Save the files in your editor.
+
+#### [Testing]
+
+* Make sure your machine has an internet connection working.
+
+* To execute the program do again `cargo run`.
+
+Your rust compiler will work for some time now
+
+* Then, see what happens: can you see a very minimal mondrian pattern (a red rectangle with a black frame) in a window?
+    + In windows, it happens that the window is hidden behind other open windows.
+    + TODO: Fix that!
+
+You should see something similar to this:
+![](images/console+mondrianwindow.jpg)
+
+Congratulations, you have made a project, adapted it so that it matches an example, and executed it successfully!
+
+#### [Explanation]
+
+Although the mondrian pattern in the window is what we're here for, it is worth looking at the console window as well. Don't worry about the warnings for now. Rust tells us that there are things in the program that are never used. We will use them soon!
+
 
 ### Exercise 1: Make one vertical split
+It is now time to have a closer look at the example
+
+
 ![](images/fig01_onevertical.jpg)
 
 
