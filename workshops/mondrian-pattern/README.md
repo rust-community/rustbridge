@@ -158,22 +158,40 @@ Although the mondrian pattern in the window is what we're here for, it is worth 
 
 
 ### Exercise 1: Make one vertical split
-It is now time to have a closer look at the example
-
 
 ![](images/fig01_onevertical.jpg)
 
+It is now time to have a closer look at the rust code. It is located in `src` folder and the file is `main.rs`.
 
-#### [Instruction] 1
+* Open the file `main.rs` located in folder `src` in your editor.
 
+Most of the code you will never touch. Only the highlighted areas are important for you.
+
+![](images/code_highlight-learners-area.jpg)
+
+Furthermore, you only need to make tiny modifications at first:
+
+* Look at the upper highlighted area. Change the line <br>`paint_rectangle(20.0, 20.0, 300.0, 250.0, chn)` into <br>`vsplit_and_paint(20.0, 20.0, 300.0, 250.0, chn)`.
+
+#### [Testing]
+
+* To execute the program do again `cargo run`.
+
+Can you see the window open with the two-rectangles-pattern, as given in the sketch?
 
 #### [Snapshot] 1
+From time to time there will be such "snapshots". They show you what are the exact changes in the code. The second link gives you the code as it should look at this point -- a snapshot.
+
 [view changes](https://github.com/rust-community/rustbridge/commit/754dc60730f0fd16f6001785aee533128326d6b5)
 |
 [download main.rs](https://raw.githubusercontent.com/rust-community/rustbridge/754dc60730f0fd16f6001785aee533128326d6b5/workshops/mondrian-pattern/codebase/mondpaint/src/main.rs)
 
+#### Explanation
+The line you have changed is the line that _intitiates the mondrian painting activity_. Technically speaking this line tells rust to _execute an operation_, named `paint_rectangle`. You have changed that line so as to execute a different operation `vsplit_and_paint`.
+
 
 ### Exercise 2:
+
 ![](images/fig02_onevertical-1third-2thirds.jpg)
 
 #### [Snapshot] 2
