@@ -190,15 +190,26 @@ From time to time there will be such "snapshots". They show you what are the exa
 The line you have changed is the line that _intitiates the mondrian painting activity_. Technically speaking this line tells rust to _execute an operation_, named `paint_rectangle`. You have changed that line so as to execute a different operation `vsplit_and_paint`.
 
 
-### Exercise 2:
+### Exercise 2: Split position
 
 ![](images/fig02_onevertical-1third-2thirds.jpg)
+
+Line 64 calculates the position where to split the canvas into two areas: `let splitpos = width / 2.0;`.
+
+* Replace the `2.0` with a `3.0`.
+
+#### [Testing] --as usual--
 
 #### [Snapshot] 2
 [view changes](https://github.com/rust-community/rustbridge/commit/1dcdf3125943137fb231e9514c73b5136e1206cb)
 |
 [download main.rs](https://github.com/rust-community/rustbridge/commit/1dcdf3125943137fb231e9514c73b5136e1206cb/workshops/mondrian-pattern/codebase/mondpaint/src/main.rs)
 
+#### Explanation
+
+The first highlighted area, the one you have modified in _Exercise 1_ executes the operation `vsplit_and_paint`. The second highlighted area _defines_ the operations `vsplit_and_paint` and `paint_rectangle`. An operation is defined as a sequence of (other) operations to be executed.
+
+What you have done in this exercise is to modify the operations that are executed, whenever `vsplit_and_paint` is executed. In this case you changed the ratio between the left and the right side of the split to _one third:two thirds_.
 
 ### Exercise 3:
 
