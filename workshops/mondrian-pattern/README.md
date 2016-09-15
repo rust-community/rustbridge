@@ -211,16 +211,59 @@ The first highlighted area, the one you have modified in _Exercise 1_ executes t
 
 What you have done in this exercise is to modify the operations that are executed, whenever `vsplit_and_paint` is executed. In this case you changed the ratio between the left and the right side of the split to _one third:two thirds_.
 
-### Exercise 3:
 
-TODO: Check example for exercise 3/4 -- there is one snapshot for two exercises, currently.
+### Exercise 3: Specify the colour for `paint_rectangle`
 
 ![](images/fig03_colour-as-parameter.jpg)
+
+* Find the lines where `paint_rectangle` is defined:
+
+```rust
+fn paint_rectangle(x :f64, y :f64, width :f64, height :f64, chn: SendChannel)
+{
+    println!("paint_rectangle: {:}, {:}, {:}, {:}", x, y, width, height);
+    chn.send( ([x, y, width, height], RED) ).unwrap();
+}
+```
+
+The stuff in the `( . . . )` is called _parameters_, separated by `,`. Parameters are used to specify the details, how an operation should be executed in detail. This exercise wants to _specify the colour for paint_rectangle_. Here we go!
+
+* Add an extra parameter `c` to the definition of `paint_rectangle` like this:
+
+```rust
+fn paint_rectangle(x :f64, y :f64, width :f64, height :f64, c: types::Color, chn: SendChannel)
+```
+
+#### Testing
+
+* Save the file.
+
+* `cargo run`
+
+Bam! Your first rust build error!
+
+![](images/console_paintrect-parameter-error.jpg)
+
+
+#### Explanation
+
+They look scary in the beginning!
+
+![](images/build-error_explained.jpg)
+
+We added one little thing in the definition of an operation and we get this amount of error!
+
+This is what rust is complaining about: `this function takes 6 parameters but 5 parameters were supplied`. Makes sense. We changed the operation and now it requires more information to be executed: The colour of the rectangle. The error occurs because this information is required by the operation but it is not provided. where the operation is invoked.
+
+Where should it be given? At each point in the code where the execution of `paint_rectangle` is invoked: Lines 67 and 72. Exactly the lines where the two (identical) errors are reported. Makes sense.
+
 
 #### [Snapshot] 3
 [view changes](https://github.com/rust-community/rustbridge/commit/c24797b80d1f0c9039c722159e137dc531f140fb)
 |
 [download main.rs](https://github.com/rust-community/rustbridge/commit/c24797b80d1f0c9039c722159e137dc531f140fb/workshops/mondrian-pattern/codebase/mondpaint/src/main.rs)
+
+
 
 
 ### Exercise 4:
