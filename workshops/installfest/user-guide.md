@@ -118,13 +118,23 @@ It should look something like this:
 
 ### Windows
 
-Visit the [Rust website](https://rust-lang.org) and click on *Install* to
-download the Rust installer. Follow through with the installation procedure and
-confirm any warnings and dialogs that may come up. When finished, you should
-have Rust installed on your machine.
+1. Go to the [Rust website](https://www.rust-lang.org).
 
-To verify, open the command prompt (cmd.exe) from the start menu. Type in the
-command `rustc --version`. The Rust compiler will tell you its current version.
+2. Click on *Install* to download the Rust installer.
+
+3. Open the file `rust-1.11.0-i686-pc-windows-gnu.msi` (or similar) you just
+   downloaded.s
+
+4. Now the installation dialog starts. Confirm any warnings and stick to the
+   default options when prompted.
+
+Now you should have Rust installed on your machine.
+
+To verify that, open a *new* command prompt like above. Don't use one that has
+already been open, because it does not know about Rust yet.
+
+Type in the command `rustc --version`. The Rust compiler will tell you its
+current version:
 
     C:\Users\yourname>rustc --version
     rustc 1.11.0 (9b21dcd6a 2016-08-15)
@@ -182,7 +192,7 @@ The next section walks you through the installation.
 
     When Atom opens, you'll see a Welcome and Welcome Guide pages as tabs.
 
-#### Windowsx
+#### Windows
 
 In your web browser, navigate to the [Atom website](https://atom.io). Hit
 *Download Windows Installer* to download `AtomSetup.exe`. Open it to install
