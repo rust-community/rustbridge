@@ -41,14 +41,14 @@ Not incredibly complex, yet, too complex and vague for a straight-forward inform
 
 **What are we interested in?** The paintings of Piet Mondrian. They are oil paintings on canvas. The canvas is made of some fabric (linen) which is a plant... The paint is some colourful substances mixed with oil as a suspension -- **STOP!** We could continue like this for ever.
 
-**What aspect(s) of his paintings are we interested in?** The distinctive visual patterns. For us as humans all these things are often immediately clear but for the machines we want to program it is not.
+**What aspect(s) of his paintings are we interested in?** The distinctive visual patterns. For us as humans, all these things are often immediately clear but for the machines we want to program they are not.
 
 
 ### Mondrian Patterns
 
 What makes this type of pattern _this_ type of pattern?
 
-With this description we will certainly make an over-simplification, omitting many aspects of the choices he made regarding composition, geometry, colour... We will see more of the complexity the further we proceed.
+With this description we will certainly make an over-simplification, omitting many aspects of the choices he made regarding composition, geometry, colour... We will see more of the complexity as we proceed.
 
 * We see the _canvas_ as a rectangular surface that has a colour at each location. Initially it is white or some other more or less uniform colour.
 
@@ -64,7 +64,7 @@ Up to now, nothing in our _definition_ makes sure the rectangles
 
 TODO: Add more odd examples
 
-**Definition:** With _Mondrian Pattern_ we will refer to a rectangular area, the _canvas_, that is filled _completely_ with differently _coloured rectangles_. The rectangles are oriented 'upright' so that their edges are aligned with the borders of the canvas.
+With _Mondrian Pattern_ we will refer to a rectangular area, the _canvas_, filled _completely_ with differently _coloured rectangles_. The rectangles are oriented 'upright' so that their edges are aligned with the borders of the canvas.
 
 
 Processing Mondrian Patterns
@@ -94,19 +94,20 @@ Practice
 
 Make a new project named `mondpaint`:
 
-* type `cargo new --bin mondpaint` into the console and hit the `Enter` key.
+* Type `cargo new --bin mondpaint` into the console and hit the `Enter` key.
 
-* type `cd mondpaint` into the console, and hit the `Enter` key.
+* Type `cd mondpaint` into the console, and hit the `Enter` key.
 
-* For the time being you can find more detailed instructions at [Step 1 of these instructions](https://github.com/broesamle/RustWorkshop/blob/master/minimals/countinghands.md#step1-your-first-project)
+* If you have not [set up your machine for coding]( https://github.com/rust-community/rustbridge/blob/master/workshops/installfest/user-guide.md) please do so, now.
 
-* TODO: link to installfest instructuins as soon as they are ready
+* If you struggle you can try [more detailed instructions at Step 1] (https://github.com/broesamle/RustWorkshop/blob/master/minimals/countinghands.md#step1-your-first-project)
+
 
 #### [Testing]
 
 Create an executable program and execute it:
 
-* type `cargo run` into the console and hit the `Enter` key.
+* Type `cargo run` into the console and hit the `Enter` key.
 
 Your console should now look like this:
 ![](images/console_run-hello-world.jpg)
@@ -119,9 +120,8 @@ Your console should now look like this:
 At this point, you have executed a minimal `Hello World` rust project already!
 Now, replace that first project with the minimal mondrian pattern generator:
 
-* Open the files `main.rs` (in the subfoler `src`) and `Cargo.toml` in your text editor.
+* Open the files `main.rs` (in the subfolder `src`) and `Cargo.toml` in your text editor.
     * Again, if you are unsure where to find the files and/or how to open them in a text editor there are [very detailed instructions in Step 2 and 3 here](https://github.com/broesamle/RustWorkshop/blob/master/minimals/countinghands.md#step-2-where-is-the-program).
-    * TODO: link to installfest instructuins as soon as they are ready
 
 * Clicking the links will show the file content in the browser window.
     + [new main.rs](https://raw.githubusercontent.com/rust-community/rustbridge/389c0502113503eccae6626561920083959cbe07/workshops/mondrian-pattern/codebase/mondpaint/src/main.rs)
@@ -180,21 +180,25 @@ Furthermore, you only need to make tiny modifications at first:
 Can you see the window open with the two-rectangles-pattern, as given in the sketch?
 
 #### [Snapshot] 1
-From time to time there will be such "snapshots". They show you what are the exact changes in the code. The second link gives you the code as it should look at this point -- a snapshot.
+From time to time there will be such "snapshots": What are the exact changes in the code. The second link gives _a snapshot_ of how the code should look at this point.
 
 [view changes](https://github.com/rust-community/rustbridge/commit/754dc60730f0fd16f6001785aee533128326d6b5)
 |
 [download main.rs](https://raw.githubusercontent.com/rust-community/rustbridge/754dc60730f0fd16f6001785aee533128326d6b5/workshops/mondrian-pattern/codebase/mondpaint/src/main.rs)
 
 #### Explanation
-The line you have changed is the line that _intitiates the mondrian painting activity_. Technically speaking this line tells rust to _execute an operation_, named `paint_rectangle`. You have changed that line so as to execute a different operation `vsplit_and_paint`.
+The line you have changed is the line that _invokes_ the mondrian painting activity. Technically speaking this line tells rust to _invoke an operation_, named `paint_rectangle`. Before, you have changed that line so as to execute a different operation, `vsplit_and_paint`.
 
 
 ### Exercise 2: Split position
 
 ![](images/fig02_onevertical-1third-2thirds.jpg)
 
-Line 64 calculates the position where to split the canvas into two areas: `let splitpos = width / 2.0;`.
+Line 64 calculates the position where to split the canvas into two areas: 
+
+```rust
+let splitpos = width / 2.0;
+```
 
 * Replace the `2.0` with a `3.0`.
 
@@ -207,7 +211,10 @@ Line 64 calculates the position where to split the canvas into two areas: `let s
 
 #### Explanation
 
-The first highlighted area, the one you have modified in _Exercise 1_ executes the operation `vsplit_and_paint`. The second highlighted area _defines_ the operations `vsplit_and_paint` and `paint_rectangle`. An operation is defined as a sequence of (other) operations to be executed.
+The first highlighted area, the one you have modified in _Exercise 1_ executes the operation `vsplit_and_paint`. The second highlighted area _defines_ the operations `vsplit_and_paint` and `paint_rectangle`. 
+An operation is defined as a sequence of (other) operations to be executed on invocation.
+
+Defining an operation can be compared to writing a recipe, invoking it means to actually prepare the dish _one time_. This can be repeated any number of times even though there is only one definition/recipe.
 
 What you have done in this exercise is to modify the operations that are executed, whenever `vsplit_and_paint` is executed. In this case you changed the ratio between the left and the right side of the split to _one third:two thirds_.
 
@@ -240,7 +247,7 @@ fn paint_rectangle(x :f64, y :f64, width :f64, height :f64, c: types::Color, chn
 
 * `cargo run`
 
-Bam! Your first rust build error!
+**Bam! Your first rust build-error!**
 
 ![](images/console_paintrect-parameter-error.jpg)
 
@@ -253,9 +260,9 @@ They look scary in the beginning!
 
 We added one little thing in the definition of an operation and we get this amount of error!
 
-This is what rust is complaining about: `this function takes 6 parameters but 5 parameters were supplied`. Makes sense. We changed the operation and now it requires more information to be executed: The colour of the rectangle. The error occurs because this information is required by the operation but it is not provided. where the operation is invoked.
+This is what rust is complaining about: `this function takes 6 parameters but 5 parameters were supplied`. Makes sense. We changed the operation and now it requires more information to be executed: The colour of the rectangle. The error occurs because this information is required by the operation but it is not provided. 
 
-Where should it be given? At each point in the code where the execution of `paint_rectangle` is invoked: Lines 67 and 72. Exactly the lines where the two (identical) errors are reported. Makes sense.
+Where should it be given? ...at each point in the code where the execution of `paint_rectangle` is invoked: Lines 67 and 72; exactly the lines where the two (identical) errors are reported. Makes sense.
 
 
 ### Exercise 4: Different colours on each side
@@ -341,7 +348,7 @@ This Exercise will give the mondrian painter a bit of 'artistic' (!?!) freedom. 
 A coupple of things are already prepared in the example code.
 There is an operation for generating random numbers available: For instance, `rng.gen_range(0.0, 20.0)` will produce a random number between `0.0` and `20.0`.
 
-Currently it is deactivated in the example;  it is placed in a comment _comment_:
+Currently it is deactivated in the example; it is placed in a comment _comment_:
 ```
 // the remainder of a line after a double forward slash will be ignored
 
@@ -370,12 +377,12 @@ let splitpos = rng.gen_range(0.0, width);
 ```
 
 #### [Testing]
-You will have to run the example a coupple of times in order to see the different split positions across several runs.
+You will have to run the example a couple of times in order to see the different split positions across several runs.
 
 #### Explanation
 `vsplit_and_paint` receives a number of parameters which define the position and dimensions of where to paint the mondrian pattern: x, y coordinates of the upper left corner and width and height of the canvas (and the colour and some technical stuff).
 
-It decides on a position where to split the canvas vertically and calculates two smaller areas, left and right of that split so as to fully cover the canvas. Technically speaking, the split position is the width of the left side. The width of the right side is the width of the whole canvas minus the width of the left side. Similar calculations are done for the x position of the righthand part.
+It decides on a position where to split the canvas vertically and calculates two smaller areas, left and right of that split so as to fully cover the canvas. Technically speaking, the split position is the width of the left side. The width of the right side is the width of the whole canvas minus the width of the left side. Similar calculations are done for the x position of the right hand part.
 
 The next step is to delegate the two parts to some other operation(s) that will take care of each side. This happens by invoking `paint_rectangle` with according coordinates.
 
@@ -415,7 +422,7 @@ The new operation has to be invoked at some point:
 * Run the example.
 
 
-* If you get error messages, most likely, you have done smaller errors.  Finding and fixing errors is one of the key skills in programming, If you feel adventurous you should try to find them yourself! Otherwise, you might need some smaller advice to continue by yourself.
+* If you get error messages, most likely, you have done smaller errors. Finding and fixing errors is one of the key skills in programming. If you feel adventurous you should try to find them yourself! Otherwise, you might need some smaller advice to continue by yourself.
 
 * Copying the snapshot is the last option. If you do so, please take some time to figure out, what is going on!
 
@@ -437,14 +444,13 @@ It is now time to play with the new operation**s**!
 
 **In more detail:** Currently, `hsplit_and_paint` triggers `paint_rectangle` for both sides of the split. For the first pattern
 
-* modify `vsplit_and_paint` so that it triggers `paint_rectangle` on the left side of the split and `hsplit_and_paint` on the right side.
+* Modify `vsplit_and_paint` so that it triggers `paint_rectangle` on the left side of the split and `hsplit_and_paint` on the right side.
 
 * Don't forget to adapt the initially invoked operation in line 53.
 
 ![](images/fig07_vertical+horizontal-split.jpg)
 
-
-* modify  `hsplit_and_paint` so that it triggers `paint_rectangle` on the left side of the split and `hsplit_and_paint` on the right side.
+* Modify `hsplit_and_paint` so that it triggers `paint_rectangle` on the left side of the split and `hsplit_and_paint` on the right side.
 
 * Don't forget to adapt the initially invoked operation in line 53.
 
@@ -461,14 +467,15 @@ It is now time to play with the new operation**s**!
 [download main.rs](https://github.com/rust-community/rustbridge/commit/e84d28afedec182ac5d1a148f7602ce756c246bd/workshops/mondrian-pattern/codebase/mondpaint/src/main.rs)
 
 
-### Exercise 8:
+### Exercise 8: An infinite pattern generation process
+
 ![](images/fig09_nontricial-nested.jpg)
 
 **Warning!** You may **crash the program or even your machine** if you continue! Usually, this is not a problem and you can just close the program and/or restart your machine and continue.**
 
-There is one way of achiving this pattern by defining more specific operations. However, things will be much more interesting if you
+There is one way of achieving this pattern by defining more specific operations. However, things will be much more interesting if you
 
-* try to modify and recombind the existing operations, only.
+* Try to modify and recombined the existing operations, only.
 
 * Make a diagram of the pattern you want to achieve. Sketch out step-by-step all the operations that will be invoked and in what order. For example, for the first pattern in Exercise 7 this will be:
 
@@ -488,6 +495,8 @@ The _split_ operations invoke to others, which actually run in parallel! The pat
 
 
 ### Exercise 9: Avoiding the infinite pattern generation process.
+
+**TODO!!**
 
 #### [Snapshot] 9
 [view changes](https://github.com/rust-community/rustbridge/commit/6a51b31a396e7a9200ac21a0cc5ab574915a3b2f)
