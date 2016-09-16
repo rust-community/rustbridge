@@ -304,7 +304,6 @@ src/main.rs:78 fn paint_rectangle(x :f64, y :f64, width :f64, height :f64, c: ty
 
 ```
 
-
 #### Explanation
 
 Yes, there is still two colours unused, that's fine. But there is an `unused variable`, `c` in line 78.
@@ -333,29 +332,55 @@ chn.send( ([x, y, width, height], RED) ).unwrap();
 [download main.rs](https://github.com/rust-community/rustbridge/commit/c24797b80d1f0c9039c722159e137dc531f140fb/workshops/mondrian-pattern/codebase/mondpaint/src/main.rs)
 
 
-### Exercise 5:
+### Exercise 5: Random split position
+
 ![](images/fig05_random-splitpostition.jpg)
 
-For Exercice 5 we will use random numbers to make things more interesting.
+This Exercise will give the mondrian painter a bit of 'artistic' (!?!) freedom. It can randomly choose the position of where to split the canvas. You will modify the operation `vsplit_and_paint` to use a random number for the split position.
 
-A coupple of things are already prepared in the example.
-There is a new operation for generating random numbers available: `rng.gen_range(0.0, 20.0)` will produce a random number between `0.0` and `20.0`.
+A coupple of things are already prepared in the example code.
+There is an operation for generating random numbers available: For instance, `rng.gen_range(0.0, 20.0)` will produce a random number between `0.0` and `20.0`.
 
-
-Currently this is deactivated by placing them in a _comment_:
+Currently it is deactivated in the example;  it is placed in a comment _comment_:
 ```
 // the remainder of a line after a double forward slash will be ignored
 
 /*
-Furthermore, everything between slash star and
-star slash is also ignored, even over multiple lines
+Furthermore, everything between 'slash star' and
+'star slash' is also ignored, even over multiple lines.
 */
 ```
 
-#### [Instruction] 5
-1. Uncomment lines ____: `use rand::Rng;` and ____ `let mut rng = rand::thread_rng();   //init a random number generator`.
+* Uncomment lines 7 and 61:
 
-2. Modify the operation `vsplit_and_paint` to generate a random split position. The value to be used as split position is calculated in line 76 `let splitpos = rng.gen_range(0.0, width);` Use the operation we just activated `rng.gen_range(...)`.
+```rust
+use rand::Rng;
+. . .
+let mut rng = rand::thread_rng();   //init a random number generator`.
+```
+
+* Run the example in order to know whether rust is still happy with the changes. (It should run as before except for two more warnings, which is not a problem right now.)
+
+From _Exercise 2_ you already know where the split position is calculated.
+
+* Find the relevant line in the code again and replace it with
+
+```rust
+let splitpos = rng.gen_range(0.0, width);
+```
+
+#### [Testing]
+You will have to run the example a coupple of times in order to see the different split positions across several runs.
+
+#### Explanation
+`vsplit_and_paint` receives a number of parameters which define the position and dimensions of where to paint the mondrian pattern: x, y coordinates of the upper left corner and width and height of the canvas (and the colour and some technical stuff).
+
+It decides on a position where to split the canvas vertically and calculates two smaller areas, left and right of that split so as to fully cover the canvas. Technically speaking, the split position is the width of the left side. The width of the right side is the width of the whole canvas minus the width of the left side. Similar calculations are done for the x position of the righthand part.
+
+The next step is to delegate the two parts to some other operation(s) that will take care of each side. This happens by invoking `paint_rectangle` with according coordinates.
+
+**If you are confused, making a sketch of the subdivision will help you to understand what is going on in detail!**
+
 
 #### [Snapshot] 5
 [view changes](https://github.com/rust-community/rustbridge/commit/30c7b9c62453ab456029ca480e07d7e33b5c0f93)
