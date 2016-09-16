@@ -18,11 +18,15 @@ Information Processing
 
 The universe is incredibly complex. When it comes to information processing technology, the first step to solving a problem is to understand the problem in a precise way.
 
-What am I interested in?
-What am I _not_ interested in?
-Which information do I have?
-Which information do I need?
-How can I derive or _create_ the information I need based on the information I have.
++ What am I interested in?
+
++ What am I _not_ interested in?
+
++ Which information do I have?
+
++ Which information do I need?
+
++ How can I derive or _create_ the information I need based on the information I have.
 
 The mondrian universe
 ---------------------
@@ -50,17 +54,19 @@ What makes this type of pattern _this_ type of pattern?
 
 With this description we will certainly make an over-simplification, omitting many aspects of the choices he made regarding composition, geometry, colour... We will see more of the complexity as we proceed.
 
-* We see the _canvas_ as a rectangular surface that has a colour at each location. Initially it is white or some other more or less uniform colour.
++ We see the _canvas_ as a rectangular surface that has a colour at each location. Initially it is white or some other more or less uniform colour.
 
-* The Mondrian Painting is a canvas filled with coloured rectangular areas bounded by black borders.
++ The Mondrian Painting is a canvas filled with coloured rectangular areas bounded by black borders.
 
 This is (still) not precise enough to define the distinctive pattern we are interested in. It could also mean something like [random rectangles](https://williamaadams.wordpress.com/2013/12/12/multitask-ui-like-its-1995/).
 
 Up to now, nothing in our _definition_ makes sure the rectangles
 
-* are aligned with the edge of the canvas,
-* cover the whole canvas,
-* do not overlap, producing non-rectangular remainders.
++ are aligned with the edge of the canvas,
+
++ cover the whole canvas,
+
++ do not overlap, producing non-rectangular remainders.
 
 TODO: Add more odd examples
 
@@ -82,6 +88,7 @@ TODO: Complex example: More subdivisions
 To fill a given rectangular _canvas_ with a pattern that satisfies the criteria of the definition we can use these steps:
 
 1. Make vertical/horizontal subdivisions so that rectangular sub-regions emerge.
+
 2. Paint each sub-region with a coloured rectangle and paint a black border around it.
 
 There are other ways of achieving similar or the same type of pattern. Also, we are far from a level of precision that would suit programming a machine to do it. But for us, we have gained a lot of precision already.
@@ -90,24 +97,24 @@ There are other ways of achieving similar or the same type of pattern. Also, we 
 Practice
 ---------
 
+Each step in the instructions is marked by a &#9654;&#9654;.
+
 ### Getting started with coding
 
 Make a new project named `mondpaint`:
 
-* Type `cargo new --bin mondpaint` into the console and hit the `Enter` key.
+&#9654;&#9654; Type `cargo new --bin mondpaint` into the console and hit the `Enter` key.
 
-* Type `cd mondpaint` into the console, and hit the `Enter` key.
+&#9654;&#9654; Type `cd mondpaint` into the console, and hit the `Enter` key.
 
-* If you have not [set up your machine for coding]( https://github.com/rust-community/rustbridge/blob/master/workshops/installfest/user-guide.md) please do so, now.
-
-* If you struggle you can try [more detailed instructions at Step 1] (https://github.com/broesamle/RustWorkshop/blob/master/minimals/countinghands.md#step1-your-first-project)
+&#9654;&#9654; If you have not [set up your machine for coding]( https://github.com/rust-community/rustbridge/blob/master/workshops/installfest/user-guide.md) please do so, now.
 
 
 #### [Testing]
 
 Create an executable program and execute it:
 
-* Type `cargo run` into the console and hit the `Enter` key.
+&#9654;&#9654; Type `cargo run` into the console and hit the `Enter` key.
 
 Your console should now look like this:
 ![](images/console_run-hello-world.jpg)
@@ -120,32 +127,37 @@ Your console should now look like this:
 At this point, you have executed a minimal `Hello World` rust project already!
 Now, replace that first project with the minimal mondrian pattern generator:
 
-* Open the files `main.rs` (in the subfolder `src`) and `Cargo.toml` in your text editor.
-    * Again, if you are unsure where to find the files and/or how to open them in a text editor there are [very detailed instructions in Step 2 and 3 here](https://github.com/broesamle/RustWorkshop/blob/master/minimals/countinghands.md#step-2-where-is-the-program).
+&#9654;&#9654; Open the files `main.rs` (in the subfolder `src`) and `Cargo.toml` in your text editor.
 
-* Clicking the links will show the file content in the browser window.
-    + [new main.rs](https://raw.githubusercontent.com/rust-community/rustbridge/389c0502113503eccae6626561920083959cbe07/workshops/mondrian-pattern/codebase/mondpaint/src/main.rs)
-    + [new Cargo.toml](https://raw.githubusercontent.com/rust-community/rustbridge/389c0502113503eccae6626561920083959cbe07/workshops/mondrian-pattern/codebase/mondpaint/Cargo.toml)
+If you are unsure where to find the files and/or how to open them in a text editor there are [very detailed instructions in Step 2 and 3 here](https://github.com/broesamle/RustWorkshop/blob/master/minimals/countinghands.md#step-2-where-is-the-program).
+
+&#9654;&#9654; Clicking the links will show the file content in the browser window.
+
++ [new main.rs](https://raw.githubusercontent.com/rust-community/rustbridge/389c0502113503eccae6626561920083959cbe07/workshops/mondrian-pattern/codebase/mondpaint/src/main.rs)
+
++ [new Cargo.toml](https://raw.githubusercontent.com/rust-community/rustbridge/389c0502113503eccae6626561920083959cbe07/workshops/mondrian-pattern/codebase/mondpaint/Cargo.toml)
 
 What you see looks quite complex and like a foreign language. True, it is rust, the language you will learn now! At this point, you don't need to understand it. You just have to copy and paste it :-)
 
 ![](images/main-rs_in-browser.jpg)
 
-* Copy and paste it from there into the file in the text editor. (Do it for both files in the same way.)
+&#9654;&#9654; Copy and paste it from there into the file in the text editor. (Do it for both files in the same way.)
 
-* Save the files in your editor.
+&#9654;&#9654; Save the files in your editor.
 
 #### [Testing]
 
-* Make sure your machine has an internet connection working.
+&#9654;&#9654; Make sure your machine has an internet connection working.
 
-* To execute the program do again `cargo run`.
+&#9654;&#9654; To execute the program do again `cargo run`.
 
 Your rust compiler will work for some time now
 
-* Then, see what happens: can you see a very minimal mondrian pattern (a red rectangle with a black frame) in a window?
-    + In windows, it happens that the window is hidden behind other open windows.
-    + TODO: Fix that!
+&#9654;&#9654; Then, see what happens: can you see a very minimal mondrian pattern (a red rectangle with a black frame) in a window?
+
++ In windows, it happens that the window is hidden behind other open windows.
+
++ TODO: Fix that!
 
 You should see something similar to this:
 ![](images/console+mondrianwindow.jpg)
@@ -163,7 +175,7 @@ Although the mondrian pattern in the window is what we're here for, it is worth 
 
 It is now time to have a closer look at the rust code. It is located in `src` folder and the file is `main.rs`.
 
-* Open the file `main.rs` located in folder `src` in your editor.
+&#9654;&#9654; Open the file `main.rs` located in folder `src` in your editor.
 
 Most of the code you will never touch. Only the highlighted areas are important for you.
 
@@ -171,11 +183,11 @@ Most of the code you will never touch. Only the highlighted areas are important 
 
 Furthermore, you only need to make tiny modifications at first:
 
-* Look at the upper highlighted area. Change the line <br>`paint_rectangle(20.0, 20.0, 300.0, 250.0, chn)` into <br>`vsplit_and_paint(20.0, 20.0, 300.0, 250.0, chn)`.
+&#9654;&#9654; Look at the upper highlighted area. Change the line <br>`paint_rectangle(20.0, 20.0, 300.0, 250.0, chn)` into <br>`vsplit_and_paint(20.0, 20.0, 300.0, 250.0, chn)`.
 
 #### [Testing]
 
-* To execute the program do again `cargo run`.
+&#9654;&#9654; To execute the program do again `cargo run`.
 
 Can you see the window open with the two-rectangles-pattern, as given in the sketch?
 
@@ -200,7 +212,7 @@ Line 64 calculates the position where to split the canvas into two areas:
 let splitpos = width / 2.0;
 ```
 
-* Replace the `2.0` with a `3.0`.
+&#9654;&#9654; Replace the `2.0` with a `3.0`.
 
 #### [Testing] --as usual--
 
@@ -223,7 +235,7 @@ What you have done in this exercise is to modify the operations that are execute
 
 ![](images/fig03_colour-as-parameter.jpg)
 
-* Find the lines where `paint_rectangle` is defined:
+&#9654;&#9654; Find the lines where `paint_rectangle` is defined:
 
 ```rust
 fn paint_rectangle(x :f64, y :f64, width :f64, height :f64, chn: SendChannel)
@@ -235,7 +247,7 @@ fn paint_rectangle(x :f64, y :f64, width :f64, height :f64, chn: SendChannel)
 
 The stuff in the `( . . . )` is called _parameters_, separated by `,`. Parameters are used to specify the details, how an operation should be executed in detail. This exercise wants to _specify the colour for paint_rectangle_. Here we go!
 
-* Add an extra parameter `c` to the definition of `paint_rectangle` like this:
+&#9654;&#9654; Add an extra parameter `c` to the definition of `paint_rectangle` like this:
 
 ```rust
 fn paint_rectangle(x :f64, y :f64, width :f64, height :f64, c: types::Color, chn: SendChannel)
@@ -243,9 +255,9 @@ fn paint_rectangle(x :f64, y :f64, width :f64, height :f64, c: types::Color, chn
 
 #### Testing
 
-* Save the file.
+&#9654;&#9654; Save the file.
 
-* `cargo run`
+&#9654;&#9654; `cargo run`
 
 **Bam! Your first rust build-error!**
 
@@ -287,7 +299,7 @@ paint_rectangle(x+splitpos, y, width-splitpos, height, chnright)
 ```
 Both lines invoke `paint_rectangle` with slightly different parameters.
 
-* In each line, behind the parameter `height`, the colour has to be provided, i.e. like this:
+&#9654;&#9654; In each line, behind the parameter `height`, the colour has to be provided, i.e. like this:
 
 ```rust
 paint_rectangle(x, y, splitpos, height, RED, chnleft)
@@ -330,7 +342,7 @@ chn.send( ([x, y, width, height], RED) ).unwrap();
 ```
 
 
-* **Final Thing to do:** Replace `RED` with `c` and give it should all be working as planned!
+&#9654;&#9654; **Final Thing to do:** Replace `RED` with `c` and give it should all be working as planned!
 
 #### [Snapshot] 4
 
@@ -358,7 +370,7 @@ Furthermore, everything between 'slash star' and
 */
 ```
 
-* Uncomment lines 7 and 61:
+&#9654;&#9654; Uncomment lines 7 and 61:
 
 ```rust
 use rand::Rng;
@@ -366,11 +378,11 @@ use rand::Rng;
 let mut rng = rand::thread_rng();   //init a random number generator`.
 ```
 
-* Run the example in order to know whether rust is still happy with the changes. (It should run as before except for two more warnings, which is not a problem right now.)
+&#9654;&#9654; Run the example in order to know whether rust is still happy with the changes. (It should run as before except for two more warnings, which is not a problem right now.)
 
 From _Exercise 2_ you already know where the split position is calculated.
 
-* Find the relevant line in the code again and replace it with
+&#9654;&#9654; Find the relevant line in the code again and replace it with
 
 ```rust
 let splitpos = rng.gen_range(0.0, width);
@@ -402,31 +414,37 @@ The next step is to delegate the two parts to some other operation(s) that will 
 
 You will _define an operation_ that works in the same way as `vsplit_and_paint` except that it does Horizontal splits.
 
-* If you have not made a sketch of the vertical canvas split before, now you will need it.
+&#9654;&#9654; If you have not made a sketch of the vertical canvas split before, now you will need it.
 
-* You will also need one vor a horizontal split.
+&#9654;&#9654; You will also need one vor a horizontal split.
 
-* Make a copy of the operation definition of `vsplit_and_paint` and rename it to `hsplit_and_paint`.
+&#9654;&#9654; Make a copy of the operation definition of `vsplit_and_paint` and rename it to `hsplit_and_paint`.
 
-* Identify the code lines where the height and the y-coordinates are calculated.
-    + this will involve all lines that touch `splitpos`, `width` and `x`
-    + `height` and `y` have to be calculated depending on the split position
-    + Remember the order of the parameters for `paint_rectangle`: `x, y, width, height, ...`. You have to give the new coordinates in the exact same order!
-    + Take some time, it is not trivial!
+&#9654;&#9654; Identify the code lines where the height and the y-coordinates are calculated.
+
++ this will involve all lines that touch `splitpos`, `width` and `x`
+
++ `height` and `y` have to be calculated depending on the split position
+
++ Remember the order of the parameters for `paint_rectangle`: `x, y, width, height, ...`. You have to give the new coordinates in the exact same order!
+
++ Take some time, it is not trivial!
 
 #### [Testing]
 The new operation has to be invoked at some point:
 
-* For testing it, find the spot where `vsplit_and_paint` is invoked and replace it with `hsplit_and_paint`.
+&#9654;&#9654; For testing it, find the spot where `vsplit_and_paint` is invoked and replace it with `hsplit_and_paint`.
 
-* Run the example.
+&#9654;&#9654; Run the example.
 
 
-* If you get error messages, most likely, you have done smaller errors. Finding and fixing errors is one of the key skills in programming. If you feel adventurous you should try to find them yourself! Otherwise, you might need some smaller advice to continue by yourself.
+If you get error messages, most likely, you have done smaller errors. Finding and fixing errors is one of the key skills in programming. 
 
-* Copying the snapshot is the last option. If you do so, please take some time to figure out, what is going on!
+&#9654;&#9654; If you feel adventurous you should try to find them yourself! Otherwise, you might need some smaller advice to continue by yourself.
 
-* Feel free to use more interesting colours :-)
+Copying the snapshot is the last option. If you do so, please take some time to figure out, what is going on!
+
+&#9654;&#9654; Feel free to use more interesting colours :-)
 
 #### [Snapshot] 6
 [view changes](https://github.com/rust-community/rustbridge/commit/aae0b114be1d8996f18db88998d4fe0b3c047201)
@@ -439,20 +457,20 @@ The new operation has to be invoked at some point:
 
 It is now time to play with the new operation**s**!
 
-* If you fell adventurous, try to figure out for yourself how to achieve one of the ny patterns.
+&#9654;&#9654; If you fell adventurous, try to figure out for yourself how to achieve one of the ny patterns.
 
 
 **In more detail:** Currently, `hsplit_and_paint` triggers `paint_rectangle` for both sides of the split. For the first pattern
 
-* Modify `vsplit_and_paint` so that it triggers `paint_rectangle` on the left side of the split and `hsplit_and_paint` on the right side.
+&#9654;&#9654; Modify `vsplit_and_paint` so that it triggers `paint_rectangle` on the left side of the split and `hsplit_and_paint` on the right side.
 
-* Don't forget to adapt the initially invoked operation in line 53.
+&#9654;&#9654; Don't forget to adapt the initially invoked operation in line 53.
 
 ![](images/fig07_vertical+horizontal-split.jpg)
 
-* Modify `hsplit_and_paint` so that it triggers `paint_rectangle` on the left side of the split and `hsplit_and_paint` on the right side.
+&#9654;&#9654; Modify `hsplit_and_paint` so that it triggers `paint_rectangle` on the left side of the split and `hsplit_and_paint` on the right side.
 
-* Don't forget to adapt the initially invoked operation in line 53.
+&#9654;&#9654; Don't forget to adapt the initially invoked operation in line 53.
 
 ![](images/fig08_vertical+2horizontal-splits.jpg)
 
@@ -475,9 +493,9 @@ It is now time to play with the new operation**s**!
 
 There is one way of achieving this pattern by defining more specific operations. However, things will be much more interesting if you
 
-* Try to modify and recombined the existing operations, only.
+&#9654;&#9654; Try to modify and recombined the existing operations, only.
 
-* Make a diagram of the pattern you want to achieve. Sketch out step-by-step all the operations that will be invoked and in what order. For example, for the first pattern in Exercise 7 this will be:
+&#9654;&#9654; Make a diagram of the pattern you want to achieve. Sketch out step-by-step all the operations that will be invoked and in what order. For example, for the first pattern in Exercise 7 this will be:
 
 * `vsplit_and_paint` invokes for
     * left side: `paint_rectangle`
