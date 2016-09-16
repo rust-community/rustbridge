@@ -389,8 +389,34 @@ The next step is to delegate the two parts to some other operation(s) that will 
 
 
 
-### Exercise 6:
+### Exercise 6: Horizontal split
+
 ![](images/fig06_horizontal-split.jpg)
+
+You will _define an operation_ that works in the same way as `vsplit_and_paint` except that it does Horizontal splits.
+
+* If you have not made a sketch of the vertical canvas split before, now you will need it.
+
+* You will also need one vor a horizontal split.
+
+* Make a copy of the operation definition of `vsplit_and_paint` and rename it to `hsplit_and_paint`.
+
+* Identify the code lines where the height and the y-coordinates are calculated.
+    + this will involve all lines that touch `splitpos`, `width` and `x`
+    + `height` and `y` have to be calculated depending on the split position
+    + Remember the order of the parameters for `paint_rectangle`: `x, y, width, height, ...`. You have to give the new coordinates in the exact same order!
+    + Take some time, it is not trivial!
+
+#### [Testing]
+The new operation has to be invoked at some point:
+
+* For testing it, find the spot where `vsplit_and_paint` is invoked and replace it with `hsplit_and_paint`.
+
+* Run the example.
+
+* If you get error messages, most likely, you have done smaller errors.  Finding and fixing errors is one of the key skills in programming, If you feel adventurous you should try to find them yourself! Otherwise, you might need some smaller advice to continue by yourself.
+
+* Copying the snapshot is the last option. If you do so, please take some time to figure out, what is going on!
 
 #### [Snapshot] 6
 [view changes](https://github.com/rust-community/rustbridge/commit/aae0b114be1d8996f18db88998d4fe0b3c047201)
