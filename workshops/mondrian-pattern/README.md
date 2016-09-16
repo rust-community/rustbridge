@@ -258,32 +258,79 @@ This is what rust is complaining about: `this function takes 6 parameters but 5 
 Where should it be given? At each point in the code where the execution of `paint_rectangle` is invoked: Lines 67 and 72. Exactly the lines where the two (identical) errors are reported. Makes sense.
 
 
-### Exercise 4:
+### Exercise 4: Different colours on each side
+
 ![](images/fig04_two-different-colours.jpg)
 
+The issue encountered in Exercise 3 is that colour information is required on the one hand but not provided. When fixing this, we will (as a side effect) have a Mondrian pattern with different colours on each side!
+
+Where do the error messages direct you?
+
+```
+src/main.rs:67:9: 67:57 error: this function takes 6 parameters but 5 parameters were supplied [E0061]
+. . .
+src/main.rs:72:9: 72:73 error: this function takes 6 parameters but 5 parameters were supplied [E0061]
+```
+Lines 67 and 73:
+
+```rust
+paint_rectangle(x, y, splitpos, height, chnleft)
+. . .
+paint_rectangle(x+splitpos, y, width-splitpos, height, chnright)
+```
+Both lines invoke `paint_rectangle` with slightly different parameters.
+
+* In each line, behind the parameter `height`, the colour has to be provided, i.e. like this:
+
+```rust
+paint_rectangle(x, y, splitpos, height, RED, chnleft)
+. . .
+paint_rectangle(x+splitpos, y, width-splitpos, height, BLUE, chnright)
+```
+
+#### [Testing]
+Testing this via `cargo run` should make rust happy again and it runs the example. Yeah! But both sides are red hmmm.
+
+And the warnings have changed:
+```
+src/main.rs:17:1: 17:48 warning: constant item is never used: `GREEN`, #[warn(dead_code)] on by default
+src/main.rs:17 const GREEN:   [f32; 4] = [0.0, 1.0, 0.0, 1.0];
+               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/main.rs:19:1: 19:48 warning: constant item is never used: `YELLOW`, #[warn(dead_code)] on by default
+src/main.rs:19 const YELLOW:  [f32; 4] = [1.0, 1.0, 0.0, 1.0];
+               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/main.rs:78:61: 78:62 warning: unused variable: `c`, #[warn(unused_variables)] on by default
+src/main.rs:78 fn paint_rectangle(x :f64, y :f64, width :f64, height :f64, c: types::Color, chn: SendChannel)
+
+```
+
+
+#### Explanation
+
+Yes, there is still two colours unused, that's fine. But there is an `unused variable`, `c` in line 78.
+
+```rust
+fn paint_rectangle(x :f64, y :f64, width :f64, height :f64, c: types::Color, chn: SendChannel)
+```
+
+This is the line where you added the new parameter for colour. Rust calls this a _variable_ because parameters are special sorts of variables.
+What is a variable? A variable is a container that can carry some value during program execution. To make things easier for you, you can give names to these containers, here `c` for colour. We decided to give `paint_rectangle` some information about the colour to be used and we do that via the parameter variable c.
+
+Rust was happy because all required parameters are now given again. It was happy enough to make and run the program but it was also a bit suspicious because there is c, which is never used (remember the warning).
+
+The last thing we have to adapt the definition of `paint_rectangle` so as to use colour information. We just need to get the information from `c` into the painting of the rectangle. The actual painting of the rectangle is invoked here:
+```rust
+chn.send( ([x, y, width, height], RED) ).unwrap();
+```
+
+
+* **Final Thing to do:** Replace `RED` with `c` and give it should all be working as planned!
+
 #### [Snapshot] 4
+
 [view changes](https://github.com/rust-community/rustbridge/commit/c24797b80d1f0c9039c722159e137dc531f140fb)
 |
 [download main.rs](https://github.com/rust-community/rustbridge/commit/c24797b80d1f0c9039c722159e137dc531f140fb/workshops/mondrian-pattern/codebase/mondpaint/src/main.rs)
-
-
-#### [Testing] Exercise 4:  
-Error message after adding an extra parameter to `paint_rectangle`:
-```
-Compiling mondpaint v0.1.0 (file:///home/broe/projets/rustbridge/workshops/mondrian-pattern/codebase/mondpaint)
-src/main.rs:80:9: 80:57 error: this function takes 6 parameters but 5 parameters were supplied [E0061]
-src/main.rs:80         paint_rectangle(x, y, splitpos, height, chnleft)
-                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-src/main.rs:80:9: 80:57 help: run `rustc --explain E0061` to see a detailed explanation
-src/main.rs:80:9: 80:57 note: the following parameter types were expected: f64, f64, f64, f64, [f32; 4], std::sync::mpsc::Sender<([f64; 4], [f32; 4])>
-src/main.rs:85:9: 85:73 error: this function takes 6 parameters but 5 parameters were supplied [E0061]
-src/main.rs:85         paint_rectangle(x+splitpos, y, width-splitpos, height, chnright)
-                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-src/main.rs:85:9: 85:73 help: run `rustc --explain E0061` to see a detailed explanation
-src/main.rs:85:9: 85:73 note: the following parameter types were expected: f64, f64, f64, f64, [f32; 4], std::sync::mpsc::Sender<([f64; 4], [f32; 4])>
-error: aborting due to 2 previous errors
-error: Could not compile `mondpaint`.
-```
 
 
 ### Exercise 5:
