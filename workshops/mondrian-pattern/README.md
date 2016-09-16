@@ -258,14 +258,6 @@ This is what rust is complaining about: `this function takes 6 parameters but 5 
 Where should it be given? At each point in the code where the execution of `paint_rectangle` is invoked: Lines 67 and 72. Exactly the lines where the two (identical) errors are reported. Makes sense.
 
 
-#### [Snapshot] 3
-[view changes](https://github.com/rust-community/rustbridge/commit/c24797b80d1f0c9039c722159e137dc531f140fb)
-|
-[download main.rs](https://github.com/rust-community/rustbridge/commit/c24797b80d1f0c9039c722159e137dc531f140fb/workshops/mondrian-pattern/codebase/mondpaint/src/main.rs)
-
-
-
-
 ### Exercise 4:
 ![](images/fig04_two-different-colours.jpg)
 
