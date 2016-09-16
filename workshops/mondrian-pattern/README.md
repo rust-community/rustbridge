@@ -414,9 +414,12 @@ The new operation has to be invoked at some point:
 
 * Run the example.
 
+
 * If you get error messages, most likely, you have done smaller errors.  Finding and fixing errors is one of the key skills in programming, If you feel adventurous you should try to find them yourself! Otherwise, you might need some smaller advice to continue by yourself.
 
 * Copying the snapshot is the last option. If you do so, please take some time to figure out, what is going on!
+
+* Feel free to use more interesting colours :-)
 
 #### [Snapshot] 6
 [view changes](https://github.com/rust-community/rustbridge/commit/aae0b114be1d8996f18db88998d4fe0b3c047201)
@@ -424,38 +427,33 @@ The new operation has to be invoked at some point:
 [download main.rs](https://github.com/rust-community/rustbridge/commit/aae0b114be1d8996f18db88998d4fe0b3c047201/workshops/mondrian-pattern/codebase/mondpaint/src/main.rs)
 
 
-#### [Testing]
-After defininf the new operation `vsplit_and_paint`, build output should look like this:
-```
-Compiling mondpaint v0.1.0 (file:///home/broe/projets/rustbridge/workshops/mondrian-pattern/codebase/mondpaint)
-src/main.rs:23:1: 23:48 warning: constant item is never used: `GREEN`, #[warn(dead_code)] on by default
-src/main.rs:23 const GREEN:   [f32; 4] = [0.0, 1.0, 0.0, 1.0];
-            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-src/main.rs:25:1: 25:48 warning: constant item is never used: `YELLOW`, #[warn(dead_code)] on by default
-src/main.rs:25 const YELLOW:  [f32; 4] = [1.0, 1.0, 0.0, 1.0];
-            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-src/main.rs:91:1: 107:2 warning: function is never used: `hsplit_and_paint`, #[warn(dead_code)] on by default
-src/main.rs:91 fn hsplit_and_paint(x :f64, y :f64, width :f64, height :f64, chn: mpsc::Sender<(Rectangle, Color)>) {
-            ^
- Finished debug [unoptimized + debuginfo] target(s) in 2.88 secs
-```
+### Exercise 7: Combine split and delegate operations
+`paint_rectangle(x, y, splitpos . . .` and `paint_rectangle(x+splitpo, y, . . .`.
+
+It is now time to play with the new operation**s**!
+
+* If you fell adventurous, try to figure out for yourself how to achieve one of the ny patterns.
 
 
-### Exercise 7a:
+**In more detail:** Currently, `hsplit_and_paint` triggers `paint_rectangle` for both sides of the split. For the first pattern
 
-It is now time to test the new operation! Currently, `hsplit_and_paint` triggers `paint_rectangle` for both sides of the split: lines 79 (?) and 85 (?): `paint_rectangle(x, y, splitpos . . .` and `paint_rectangle(x+splitpo, y, . . .`. Modify `hsplit_and_paint` so that it triggers `paint_rectangle` on the left side of the split and `hsplit_and_paint` on the right side.
+* modify `vsplit_and_paint` so that it triggers `paint_rectangle` on the left side of the split and `hsplit_and_paint` on the right side.
+
+* Don't forget to adapt the initially invoked operation in line 53.
 
 ![](images/fig07_vertical+horizontal-split.jpg)
+
+
+* modify  `hsplit_and_paint` so that it triggers `paint_rectangle` on the left side of the split and `hsplit_and_paint` on the right side.
+
+* Don't forget to adapt the initially invoked operation in line 53.
+
 ![](images/fig08_vertical+2horizontal-splits.jpg)
 
 #### [Snapshot] 7a
 [view changes](https://github.com/rust-community/rustbridge/commit/3249caaa11f91b34344999809294c1d05493b597)
 |
 [download main.rs](https://github.com/rust-community/rustbridge/commit/3249caaa11f91b34344999809294c1d05493b597/workshops/mondrian-pattern/codebase/mondpaint/src/main.rs)
-
-
-### Exercise 7b:
-![](images/fig09_nontricial-nested.jpg)
 
 #### [Snapshot] 7b
 [view changes](https://github.com/rust-community/rustbridge/commit/e84d28afedec182ac5d1a148f7602ce756c246bd)
@@ -464,11 +462,23 @@ It is now time to test the new operation! Currently, `hsplit_and_paint` triggers
 
 
 ### Exercise 8:
+![](images/fig09_nontricial-nested.jpg)
 
-Option 1: Introduce more special operations
-Option 2:
-Try to use only the operations we have defined so far -- you will fail in a funny way!
-;-)
+**Warning!** You may **crash the program or even your machine** if you continue! Usually, this is not a problem and you can just close the program and/or restart your machine and continue.**
+
+There is one way of achiving this pattern by defining more specific operations. However, things will be much more interesting if you
+
+* try to modify and recombind the existing operations, only.
+
+* Make a diagram of the pattern you want to achieve. Sketch out step-by-step all the operations that will be invoked and in what order. For example, for the first pattern in Exercise 7 this will be:
+
+* `vsplit_and_paint` invokes for
+    * left side: `paint_rectangle`
+    * right side: `hsplit_and_paint` invokes for
+        * top side: `paint_rectangle`
+        * bottom side: `paint_rectangle`
+
+The _split_ operations invoke to others, which actually run in parallel! The pattern painting process is artificially delayed so that you can see that in detail.
 
 #### [Snapshot] 8
 [view changes](https://github.com/rust-community/rustbridge/commit/560ef8cf6a9df67151bfa65bdab7a07655fcd77d)
@@ -483,15 +493,6 @@ Try to use only the operations we have defined so far -- you will fail in a funn
 [view changes](https://github.com/rust-community/rustbridge/commit/6a51b31a396e7a9200ac21a0cc5ab574915a3b2f)
 |
 [download main.rs](https://github.com/rust-community/rustbridge/commit/6a51b31a396e7a9200ac21a0cc5ab574915a3b2f/workshops/mondrian-pattern/codebase/mondpaint/src/main.rs)
-
-
-
-### TODO: Integrate text instructions above.
-![](images/exercises-a.jpg)
-![](images/exercises-b.jpg)
-
-
-### TODO: Add instructions to keep track of operations executed. -- This may be better placed in the beginning, before coding.
 
 
 Beyond this Workshop
