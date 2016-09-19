@@ -5,7 +5,7 @@ Mondrian Pattern Generator
 </a>
 
 
-Piet Mondrian (7 March 1872 - 1 February 1944) is propably best known for establishing a distinctive visual pattern in our cultural heritage. Its characteristic way of creating images by making subsequent, orthogonal subdivisions has inspired not only fasion designers and confectioners but also [computer scientists](https://github.com/qiyuangong/Mondrian).
+Piet Mondrian (7 March 1872 - 1 February 1944) is probably best known for establishing a distinctive visual pattern in our cultural heritage. Its characteristic way of creating images by making subsequent, orthogonal subdivisions has inspired not only fashion designers and confectioners but also [computer scientists](https://github.com/qiyuangong/Mondrian).
 
 <a title="By Eric Koch / Anefo (Nationaal Archief) [CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0)], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File%3AMondriaanmode_door_Yves_St_Laurent_(1966).jpg"><img width="30%" alt="Mondriaanmode door Yves St Laurent (1966)" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Mondriaanmode_door_Yves_St_Laurent_%281966%29.jpg/512px-Mondriaanmode_door_Yves_St_Laurent_%281966%29.jpg"/></a>
 <a title="By Heidi De Vries [CC BY 2.0 (http://creativecommons.org/licenses/by/2.0)], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File%3AMondrian_Cake.jpg"><img width="30%" alt="Mondrian Cake" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Mondrian_Cake.jpg/512px-Mondrian_Cake.jpg"/></a>
@@ -28,7 +28,7 @@ The universe is incredibly complex. When it comes to information processing tech
 
 + How can I derive or _create_ the information I need based on the information I have.
 
-The mondrian universe
+The Mondrian universe
 ---------------------
 
 ![](images/mondrian-associations.jpg)
@@ -120,12 +120,12 @@ Your console should now look like this:
 ![](images/console_run-hello-world.jpg)
 
 
-### Exercise 0: Start with a prepared minimal mondrian pattern
+### Exercise 0: Start with a prepared minimal Mondrian pattern
 
 ![](images/fig00_exercise-start.jpg)
 
 At this point, you have executed a minimal `Hello World` rust project already!
-Now, replace that first project with the minimal mondrian pattern generator:
+Now, replace that first project with the minimal Mondrian pattern generator:
 
 &#9654;&#9654; Open the files `main.rs` (in the subfolder `src`) and `Cargo.toml` in your text editor.
 
@@ -153,7 +153,7 @@ What you see looks quite complex and like a foreign language. True, it is rust, 
 
 Your rust compiler will work for some time now
 
-&#9654;&#9654; Then, see what happens: can you see a very minimal mondrian pattern (a red rectangle with a black frame) in a window?
+&#9654;&#9654; Then, see what happens: can you see a very minimal Mondrian pattern (a red rectangle with a black frame) in a window?
 
 + In windows, it happens that the window is hidden behind other open windows.
 
@@ -166,7 +166,7 @@ Congratulations, you have made a project, adapted it so that it matches an examp
 
 #### [Explanation]
 
-Although the mondrian pattern in the window is what we're here for, it is worth looking at the console window as well. Don't worry about the warnings for now. Rust tells us that there are things in the program that are never used. We will use them soon!
+Although the Mondrian pattern in the window is what we're here for, it is worth looking at the console window as well. Don't worry about the warnings for now. Rust tells us that there are things in the program that are never used. We will use them soon!
 
 
 ### Exercise 1: Make one vertical split
@@ -199,7 +199,7 @@ From time to time there will be such "snapshots": What are the exact changes in 
 [download main.rs](https://raw.githubusercontent.com/rust-community/rustbridge/754dc60730f0fd16f6001785aee533128326d6b5/workshops/mondrian-pattern/codebase/mondpaint/src/main.rs)
 
 #### Explanation
-The line you have changed is the line that _invokes_ the mondrian painting activity. Technically speaking this line tells rust to _invoke an operation_, named `paint_rectangle`. Before, you have changed that line so as to execute a different operation, `vsplit_and_paint`.
+The line you have changed is the line that _invokes_ the Mondrian painting activity. Technically speaking this line tells rust to _invoke an operation_, named `paint_rectangle`. Before, you have changed that line so as to execute a different operation, `vsplit_and_paint`.
 
 
 ### Exercise 2: Split position
@@ -355,9 +355,9 @@ chn.send( ([x, y, width, height], RED) ).unwrap();
 
 ![](images/fig05_random-splitpostition.jpg)
 
-This Exercise will give the mondrian painter a bit of 'artistic' (!?!) freedom. It can randomly choose the position of where to split the canvas. You will modify the operation `vsplit_and_paint` to use a random number for the split position.
+This Exercise will give the Mondrian painter a bit of 'artistic' (!?!) freedom. It can randomly choose the position of where to split the canvas. You will modify the operation `vsplit_and_paint` to use a random number for the split position.
 
-A coupple of things are already prepared in the example code.
+A couple of things are already prepared in the example code.
 There is an operation for generating random numbers available: For instance, `rng.gen_range(0.0, 20.0)` will produce a random number between `0.0` and `20.0`.
 
 Currently it is deactivated in the example; it is placed in a comment _comment_:
@@ -370,7 +370,7 @@ Furthermore, everything between 'slash star' and
 */
 ```
 
-&#9654;&#9654; Uncomment lines 7 and 61:
+&#9654;&#9654; Uncomment lines 7 and 61 by removing the dashes:
 
 ```rust
 use rand::Rng;
@@ -392,7 +392,7 @@ let splitpos = rng.gen_range(0.0, width);
 You will have to run the example a couple of times in order to see the different split positions across several runs.
 
 #### Explanation
-`vsplit_and_paint` receives a number of parameters which define the position and dimensions of where to paint the mondrian pattern: x, y coordinates of the upper left corner and width and height of the canvas (and the colour and some technical stuff).
+`vsplit_and_paint` receives a number of parameters which define the position and dimensions of where to paint the Mondrian pattern: x, y coordinates of the upper left corner and width and height of the canvas (and the colour and some technical stuff).
 
 It decides on a position where to split the canvas vertically and calculates two smaller areas, left and right of that split so as to fully cover the canvas. Technically speaking, the split position is the width of the left side. The width of the right side is the width of the whole canvas minus the width of the left side. Similar calculations are done for the x position of the right hand part.
 
@@ -416,7 +416,7 @@ You will _define an operation_ that works in the same way as `vsplit_and_paint` 
 
 &#9654;&#9654; If you have not made a sketch of the vertical canvas split before, now you will need it.
 
-&#9654;&#9654; You will also need one vor a horizontal split.
+&#9654;&#9654; You will also need one for a horizontal split.
 
 &#9654;&#9654; Make a copy of the operation definition of `vsplit_and_paint` and rename it to `hsplit_and_paint`.
 
@@ -455,9 +455,9 @@ Copying the snapshot is the last option. If you do so, please take some time to 
 ### Exercise 7: Combine split and delegate operations
 `paint_rectangle(x, y, splitpos . . .` and `paint_rectangle(x+splitpo, y, . . .`.
 
-It is now time to play with the new operation**s**!
+It is now time to play with the new operations!
 
-&#9654;&#9654; If you fell adventurous, try to figure out for yourself how to achieve one of the ny patterns.
+&#9654;&#9654; If you fell adventurous, try to figure out for yourself how to achieve one of the new patterns.
 
 
 **In more detail:** Currently, `hsplit_and_paint` triggers `paint_rectangle` for both sides of the split. For the first pattern
