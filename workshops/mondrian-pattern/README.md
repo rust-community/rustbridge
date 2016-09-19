@@ -489,7 +489,8 @@ It is now time to play with the new operations!
 
 ![](images/fig09_nontricial-nested.jpg)
 
-**Warning!** You may **crash the program or even your machine** if you continue! Usually, this is not a problem and you can just close the program and/or restart your machine and continue.**
+**Warning!** Some changes here may crash the program or make your machine unresponsive. That's okay and it's a natural part of learning programming. You can just close the program and/or restart your machine and continue.
+Save your data before you run.
 
 There is one way of achieving this pattern by defining more specific operations. However, things will be much more interesting if you
 
