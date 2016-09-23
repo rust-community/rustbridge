@@ -22,38 +22,36 @@ const BLACK:   [f32; 4] = [0.0, 0.0, 0.0, 1.0];
 fn main() {
     let (paintsend, paintrecv) = mpsc::channel();
 
-    let serverthread = thread::spawn(move || {
-        // Change this to OpenGL::V2_1 if not working.
-        let opengl = OpenGL::V3_2;
-
-        // Construct the window.
-        let mut window: PistonWindow =
-            WindowSettings::new("RustBridge / Mondrian Pattern Generator", [400, 720])
-                .opengl(opengl).samples(4).exit_on_esc(true).build().unwrap();
-        window.set_ups(60);
-
-        let mut canvas: Vec<(types::Rectangle, types::Color)> = Vec::new();
-        while let Some(e) = window.next() {
-            if let Ok( tobepainted ) = paintrecv.try_recv() {
-                canvas.push( tobepainted );
-                println!("Painter received: {:?}", tobepainted );
-            }
-            window.draw_2d(&e, |c, gl| {
-                clear(WHITE, gl);
-                let redrect = graphics::Rectangle::new(WHITE).border(graphics::rectangle::Border{color :BLACK, radius :2.0});
-                for item in (&canvas).iter() {
-                    let (rct, col) = *item;
-                    redrect.color(col).draw(rct, &c.draw_state, c.transform, gl);
-                }
-            });
-        }
-    });
     let chn = paintsend.clone();
     let painterthread = thread::spawn(move ||
         paint_rectangle(20.0, 20.0, 300.0, 250.0, chn)
     );
+
+    // Change this to OpenGL::V2_1 if not working.
+    let opengl = OpenGL::V3_2;
+
+    // Construct the window.
+    let mut window: PistonWindow =
+        WindowSettings::new("RustBridge / Mondrian Pattern Generator", [400, 720])
+            .opengl(opengl).samples(4).exit_on_esc(true).build().unwrap();
+    window.set_ups(60);
+
+    let mut canvas: Vec<(types::Rectangle, types::Color)> = Vec::new();
+    while let Some(e) = window.next() {
+        if let Ok( tobepainted ) = paintrecv.try_recv() {
+            canvas.push( tobepainted );
+            println!("Painter received: {:?}", tobepainted );
+        }
+        window.draw_2d(&e, |c, gl| {
+            clear(WHITE, gl);
+            let redrect = graphics::Rectangle::new(WHITE).border(graphics::rectangle::Border{color :BLACK, radius :2.0});
+            for item in (&canvas).iter() {
+                let (rct, col) = *item;
+                redrect.color(col).draw(rct, &c.draw_state, c.transform, gl);
+            }
+        });
+    }
     painterthread.join().unwrap();
-    serverthread.join().unwrap();
 }
 
 
