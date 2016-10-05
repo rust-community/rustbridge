@@ -1,0 +1,7 @@
+[package]
+name = "spam_or_ham"
+version = "0.1.0"
+authors = ["maciejkula <maciej.kula@gmail.com>"]
+
+[dependencies]
+hyper = "0.9.10"
