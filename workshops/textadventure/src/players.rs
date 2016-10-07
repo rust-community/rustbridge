@@ -85,7 +85,7 @@ fn move_explorer(data: ExplorerData, board: &Board) -> ExplorerData {
     let mut input = String::new();
 
     loop {
-        println!("Enter letter command: [U]p [R]ight [D]own [L]eft [T]eleport");
+        println!("Enter letter command: [N]orth [S]outh [E]ast [W]est [T]eleport");
 
         match io::stdin().read_line(&mut input) {
             Ok(n) => (),
@@ -95,11 +95,12 @@ fn move_explorer(data: ExplorerData, board: &Board) -> ExplorerData {
         match input.trim().chars().nth(0) {
             Some(command) => {
                 match command {
-                    'U' => { move_explorer_up(&mut _data, board); break; },
-                    'R' => { move_explorer_right(&mut _data, board); break; },
-                    'D' => { move_explorer_down(&mut _data, board); break; },
-                    'L' => { move_explorer_left(&mut _data, board); break; },
-                    'T' => if teleport_explorer(&mut _data, board) { break; },
+                    'N' => { move_explorer_north(&mut _data, board; break; },
+                    'S' => { move_explorer_south(&mut _data, board); break; },
+                    'E' => { move_explorer_east(&mut _data, board); break; },
+                    'W' => { move_explorer_west(&mut _data, board); break; },
+                    'T' => if teleport_explorer(&mut _data, board) { break; }
+                           else { println!("Cannot teleport"); },
                     _ => println!("Invalid command")
                 }
             },
@@ -110,19 +111,19 @@ fn move_explorer(data: ExplorerData, board: &Board) -> ExplorerData {
     _data
 }
 
-fn move_explorer_up(data: &mut ExplorerData, board: &Board) {
+fn move_explorer_north(data: &mut ExplorerData, board: &Board) {
     unimplemented!();
 }
 
-fn move_explorer_right(data: &mut ExplorerData, board: &Board) {
+fn move_explorer_south(data: &mut ExplorerData, board: &Board) {
     unimplemented!();
 }
 
-fn move_explorer_down(data: &mut ExplorerData, board: &Board) {
+fn move_explorer_east(data: &mut ExplorerData, board: &Board) {
     unimplemented!();
 }
 
-fn move_explorer_left(data: &mut ExplorerData, board: &Board) {
+fn move_explorer_west(data: &mut ExplorerData, board: &Board) {
     unimplemented!();
 }
 

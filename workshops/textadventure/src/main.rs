@@ -8,7 +8,7 @@ use players::move_player;
 use inventory::encounter_player;
 
 fn main() {
-    println!("Welcome to the maze! Let's begin.");
+    println!("Welcome to the maze; Let's begin");
 
     let board = build_board();
     let mut players = build_players();
