@@ -161,6 +161,9 @@ It is dedicated to people who have made some more coding experience for themselv
 
 The mondrian pattern generator follows the idea of rust as a parallel processing systems programming language. Part II will directly address rust-specific concepts related to multi-threading.
 
+[sneek into unfinnished Part II](part2.md)
+
+
 --------------------------------------
 
-[Continue to Part I](part1.md)
+[Continue to Part I](part1.md) | [sneek into unfinnished Part II](part2.md)
