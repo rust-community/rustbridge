@@ -19,12 +19,14 @@ fn main() {
     let document = Document::from(body.as_str());
     let rows = document.find(Class("a-row"));
     for row in rows.iter() {
-        let maybe_title_node = row.find(Name("h5")).first();
+        let maybe_name_node = row.find(Name("h5")).first();
         let maybe_price_node = row.find(Class("a-color-price")).first();
-        if let (Some(title_node), Some(price_node)) = (maybe_title_node, maybe_price_node) {
-            let title = title_node.text().trim().to_string();
-            let price = price_node.text().trim().to_string();
-            println!(" * Book \"{}\", with price {}", title, price);
+        if let (Some(name_node), Some(price_node)) = (maybe_name_node, maybe_price_node) {
+            println!(
+                " * Book \"{}\", with price {}",
+                name_node.text().trim(),
+                price_node.text().trim(),
+            );
         }
     }
 }
