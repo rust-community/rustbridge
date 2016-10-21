@@ -97,7 +97,7 @@ To do that we're going to write this series of lines:
 let response =
     client.get("https://brson.github.io/demo/wishlist.html")
     .send()
-    .unwrap();
+    .expect("Request failed");
 ```
 
 There's a lot going on here.
@@ -106,7 +106,7 @@ What we're looking at is a _chain_ of method calls. `client.get(...)`
 is calling `get` on the client we just created. That's what the 'dot'
 operator means - a method call. What are "methods"?
 
-`send` and `unwrap` are also method calls. The details aren't important
+`send` and `expect` are also method calls. The details aren't important
 right now, but feel free to read the documentation for those.
 
 ## Step 010: Reading the response body
@@ -117,7 +117,7 @@ To read the response body, first we need to make `response` mutable by changing
 
 ```rust
 let mut body = String::new();
-response.read_to_string(&mut body).unwrap();
+response.read_to_string(&mut body).expect("Read failed");
 println!("{:?}", body);
 ```
 
@@ -130,7 +130,7 @@ $ cargo build
 error: no method named `read_to_string` found for type `hyper::client::Response` in the current scope
   --> src/main.rs:14:14
    |
-14 |     response.read_to_string(&mut body).unwrap();
+14 |     response.read_to_string(&mut body).expect("Read failed");
    |              ^^^^^^^^^^^^^^
    |
    = help: items from traits can only be used if the trait is in scope; the following trait is implemented but not in scope, perhaps add a `use` for it:

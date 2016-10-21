@@ -8,8 +8,8 @@ fn main() {
     let mut response =
         client.get("https://brson.github.io/demo/wishlist.html")
               .send()
-              .unwrap();
+              .expect("Request failed");
     let mut body = String::new();
-    response.read_to_string(&mut body).unwrap();
+    response.read_to_string(&mut body).expect("Read failed");
     println!("{:?}", body);
 }

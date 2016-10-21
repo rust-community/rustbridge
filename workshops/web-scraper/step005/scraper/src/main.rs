@@ -7,6 +7,6 @@ fn main() {
     let response =
         client.get("https://brson.github.io/demo/wishlist.html")
         .send()
-        .unwrap();
+        .expect("Request failed");
     println!("{:?}", response);
 }
