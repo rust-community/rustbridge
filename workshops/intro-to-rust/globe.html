@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta charset="utf-8">
+<style>
+
+.country {
+  fill: #b8b8b8;
+  stroke: #fff;
+  stroke-width: .5px;
+  stroke-linejoin: round;
+}
+
+.graticule {
+  fill: none;
+  stroke: #000;
+  stroke-opacity: .3;
+  stroke-width: .5px;
+}
+
+.graticule-outline {
+  fill: none;
+  stroke: #333;
+  stroke-width: 1.5px;
+}
+
+text {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 18px;
+  font-weight: bold;
+  text-anchor: middle;
+}
+
+svg {
+    margin-left: -125px;
+}
+
+</style>
+</head><body>
+<script src="globe_files/d3.js"></script>
+<script src="globe_files/topojson.js"></script>
+<script>
+
+// Each entry: [name, lat, lon]
+var city_data = [
+    ["Berlin", "52.52", "13.41"],
+    ["Pittsburgh", "40.44", "-79.99"]
+];
+
+var width = 960,
+    height = 500;
+
+var centroid = d3.geo.path()
+    .projection(function(d) { return d; })
+    .centroid;
+
+var projection = d3.geo.orthographic()
+    .scale(248)
+    .clipAngle(90);
+
+var path = d3.geo.path()
+    .projection(projection);
+
+var graticule = d3.geo.graticule()
+    .extent([[-180, -90], [180 - .1, 90 - .1]]);
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+
+var line = svg.append("path")
+    .datum(graticule)
+    .attr("class", "graticule")
+    .attr("d", path);
+
+svg.append("circle")
+    .attr("class", "graticule-outline")
+    .attr("cx", width / 2)
+    .attr("cy", height / 2)
+    .attr("r", projection.scale());
+
+var locations = svg.append('svg:g').attr('id', 'locations');
+
+var rotate = d3_geo_greatArcInterpolator();
+
+d3.json("index.json", function(error, world) {
+  var countries = topojson.object(world, world.objects.countries).geometries,
+      i = -1,
+      n = countries.length;
+
+  var country = svg.selectAll(".country")
+      .data(countries)
+    .enter().insert("path", ".graticule")
+      .attr("class", "country")
+      .attr("d", path);
+
+
+
+  var cities = locations.selectAll('path')
+      .data(city_data)
+      .enter()
+      .append('svg:path')
+      .datum(function(d) {
+          return {
+              type: "Point",
+              // d3 wants longitude THEN latitude!!!
+              coordinates: [d[2], d[1]]
+          };
+      })
+      .attr('class', 'geo-node')
+      .attr("d", path.pointRadius(5))
+      .attr('d', path)
+      .style("fill", "red");
+  globe_rotate();
+
+  function globe_rotate() {
+    d3.transition()
+        .duration(10)
+        .tween("rotate", function() {
+            var orig = projection.rotate();
+          rotate.source(projection.rotate()).target([orig[0] + 1, 0]).distance();
+          return function(t) {
+            projection.rotate(rotate(t));
+            country.attr("d", path);
+            line.attr("d", path);
+            cities.attr("d", path);
+
+          };
+        })
+      .transition()
+        .each("end", globe_rotate);
+  }
+});
+
+var d3_radians = Math.PI / 180;
+
+function d3_geo_greatArcInterpolator() {
+  var x0, y0, cy0, sy0, kx0, ky0,
+      x1, y1, cy1, sy1, kx1, ky1,
+      d,
+      k;
+
+  function interpolate(t) {
+    var B = Math.sin(t *= d) * k,
+        A = Math.sin(d - t) * k,
+        x = A * kx0 + B * kx1,
+        y = A * ky0 + B * ky1,
+        z = A * sy0 + B * sy1;
+    return [
+      Math.atan2(y, x) / d3_radians,
+      Math.atan2(z, Math.sqrt(x * x + y * y)) / d3_radians
+    ];
+  }
+
+  interpolate.distance = function() {
+    if (d == null) k = 1 / Math.sin(d = Math.acos(Math.max(-1, Math.min(1, sy0 * sy1 + cy0 * cy1 * Math.cos(x1 - x0)))));
+    return d;
+  };
+
+  interpolate.source = function(_) {
+    var cx0 = Math.cos(x0 = _[0] * d3_radians),
+        sx0 = Math.sin(x0);
+    cy0 = Math.cos(y0 = _[1] * d3_radians);
+    sy0 = Math.sin(y0);
+    kx0 = cy0 * cx0;
+    ky0 = cy0 * sx0;
+    d = null;
+    return interpolate;
+  };
+
+  interpolate.target = function(_) {
+    var cx1 = Math.cos(x1 = _[0] * d3_radians),
+        sx1 = Math.sin(x1);
+    cy1 = Math.cos(y1 = _[1] * d3_radians);
+    sy1 = Math.sin(y1);
+    kx1 = cy1 * cx1;
+    ky1 = cy1 * sx1;
+    d = null;
+    return interpolate;
+  };
+
+  return interpolate;
+}
+
+</script>
+
+
+</body></html>
