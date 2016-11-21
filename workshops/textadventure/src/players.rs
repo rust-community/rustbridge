@@ -95,7 +95,7 @@ fn move_explorer(data: ExplorerData, board: &Board) -> ExplorerData {
         match input.trim().chars().nth(0) {
             Some(command) => {
                 match command {
-                    'N' => { move_explorer_north(&mut _data, board; break; },
+                    'N' => { move_explorer_north(&mut _data, board); break; },
                     'S' => { move_explorer_south(&mut _data, board); break; },
                     'E' => { move_explorer_east(&mut _data, board); break; },
                     'W' => { move_explorer_west(&mut _data, board); break; },
