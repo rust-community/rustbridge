@@ -6,7 +6,7 @@ Here is what we need:
 
 **Game Board** - A 5 by 5 grid containing a total of 25 rooms. 
 
-**Rooms** - A room may have up to 4 walls. Each wall may be:
+**Rooms** - A room may have up to 4 **Walls**. Each wall may be:
 + **Open** which will allow unrestricted passage through.
 + **Solid** which will prevent passage.
 + **Magical** which will allow passage only with a secret word.
