@@ -1,0 +1,52 @@
+html, body {
+  font-family: "Open Sans", sans-serif;
+  color: #333;
+}
+
+.subtitle {
+  color: #949494;
+}
+
+img {
+  max-width: 100%;
+}
+
+a, a:visited, a:active, a:hover {
+  color: #400AA7;
+}
+
+
+.highlight {
+  color: #400AA7;
+  font-weight: 700;
+}
+
+li {
+  text-indent: -1em;
+  margin-left: 0.6em;
+}
+
+/* source */
+h5 {
+  position: absolute;
+  bottom: 10px;
+  font-weight: 400;
+  margin-right: 20px;
+  font-size: 0.5em;
+}
+
+.no {
+  position: absolute;
+  top: -112px;
+  left: 0;
+}
+
+.pull-left {
+  float: left;
+  width: 47%;
+}
+
+.pull-right {
+  float: right;
+  width: 47%;
+}

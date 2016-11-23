@@ -4,9 +4,9 @@ use hyper::Client;
 
 fn main() {
     let client = Client::new();
-    let mut response =
+    let response =
         client.get("https://brson.github.io/demo/wishlist.html")
         .send()
-        .unwrap();
+        .expect("Request failed");
     println!("{:?}", response);
 }

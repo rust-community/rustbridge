@@ -1,0 +1,1014 @@
+<DOCTYPE html>
+<html>
+  <head>
+    <title>A Very Brief Intro to Rust</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="skeleton.css" type="text/css" rel="stylesheet">
+    <link href="custom.css" type="text/css" rel="stylesheet">
+  </head>
+  <body>
+    <textarea id="source">
+
+class: middle, center
+
+![ferris](img/ferris.gif)
+# A Very Brief Intro to Rust
+
+???
+
+* This is Ferris, our unofficial mascot!
+
+---
+class: middle, center
+
+## 2ND RUSTBRIDGE IN THE WORLD!
+
+<iframe src="globe.html" style="width: 100%; height: 100% ; border: none" />
+
+???
+
+* Welcome to the 2nd Rustbridge IN THE WORLD
+
+---
+class: middle, center
+
+![experiment](img/experiment.jpg)
+
+???
+
+* This curriculum is an experiment. It's disorganized and untested.
+* Please take notes about what you liked, didn't like, wished we spent more or less time on, etc -- there will be a survey!
+
+---
+class: middle, left
+
+## Overview
+
+* Rust, Cargo, Setup
+* Syntax + Concepts mostly the same as other languages
+* Syntax + Concepts particular to Rust
+* Further learning
+
+---
+class: middle, left
+
+## What is Rust?
+
+Rust is a systems programming language that runs blazingly fast, prevents
+segfaults, and guarantees thread safety.
+
+???
+
+* Ask class to define "systems programming", what do they think of when they hear it
+* Fast = as fast as C
+* segfaults = crashing because of mismanaged memory
+* Memory safety also covers buffer over/underflows
+
+---
+class: middle, left
+
+## Rust Philosophy
+
+* Favor explicit over implicit
+* Zero-cost abstractions
+* Only pay for what you use
+* Memory safety
+* Small standard library
+* Error handling
+* Stability without stagnation
+
+???
+
+* This does make it harder to prototype in Rust sometimes
+
+- A new version comes out every 6 weeks
+- Stability without stagnation
+- your stuff won't break
+- channels
+- cool new stuff is still being added!
+- experimental stuff starts nightly only
+
+---
+class: middle, left
+
+## What is Cargo?
+
+* Package manager
+* Build tool
+* Test runner
+* Documentation generator
+
+???
+
+* A lot of these things are convenience wrappers around other tools like rustc
+and rustdoc.
+
+---
+class: middle, left
+
+## Setting up a Project
+
+We're going to be making a *binary* project; the other option is a *library*.
+
+`cargo new` will create a skeleton project setup for you.
+
+1. `cd` to a directory where you like to store code
+2. `cargo new --bin rustbridge`
+3. `cd rustbridge`
+
+If you use version control, now would be a good time to commit.
+
+???
+
+If you are writing a <strong>library</strong>, it means you intend for your
+code to be used in someone else's application as a crate or module.
+
+If you are writing a <strong>binary</strong>, it means that you'd like
+to write code that compiles into a binary that someone can run. If you
+want to do this, you need to use a `main.rs`. Inside the `main.rs` you
+should have a `main` function.
+
+---
+class: middle, left
+
+## Files created
+
+- `Cargo.toml`: metadata about your project and its dependencies
+- `.gitignore`: ignores compiled files built by Rust
+- `src/main.rs`: where your Rust code goes
+
+---
+class: middle, left
+
+## `Cargo.toml`
+
+```toml
+[package]
+name = "rustbridge"
+version = "0.1.0"
+authors = ["Carol (Nichols || Goulding) <carol.nichols@gmail.com>"]
+
+[dependencies]
+```
+
+???
+
+* Cargo got your name from your env, probably from git.
+* If it's not there, or if it's wrong, go ahead and fix it.
+
+---
+class: middle, left
+
+## `src/main.rs`
+
+```rust
+fn main() {
+    println!("Hello, world!");
+}
+```
+
+???
+
+* `fn` starts a function definition
+* `main` is the name of the function
+* `main` fn is special - entry point of your binary
+* curly braces around the body
+* `println!` is a macro (don't worry) that prints to the screen
+* End lines with semicolons (mostly, we'll talk later)
+
+---
+class: middle, left
+
+## Run it!
+
+* `cargo run`
+* Should print "Hello, world!"
+* Now you have more files:
+  * `target` directory: all the built stuff
+  * `Cargo.lock`: locks your dependencies (we don't have any yet)
+* Try printing out something else!
+* Try printing out two things!
+
+---
+class: middle, left
+
+## API Documentation
+
+https://doc.rust-lang.org/
+or
+`rustup doc`
+
+Click on "Standard Library API Reference"
+or
+`rustup doc --std`
+
+---
+class: middle, left
+
+## Syntax + Concepts mostly the same as other languages
+
+---
+class: middle, left
+
+## Comments
+
+* Double slash at the beginning of a line (`//`)
+* Try commenting out one of your lines printing!
+* There are other kinds of comments but this is the most common
+
+---
+class: middle, left
+
+## Variables
+
+```rust
+let name = "ashley";
+let age = 30;
+println!("Hi, {}! You are {} years old.", name, age);
+```
+
+* Try making more variables and printing them all out in one `println!`
+
+???
+
+* `let`, variable name, single equals, value, semicolon.
+* Crab pincers in println, then values that should fit in there
+
+---
+class: middle, left
+
+## Experiment
+
+What happens if you run this:
+
+```rust
+let apples = 100;
+apples += 50;
+println!("I have {} apples", apples);
+```
+
+???
+
+* Have someone read the error message
+* Whenever anyone gets an error message, we'll read it out loud and talk about it so everyone can learn!
+
+---
+class: middle, left
+
+## Mutability
+
+Variables are *immutable* by default in Rust.
+
+```rust
+let mut apples = 100;
+apples += 50;
+println!("I have {} apples", apples);
+```
+
+???
+
+* Rust has functional influences
+* Changing a value where you didn't expect to is a common source of bugs.
+
+---
+class: middle, left
+
+## Types
+
+Rust is strongly, statically typed. Common fundamental types are:
+
+- `u32`: unsigned 32-bit integer
+- `i32`: signed 32-bit integer
+- `f64`: floating point number
+- `String` and/or `&str`: more on these later
+- `bool`: a boolean
+
+---
+class: middle, left
+
+## Type inference
+
+* Every value has a type that the compiler has to know about.
+* Most of the time, the compiler can figure it out.
+* Sometimes it can't, and you'll get an error and need to add an annotation.
+* We could have written `let age: i32 = 30;`
+* A place we **must** specify types is function definitions.
+
+???
+
+* Types come after the name
+
+---
+class: middle, left
+
+## Functions
+
+```rust
+fn add_fifty(n: i32) -> i32 {
+    n + 50
+}
+
+fn main() {
+    println!("Lots: {}", add_fifty(100));
+}
+```
+
+???
+
+* Argument/parameter, named with type specified
+* `->` plus return type, if returning a value
+* No semicolon on the last line when returning that value
+* No `return` keyword unless doing an early return
+* Function call always uses parens, even if no arguments
+
+---
+class: middle, left
+
+## Conditionals: `if`
+
+```rust
+fn main() {
+    let age = 13u32;
+    if n < 13 {
+        println!("You may see G or PG movies");
+    } else if n < 17 {
+        println!("You may see G, PG, or PG-13 movies");
+    } else {
+        println!("You are old.");
+        println!("You may see G, PG, PG-13, or R movies");
+    }
+}
+```
+???
+
+* Shorthand for numeric type annotation
+* Age can't be negative, compiler will make sure we don't have negative ages
+
+---
+class: middle, left
+
+## Conditionals: `match`
+
+Kinda like a switch. But better.
+
+```rust
+fn main() {
+    let age = 13u32;
+    match age {
+        0...12 => println!("You may see G or PG movies"),
+        13...16 => println!("You may see G, PG, or PG-13 movies"),
+        _ => {
+            println!("You are old.");
+            println!("You may see G, PG, PG-13, or R movies")
+        },
+    }
+}
+```
+
+???
+
+* Underscore is catch-all
+* Pattern, rocket, code to run
+* Commas at the end of the code to run
+* If the code is more than one line, surround with curly braces
+* Trailing comma on the last one is the style
+* What if we take out the line with the underscore? This is advantage to `match` over `if`/`else if`/`else`
+
+---
+class: middle, left
+
+## Arrays
+
+Kinda like arrays in other languages, but worse.
+
+```rust
+let mut color = [255, 0, 255];
+color[0] = 100;
+println!("The color is {:?}", color);
+```
+
+???
+
+* Arrays are a fixed size known at compile time
+* Square brackets, commas
+* Indexing to a particular location
+* Need debug formatting in println since Rust doesn't know how you want to display arrays to your users
+
+---
+class: middle, left
+
+## Quick but Useful Tangent #1: `println!` formatting
+
+* `{}` is called `Display` formatting; only on primitive types by default
+* `{:?}` is called `Debug` formatting; more types have this by default
+* Display is for end users, Debug is for... debugging
+* Rust doesn't want to make assumptions
+* My favorite: `{:#?}` = pretty debug
+* [`fmt` docs](https://doc.rust-lang.org/stable/std/fmt/index.html)
+
+---
+class: middle, left
+
+## Quick but Useful Tangent #2: `panic!`
+
+* Panic stops your program with a message.
+
+```rust
+fn main() {
+    panic!("aaaaa!");
+}
+```
+
+What happens in the last example if we try to access an element out of bounds of the array?
+
+```rust
+let color = [255, 0, 255];
+let index = 9;
+println!("The 10th element is {:?}", color[index]);
+```
+
+???
+
+* It's a `panic!` behind the scenes!
+* This has to do with safety-- don't continue with bad data!
+
+---
+class: middle, left
+
+## Vectors
+
+Most of the time, you probably want a vector rather than array.
+
+```rust
+let mut prices = vec![30, 100, 2];
+prices[0] = 25;
+prices.push(40);
+println!("All the prices are: {:?}", prices);
+```
+
+???
+
+* `vec!` shorthand macro, the rest is like an array
+* Vecs can change in size at runtime
+* So we can call the `push` method
+
+---
+class: middle, left
+
+## Looping (and ranges)
+
+* `for` loops are most common:
+
+```rust
+for i in 0..10 {
+    println!("Number {}", i);
+}
+```
+
+```rust
+let names = vec!["Carol", "Jake", "Marylou", "Bruce"];
+for name in names.iter() {
+    println!("Hi {}!", name);
+}
+```
+
+* `loop` creates an infinite loop
+* `while` loops run while their condition is true
+* `break` exits the current loop
+
+???
+
+* `for` loop means you never go past the end of the array
+
+---
+class: middle, left
+
+## Iterators
+
+```
+for i in (0..10).filter(|x| x % 2 == 0) {
+    println!("i = {}", i);
+}
+
+for i in (0..10).map(|x| x * x ) {
+    println!("i = {}", i);
+}
+
+let sum = (0..10).fold(0, |acc, x| acc + x);
+println!("sum = {}", sum);
+```
+
+* See the [Iterator docs](https://doc.rust-lang.org/stable/std/iter/trait.Iterator.html) for lots more fun stuff.
+* The `|x| x % 2 == 0` in the examples is a closure, they can be used in other situations too.
+
+---
+class: middle, left
+
+## Enums
+
+* Nice to use with `match`
+
+```rust
+enum TrafficLight {
+    Red,
+    Yellow,
+    Green,
+}
+let light = TrafficLight::Green;
+
+match light {
+    TrafficLight::Red => println!("STOP!"),
+    TrafficLight::Yellow => println!("Slow down!"),
+    TrafficLight::Green => println!("Go go go!"),
+}
+```
+
+???
+
+* Double colon is namespacing
+* Show warnings!
+
+---
+class: middle, left
+
+## Enums
+
+* Better than in other languages: can hold values!
+
+```rust
+enum GameType {
+    SinglePlayer,
+    MultiPlayer(u32),
+}
+
+let game = GameType::MultiPlayer(4);
+
+match game {
+    GameType::SinglePlayer => println!("How about solitaire?"),
+    GameType::MultiPlayer(2) => println!("How about checkers?"),
+    GameType::MultiPlayer(4) => println!("How about bridge?"),
+    GameType::MultiPlayer(num) => {
+        println!("How about {}-player tag?", num)
+    },
+}
+```
+
+???
+
+* Values are specific to each variant
+* Have to define the type of the values in the variant
+* Destructure = patterns that bind to parts
+* Destructure to get values out
+
+---
+class: middle, left
+
+## Syntax + Concepts particular to Rust
+
+---
+class: middle, left
+
+## Option
+
+**Rust doesn't have `nil`/`null`** so to express that a value might be something or nothing, Rust has the `Option` type.
+
+Option is an enum provided by the standard library:
+
+```rust
+enum Option<T> {
+    Some(T),
+    None
+}
+```
+
+???
+
+* T is a generic type parameter, means Some can hold any type
+* No more undefined method on nil!!!!
+
+---
+class: middle, left
+
+## Using Option
+
+```rust
+let mut instructors = vec!["Carol"];
+
+let a = instructors.pop();
+println!("a is {:?}", a);
+
+let b = instructors.pop();
+println!("b is {:?}", b);
+```
+
+???
+
+* When we pop off the last element of a vec, there might not be one!
+
+---
+class: middle, left
+
+## Using Option
+
+```rust
+let a = Some("Carol");
+
+let name = a.expect("No name present");
+println!("Name is {} bytes long", name.len());
+```
+
+???
+
+* Can't call `len` on an `Option` directly since it could be `None`!
+* expect panics if it gets a None, good for prototyping or when you're REALLY REALLY SURE you have Some
+    * Set an error message in expect that is useful to you for debugging
+    * Try changing `a` to this and see what happens
+        `let a: Option<&str> = None;`
+    * Mention but gloss over type annotation
+
+---
+class: middle, left
+
+## Using Option
+
+```rust
+let b: Option<&str> = None;
+
+match b {
+    Some(name) => {
+        println!("Other name is {} bytes long", name.len())
+    },
+    None => {
+        println!("No name!")
+    }
+}
+```
+
+???
+
+* Match is useful for handling both cases
+* Option is just another enum!
+
+---
+class: middle, left
+
+## Result
+
+* Another enum in the standard library
+* For when something could succeed or fail
+* Rust doesn't have exceptions; using `Result` is how you handle errors.
+
+```rust
+enum Result<T, E> {
+    Ok(T),
+    Err(E),
+}
+```
+
+???
+
+---
+class: middle, left
+
+## Using Result
+
+```rust
+let numstr = "6";
+let num = numstr.parse::<i32>();
+println!("num = {:?}", num);
+
+let numstr = "florp";
+let num = numstr.parse::<i32>();
+println!("num = {:?}", num);
+```
+
+???
+
+* Turbofish! Because we could parse into many different types.
+
+---
+class: middle, left
+
+## Using Result
+
+```rust
+let numstr = "6";
+let num = numstr.parse::<i32>();
+let num = num.expect("should have a number");
+
+println!("num + 5 = {}", num + 5);
+```
+
+---
+class: middle, left
+
+## Using Result
+
+```rust
+let numstr = "florp";
+let num = numstr.parse::<i32>();
+
+let answer = match num {
+    Ok(n) => n + 5,
+    Err(_) => 0,
+};
+println!("Answer is {}", answer);
+```
+
+???
+
+* Yes, this might feel annoying to be forced to think about failure cases all the time
+* But it will save debugging time later, trust me
+* There are lots of methods on Option and Result to help with common ways of handling them
+
+---
+class: middle, left
+
+## `try!` macro to propagate errors up
+
+* Can only be used in methods/functions that return `Result`!!!!
+
+```rust
+fn add_five_to_string(s: String) ->
+    Result<i32, std::num::ParseIntError> {
+
+    let ans = try!(s.parse::<i32>()) + 5;
+    Ok(ans)
+}
+```
+
+???
+
+* Typical to have lots of functions that return `Result` then have a `match` at the outer layer
+* Unstable `?` operator coming soon to make this even nicer and chainable
+
+---
+class: middle, left
+
+## Strings: WARNING
+
+* Strings in Rust feel complicated
+* We're sorry
+
+???
+
+Working with strings in Rust is more complicated than working with strings in other languages.
+
+Strings are actually complicated in all languages, it's just that most hide the complexity from you and make choices for you. Rust makes you be explicit with the choices.
+
+---
+class: middle, left
+
+## Two string types
+
+### `String`
+
+* Allocated
+* Growable
+* Can create with either:
+  * `something.to_string()`
+  * `String::from("string slice")`
+
+### `&str`
+
+* Pronounced "string slice"
+* View into string data stored somewhere else
+* Hardcoded strings are `&str`s
+
+???
+
+* `String` is kinda like `Vec`
+
+---
+class: middle, left
+
+## A common problem
+
+```rust
+fn fizz(num: u32) -> String {
+    if num % 3 == 0 {
+        "Fizz"
+    } else {
+        num.to_string()
+    }
+}
+```
+
+???
+
+* "Fizz" here isn't a String, it's a &str
+* Have to make Fizz a String to fix this
+
+---
+class: middle, left
+
+## Slices
+
+* A view into some data
+* Points to the start of the view
+* Knows how long the view is
+
+---
+class: middle, left
+
+## Slice syntax
+
+* Vector type: `Vec<i32>`
+* Corresponding slice type: `&[i32]`
+
+```rust
+let v = vec![1, 2, 3, 4, 5];
+let piece = &v[3..];
+println!("piece of v = {:?}", piece);
+```
+
+???
+
+* For any type of thing you put in a vector
+* Range syntax
+
+---
+class: middle, left
+
+## String Slices
+
+```rust
+let s = String::from("Call me Ishmael blah blah...");
+let part = &s[0..4];
+
+println!("part is '{}'", part);
+```
+
+???
+
+* Vec<T> : &[T] :: String : &str
+* With string slices, indices are bytes, not chars, long story
+
+* All kinds of slices are useful because they let you share data without copying all of it around
+
+---
+class: middle, left
+
+## Ownership
+
+* The *owner* of a resource is who is responsible for cleaning it up.
+* When owners go out of scope, Rust automatically calls the cleanup code.
+
+```rust
+fn main() {
+    let v = vec![1, 2, 3];
+    println!("v is valid here! {:?}", v);
+}
+```
+
+???
+
+* Point to where s is valid and where s goes out of scope
+
+---
+class: middle, left
+
+## Transferring Ownership
+
+* When you pass an argument to a function, ownership is transferred to the function.
+* We say that something is *moved*.
+
+```rust
+fn main() {
+    let v = vec![1, 2, 3];
+    print_vec(v);
+    print_vec(v);
+}
+
+fn print_vec(v: Vec<i32>) {
+    println!("v is {:?}", v);
+}
+```
+
+???
+
+* Explain error message
+* Yes this is weird and annoying!
+* Don't worry we'll fix it!
+
+---
+class: middle, left
+
+## References
+
+* Let you borrow a resource you don't own
+* A reference is only valid as long as the owner is valid. Rust ensures you aren't using an invalid reference *at compile time*.
+* Slices are a specific type of reference.
+
+```rust
+fn main() {
+    let v = vec![1, 2, 3];
+    print_vec(&v[..]);
+    print_vec(&v[..]);
+}
+
+fn print_vec(v: &[i32]) {
+    println!("v is {:?}", v);
+}
+```
+
+???
+
+- So unless you *want* your function to take ownership of an argument, you *probably* will have most of your functions take references as arguments.
+
+---
+class: middle, left
+
+## Mutable References
+
+* Like variables, references are immutable by default, but you can make them mutable with `mut`.
+* You may have many immutable references in a scope
+* You may only have one mutable reference and no immutable references in a scope
+
+```rust
+fn main() {
+    let mut v = vec![1, 2, 3];
+    change_vec(&mut v[..]);
+    change_vec(&mut v[..]);
+    println!("v is {:?}", v);
+}
+
+fn change_vec(v: &mut [i32]) {
+    v[0] *= 5;
+}
+```
+
+???
+
+* This is how you would make a function that's allowed to change its arguments.
+
+---
+class: middle, left
+
+## Not allowed to have mutable and immutable references in the same scope.
+
+```rust
+fn main() {
+    let mut v = vec![1, 2, 3];
+
+    let f = &v[0];
+    v.clear();
+
+    println!("What would f be? {}", f);
+}
+```
+
+???
+
+* This won't compile-- look at the error.
+* Where is the immutable reference?
+* Where is the mutable reference?
+* Other languages will let you do this and give you invalid data.
+* Security vulnerabilities!
+
+---
+class: middle, left
+
+## Further learning
+### Syntax + Concepts we didn't cover but that are things
+
+.pull-left[
+* Tests
+* Lifetimes
+* Tuples
+* Structs
+* Methods
+* `if let`
+]
+.pull-right[
+* FFI
+* Traits
+* Generics
+* Macros
+* Threads
+* Composition over inheritance
+]
+
+---
+class: middle, left
+
+## Just One More Thing: Crates
+
+![cratesio](img/cratesio.png)
+
+???
+
+* Like rubygems.org
+* Easy to add crates to your project
+* Rust's stdlib is small and stable
+* Crates can change more rapidly and more radically independently of Rust
+* We're going to be using some crates for our project!
+
+   </textarea>
+    <script src="remark.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>

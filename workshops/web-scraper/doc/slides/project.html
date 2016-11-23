@@ -1,0 +1,360 @@
+<DOCTYPE html>
+<html>
+  <head>
+    <title>A Rust Project</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="skeleton.css" type="text/css" rel="stylesheet">
+    <link href="custom.css" type="text/css" rel="stylesheet">
+  </head>
+  <body>
+    <textarea id="source">
+
+class: middle, center
+
+![ferris](img/ferris.gif)
+
+# Let's make a Rust project!!
+
+---
+class: middle, left
+
+## Project: Web Scraper
+
+* Problem: there's data on a website that you want to use, but getting it out of the website would be tedious and error-prone.
+* Examples:
+  * "open" data that isn't in an easy-to-use format
+  * Branding Brand
+  * Vivisimo
+
+---
+class: middle, left
+
+## Overview
+
+* Request an Amazon wishlist-like page and extract titles and prices
+* Use an HTTP client library (`hyper`) to make the requests
+* Use an HTML DOM parser (`select`) to extract the data
+* Process the data using Iterators
+* [Code at various steps](https://github.com/rust-community/rustbridge/tree/master/workshops/web-scraper)
+
+---
+class: middle, left
+
+## Start a new project
+
+* Go to wherever you keep your code
+* `cargo new --bin web_scraper`
+* `cd web_scraper`
+* `cargo run`
+* It should say "Hello, world!"
+* Use version control however you'd like
+
+---
+class: middle, left
+
+# To crates.io!
+
+???
+
+* Show searching for http, which is horrible we're sorry, then sort by downloads
+* Show the line to copy for the Cargo.toml
+
+---
+class: middle, left
+
+## Adding the `hyper` crate
+
+* Edit `Cargo.toml` file
+* Beneath `[dependencies]` section add `hyper = "0.9.10"` so it looks like:
+
+```toml
+[package]
+name = "web_scraper"
+version = "0.1.0"
+authors = ["Carol (Nichols || Goulding) <carol.nichols@gmail.com>"]
+
+[dependencies]
+hyper = "0.9.10"
+```
+
+???
+
+* A crate is a library that someone else made and shared, like rubygems
+* Let's do `cargo run`!
+* What else changed? Cargo.lock
+
+---
+class: middle, left
+
+## How do we use `hyper`?
+
+* To the docs!
+* `cargo doc --open` will include hyper docs now!
+* Let's go look!
+
+???
+
+* Click on "hyper" in the sidebar
+* Click on "Client" since we want to use an HTTP client
+* Check out the `GET` example! Go through each part
+
+---
+class: middle, left
+
+## Using `hyper`
+
+* Adding it to `Cargo.toml` just told cargo we wanted to have it available
+* Have to bring the crate in with `extern crate`
+* Going to bring `hyper::Client` into our scope for convenience
+* At the top add:
+
+```rust
+extern crate hyper;
+use hyper::Client;
+```
+
+---
+class: middle, left
+
+## Using `hyper`'s GET example
+
+```rust
+fn main() {
+    let client = Client::new();
+
+    let res = client.get("http://example.domain")
+                    .send()
+                    .expect("Request failed"); // <---- different
+
+    assert_eq!(res.status, hyper::Ok);
+    println!("{:#?}", response); // <---- different
+}
+```
+
+???
+
+* Creating a new hyper::Client instance
+* Result of calling `get` method on client, passing the address as an arg
+* Show clicking on `Client` to get docs for that struct
+* `get` returns a request builder
+* `send` does the request
+* Returns a `Result<Response>`
+* Examples tend to use `unwrap` because it's short, but we're going to change it to `expect`
+* This example does a test, basically-- assert_eq! will panic if it fails
+* Note that `hyper::Ok` is different than standard library `Ok`
+* Talk about pretty debug output
+
+---
+class: middle, left
+
+## Experiments!
+
+* Let's run it with the clearly example address and see what happens!
+* Let's run it with an address that will respond with a 404!
+* Bonus challenge: take the URL as a command line argument!
+
+---
+class: middle, left
+
+## How do we get the body of the `Response`?
+
+* Look at the docs for the `hyper::Response` struct!
+
+???
+
+* Note the "and the response body via the `Read` trait."
+
+---
+class: middle, left
+
+## Traits
+
+* Guarantees that a type implements a set of methods
+  * Compiler-checked duck-typing
+  * `implements` interfaces in Java
+* Can define default methods in terms of required methods
+  * Sort of like Ruby enumerable/each
+* Display and Debug are traits you've been using!
+
+---
+class: middle, left
+
+```rust
+extern crate hyper;
+
+use hyper::Client;
+use std::io::Read;
+
+fn main() {
+    let client = Client::new();
+    let mut response =
+        client.get("https://github.com")
+              .send()
+              .expect("Request failed");
+    let mut body = String::new();
+    response.read_to_string(&mut body).expect("Read failed");
+    println!("{:?}", body);
+}
+```
+
+???
+
+* The trait needs to be in scope: `use std::io::Read;`
+* `response` needs to be `mut` now
+* Need a mutable string to read into
+* Pass a mutable reference to that string to `read_to_string`
+* Then we get the HTML of github.com!
+
+---
+class: middle, left
+
+# WARNING!!
+
+* Some webservers don't like it if you do a lot of requests quickly!
+
+???
+
+* Feel free to experiment, but don't run a script that makes thousands of requests per second
+* All of vivisimo's office got blocked by google
+
+---
+class: middle, left
+
+## Get the content we're going to parse
+
+* Change the URL to `https://brson.github.io/demo/wishlist.html`
+* Take a look in your browser, it's basically an Amazon wishlist page
+* Ultimate goal: Titles and prices
+* Web devs: inspect element!
+
+---
+class: middle, left
+
+## Another crate: `select`!
+
+* Add to your `Cargo.toml`: `select = "0.3.0"`
+* Rebuild the docs: `cargo doc --open`
+
+???
+
+* Click select in the sidebar
+* Click document, Document
+* Scroll to `From &str`
+
+---
+class: middle, left
+
+## Let's make a `Document` from our `String`!
+
+* Have to make our `String` into a string slice first (sorry sorry)
+
+```rust
+use select::document::Document;
+
+// ...
+
+let document = Document::from(body.as_str());
+println!("doc = {:#?}", document);
+```
+
+---
+class: middle, left
+
+## We have a Document, now what???
+
+---
+class: middle, left
+
+## Let's `find` something!
+
+* What's `Predicate`?
+* Try using `find` to select something specific!
+* Print with debug formatting to see what you get!
+
+???
+
+* Let everyone try for a bit
+* Discuss variety of solutions
+
+---
+class: middle, left
+
+```rust
+use select::predicate::{Attr, Class};
+
+// ...
+
+let wrapper = document.find(Attr("id", "item-page-wrapper"));
+let rows = wrapper.find(Class("a-fixed-right-grid"));
+for row in rows.iter() {
+    println!(" * Row {}", row.text());
+}
+```
+
+---
+class: middle, left
+
+## Let's extract just the title and the price.
+
+* Iterate through each row and get the title and price
+* What about the "idea" row?
+
+???
+
+---
+class: middle, left
+
+## One way: using `match`
+
+```rust
+for row in rows.iter() {
+    let title_node = row.find(Name("h5")).first();
+    let price_node = row.find(Class("a-color-price")).first();
+    match (title_node, price_node) {
+        (Some(title), Some(price)) => {
+            println!("* Book \"{}\", with price {}",
+                title.text().trim(),
+                price.text().trim()
+            );
+        },
+        (_, _) => (),
+    }
+}
+```
+
+---
+class: middle, left
+
+## Another way: using `if let`
+
+```rust
+for row in rows.iter() {
+    let title_node = row.find(Name("h5")).first();
+    let price_node = row.find(Class("a-color-price")).first();
+    if let (Some(title), Some(price)) = (title_node, price_node) {
+        println!("* Book \"{}\", with price {}",
+            title.text().trim(),
+            price.text().trim()
+        );
+    }
+}
+```
+
+---
+class: middle, left
+
+## Bonuses
+
+* Parse and sum the prices
+* Extract more information
+* Scrape data from a different page
+* Scrape data from multiple pages in parallel and aggregate the results
+
+   </textarea>
+    <script src="remark.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>

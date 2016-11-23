@@ -1,17 +1,15 @@
 extern crate hyper;
 
 use hyper::Client;
-use hyper::header::Connection;
 use std::io::Read;
 
 fn main() {
     let client = Client::new();
     let mut response =
         client.get("https://brson.github.io/demo/wishlist.html")
-              .header(Connection::close())
               .send()
-              .unwrap();
+              .expect("Request failed");
     let mut body = String::new();
-    response.read_to_string(&mut body).unwrap();
+    response.read_to_string(&mut body).expect("Read failed");
     println!("{:?}", body);
 }
