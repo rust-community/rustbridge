@@ -1,47 +1,53 @@
-use board::Board;
-use std::collections::VecDeque;
+extern crate rand;
+
+use board;
+use inventory;
 use std::io;
+use std::collections::VecDeque;
+use self::rand::Rng;
 
-pub struct ExplorerData {
-    pub x: u32, pub y: u32,
-    pub energy: i32
-}
-
-pub struct GnomeData {
-    pub x: u32, pub y: u32,
-    pub energy: i32
-}
-
-pub struct LeprechaunData {
-    pub x: u32, pub y: u32,
-    pub energy: i32
-}
+pub type Players = VecDeque<Player>;
 
 pub enum Player {
     Explorer(ExplorerData),  // actual player
     Gnome(GnomeData),  // NPC
-    Leprechaun(LeprechaunData),  // NPC
+    Leprechaun(LeprechaunData)  // NPC
 }
 
-pub type Players = VecDeque<Player>;
+pub struct ExplorerData {
+    pub x: i32, pub y: i32,
+    pub energy: i32,
+    pub gold: i32, pub pyrite: i32,
+    pub things: Vec<inventory::Thing>
+}
+
+pub struct GnomeData {
+    pub x: i32, pub y: i32,
+    pub things: Vec<inventory::Thing>
+}
+
+pub struct LeprechaunData {
+    pub x: i32, pub y: i32
+}
 
 pub fn build_players() -> Players {
     let mut players: Players = VecDeque::new();
 
-    let explorer = Player::Explorer(ExplorerData {
-        x: 0, y: 0,
-        energy: 99
-    });
+    let explorer = Player::Explorer(
+        ExplorerData { x: 0, y: 0,
+                       energy: 99,
+                       gold: 7, pyrite: 5,
+                       things: vec![inventory::Thing::Torch] }
+    );
 
-    let gnome = Player::Gnome(GnomeData {
-        x: 0, y: 4,
-        energy: 111
-    });
+    let gnome = Player::Gnome(
+        GnomeData { x: 0, y: 4,
+                    things: vec![] }
+    );
 
-    let leprechaun = Player::Leprechaun(LeprechaunData {
-        x: 4, y: 4,
-        energy: 333
-    });
+    let leprechaun = Player::Leprechaun(
+        LeprechaunData { x: 4, y: 4 }
+    );
 
     players.push_back(explorer);
     players.push_back(gnome);
@@ -50,19 +56,13 @@ pub fn build_players() -> Players {
     players
 }
 
-pub fn build_explorer_data(x: u32, y: u32, energy: i32) -> ExplorerData {
-    ExplorerData{ x: x, y: y, energy: energy }
+pub fn is_explorer_dead(players: &Players) -> bool {
+    players.iter()
+           .filter(|&p| is_explorer(p))
+           .fold(false, |acc, e| acc & is_dead(e))
 }
 
-pub fn build_gnome_data(x: u32, y: u32, energy: i32) -> GnomeData {
-    GnomeData{ x: x, y: y, energy: energy }
-}
-
-pub fn build_leprechaun_data(x: u32, y: u32, energy: i32) -> LeprechaunData {
-    LeprechaunData{ x: x, y: y, energy: energy }
-}
-
-pub fn move_player(player: Player, board: &Board) -> Player {
+pub fn move_player(player: Player, board: &board::Board) -> Player {
     let _player : Player;
 
     match player {
@@ -80,7 +80,23 @@ pub fn move_player(player: Player, board: &Board) -> Player {
     _player
 }
 
-fn move_explorer(data: ExplorerData, board: &Board) -> ExplorerData {
+enum Direction { North, South, East, West }
+
+fn is_explorer(player: &Player) -> bool {
+    match *player {
+        Player::Explorer(_) => true,
+        _ => false
+    }
+}
+
+fn is_dead(player: &Player) -> bool {
+    match *player {
+        Player::Explorer(ref data) => data.energy <= 0,
+        _ => false
+    }
+}
+
+fn move_explorer(data: ExplorerData, board: &board::Board) -> ExplorerData {
     let mut _data = data;
     let mut input = String::new();
 
@@ -111,33 +127,55 @@ fn move_explorer(data: ExplorerData, board: &Board) -> ExplorerData {
     _data
 }
 
-fn move_explorer_north(data: &mut ExplorerData, board: &Board) {
+fn direction_to_dx_dy(direction: &Direction) -> (i32, i32) {
+    match *direction {
+        Direction::North => (0, 1),
+        Direction::South => (0, -1),
+        Direction::East => (1, 0),
+        Direction::West => (-1, 0)
+    }
+}
+
+fn move_gnome(data: GnomeData, board: &board::Board) -> GnomeData {
+    let choices = [Direction::North, Direction::South, Direction::East, Direction::West];
+    let (dx, dy) : (i32, i32);
+
+    loop {
+        let index = rand::thread_rng().gen_range(0, 4);
+        let (_dx, _dy) = direction_to_dx_dy(&choices[index]);
+        let xinb = board::x_in_bounds(data.x + _dx, board);
+        let yinb = board::y_in_bounds(data.y + _dy, board);
+
+        if xinb & yinb {
+            dx = _dx;
+            dy = _dy;
+            break;
+        }
+    }
+
+    GnomeData { x: data.x + dx, y: data.y + dy, things: data.things }
+}
+
+fn move_explorer_north(data: &mut ExplorerData, board: &board::Board) {
     unimplemented!();
 }
 
-fn move_explorer_south(data: &mut ExplorerData, board: &Board) {
+fn move_explorer_south(data: &mut ExplorerData, board: &board::Board) {
     unimplemented!();
 }
 
-fn move_explorer_east(data: &mut ExplorerData, board: &Board) {
+fn move_explorer_east(data: &mut ExplorerData, board: &board::Board) {
     unimplemented!();
 }
 
-fn move_explorer_west(data: &mut ExplorerData, board: &Board) {
+fn move_explorer_west(data: &mut ExplorerData, board: &board::Board) {
     unimplemented!();
 }
 
-fn teleport_explorer(data: &ExplorerData, board: &Board) -> bool {
-    unimplemented!();    
-    false
+fn teleport_explorer(data: &ExplorerData, board: &board::Board) -> bool {
+    unimplemented!();
 }
 
-fn move_gnome(data: GnomeData, board: &Board) -> GnomeData {
+fn move_leprechaun(data: LeprechaunData, board: &board::Board) -> LeprechaunData {
     unimplemented!();
-    GnomeData{ x: data.x, y: data.y, energy: data.energy }
-}
-
-fn move_leprechaun(data: LeprechaunData, board: &Board) -> LeprechaunData {
-    unimplemented!();
-    LeprechaunData{ x: data.x, y: data.y, energy: data.energy }
 }   

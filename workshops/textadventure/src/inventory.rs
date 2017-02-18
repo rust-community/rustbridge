@@ -1,8 +1,11 @@
+use players::Players;
 use players::Player;
 use players::ExplorerData;
 use players::GnomeData;
 use players::LeprechaunData;
-use players::Players;
+use std::io;
+
+pub enum Thing { Food, Torch, Teleporter }
 
 pub fn encounter_player(player: Player, others: &mut Players) -> Player {
     let _player : Player;
@@ -22,17 +25,15 @@ pub fn encounter_player(player: Player, others: &mut Players) -> Player {
     _player
 }
 
-pub fn encounter_explorer(data: ExplorerData, others: &mut Players) -> ExplorerData {
+pub fn encounter_gnome(data: GnomeData, others: &mut Players) -> GnomeData {
+    // TODO
     unimplemented!();
-    ExplorerData{ x: data.x, y: data.y, energy: data.energy }
 }
 
-pub fn encounter_gnome(data: GnomeData, others: &mut Players) -> GnomeData {
+pub fn encounter_explorer(data: ExplorerData, others: &mut Players) -> ExplorerData {
     unimplemented!();
-    GnomeData{ x: data.x, y: data.y, energy: data.energy }
 }
 
 pub fn encounter_leprechaun(data: LeprechaunData, others: &mut Players) -> LeprechaunData {
     unimplemented!();
-    LeprechaunData{ x: data.x, y: data.y, energy: data.energy }
 }
