@@ -1,9 +1,13 @@
+use players;
 use inventory;
 use std::io;
 
-pub enum Wall { Opening, Solid, Magical }
+// TODO Need 5 by 5 not 2 by 1 game board.
+pub type Board = [[Room; 1]; 2];
 
-pub struct Room {
+enum Wall { Opening, Solid, Magical }
+
+struct Room {
     up: Wall,
     right: Wall,
     down: Wall,
@@ -11,7 +15,13 @@ pub struct Room {
     contents: Vec<inventory::Thing>
 }
 
-#[derive(PartialEq)]
+// TODO Construct a maze.
+pub fn build_board() -> Board {
+    [[Room {up: Wall::Opening, right: Wall::Solid,   down: Wall::Opening, left: Wall::Solid, contents: vec![]}],
+     [Room {up: Wall::Opening, right: Wall::Opening, down: Wall::Solid,   left: Wall::Solid, contents: vec![]}]]
+}
+
+#[derive(Copy, Clone, PartialEq, Eq)]
 pub struct Position {
     x: i32,
     y: i32
@@ -27,13 +37,9 @@ impl Position {
     }
 }
 
-// TODO Need 5 by 5 not 2 by 1 game board.
-pub type Board = [[Room; 1]; 2];
-
-// TODO Construct a maze.
-pub fn build_board() -> Board {
-    [[Room {up: Wall::Opening, right: Wall::Solid,   down: Wall::Opening, left: Wall::Solid, contents: vec![]}],
-     [Room {up: Wall::Opening, right: Wall::Opening, down: Wall::Solid,   left: Wall::Solid, contents: vec![]}]]
+pub fn survey_room(player: players::Player, board: &Board) -> players::Player {
+    // TODO
+    unimplemented!()
 }
 
 pub fn move_in_bounds(pos: &Position, dx: &i32, dy: &i32, board: &Board) -> bool {
@@ -43,7 +49,7 @@ pub fn move_in_bounds(pos: &Position, dx: &i32, dy: &i32, board: &Board) -> bool
     xy_in_bounds(&x, &y, board)
 }
 
-pub fn move_position(pos: Position, dx: i32, dy: i32, board: &Board) -> Position {
+pub fn move_pos(pos: Position, dx: i32, dy: i32, board: &Board) -> Position {
     if !move_in_bounds(&pos, &dx, &dy, board) {
         panic!("move out of bounds")
     }

@@ -12,8 +12,9 @@ fn main() {
         match players.pop_front() {
             Some(player) => {
                 if players::is_game_over(&players) { break };
-                let moved = players::move_player(player, &board);
-                let played = inventory::encounter_player(moved, &mut players);
+                let ready = board::survey_room(player, &board);
+                let moved = players::move_player(ready, &board);
+                let played = inventory::encounter_others(moved, &mut players);
                 players.push_back(played);
             }
             None => break

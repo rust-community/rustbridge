@@ -14,7 +14,7 @@ Here is what we need:
  
 **Characters** - We will have 3 kinds of characters.
 + You the adventurous **Explorer**, wandering from room to room.
-+ **Leprechauns** the good wee people with a mischievous sense of humour. They can give you gold or magic words but you never know if they are telling the truth. They can teleport to any room.
++ **Leprechauns** the good wee people with a mischievous sense of humour. They can give you gold or **Magic Words** but you never know if they are telling the truth. They can teleport to any room.
 + **Gnomes** who guard the treasures of the earth and just might take your stuff if you’re not careful. They can go one space in any direction - they know the magic word to walk through any kind of wall. 
  
 **Things**

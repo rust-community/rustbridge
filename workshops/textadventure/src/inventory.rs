@@ -4,62 +4,57 @@ use players::ExplorerData;
 use players::GnomeData;
 use players::LeprechaunData;
 use players::is_occupant;
-use players::get_gnome_position;
+use players::get_exp_pos;
+use players::get_gnome_pos;
+use players::get_lep_pos;
 use board;
 use std::io;
 
-pub enum Thing { Food, Torch, Teleporter }
+pub enum Thing {
+    Torch,
+    Teleporter,
+    Food { name: String, energy: i32 },
+    GoldCoin { denom: i32 },
+    FakeCoin { denom: i32 },
+    MagicWord { word: String, room: board::Position },
+    FakeWord { word: String }
+}
 
-pub fn encounter_player(player: Player, others: &mut Players) -> Player {
-    let _player : Player;
+pub fn gold_coins() -> Vec<Thing> {
+    // TODO
+    unimplemented!()
+}
+
+pub fn fake_coins() -> Vec<Thing> {
+    // TODO
+    unimplemented!()
+}
+
+pub fn fake_words() -> Vec<Thing> {
+    // TODO
+    unimplemented!()
+}
+
+pub fn encounter_others(player: Player, others: &mut Players) -> Player {
+    let _player: Player;
 
     match player {
-        Player::Explorer(data) => {
-            _player = Player::Explorer(encounter_explorer(data, others));
+        Player::Explorer(exp) => {
+            _player = Player::Explorer(encounter_explorer(exp, others));
         },
-        Player::Gnome(data) => {
-            _player = Player::Gnome(encounter_gnome(data, others));
+        Player::Gnome(gnome) => {
+            _player = Player::Gnome(encounter_gnome(gnome, others));
         },
-        Player::Leprechaun(data) => {
-            _player = Player::Leprechaun(encounter_leprechaun(data, others));
+        Player::Leprechaun(lep) => {
+            _player = Player::Leprechaun(encounter_leprechaun(lep, others));
         }
     }
 
     _player
 }
 
-pub fn encounter_gnome(data: GnomeData, others: &mut Players) -> GnomeData {
-    let mut _data = data;
-
-    let shake_down = |occupant: Player| {
-        let _occupant : Player;
-        
-        match occupant {
-            Player::Explorer(data) => {
-                _occupant = Player::Explorer(data);  // TODO
-            },
-            Player::Gnome(data) => _occupant = Player::Gnome(data),
-            Player::Leprechaun(data) => _occupant = Player::Leprechaun(data)
-        }
-
-        _occupant
-    };
-
-    exchange_with_other_occupants(get_gnome_position(&_data), others, shake_down);
-    
-    _data
-}
-
-pub fn encounter_explorer(data: ExplorerData, others: &mut Players) -> ExplorerData {
-    unimplemented!();
-}
-
-pub fn encounter_leprechaun(data: LeprechaunData, others: &mut Players) -> LeprechaunData {
-    unimplemented!();
-}
-
-fn exchange_with_other_occupants<F>(pos: &board::Position, others: &mut Players, exchange: F)
-where F: Fn(Player) -> Player {
+fn exchange_with_occupants<F>(pos: &board::Position, others: &mut Players, mut exchange: F)
+where F: FnMut(Player) -> Player {
     let rotation = others.len() as i32;
     let mut index = 0;
 
@@ -77,4 +72,84 @@ where F: Fn(Player) -> Player {
             None => panic!("missing other")
         }
     }
+}
+
+fn encounter_explorer(data: ExplorerData, others: &mut Players) -> ExplorerData {
+    let mut exp = data;
+
+    exchange_with_occupants(&get_exp_pos(&exp), others,
+       |occupant: Player| {
+           let _occupant : Player;
+
+            match occupant {
+                Player::Explorer(other) => _occupant = Player::Explorer(other),
+                Player::Gnome(mut gnome) => {
+                    shake_down(&mut gnome, &mut exp);
+                    _occupant = Player::Gnome(gnome)
+                },
+                Player::Leprechaun(mut lep) => {
+                    trick_or_treat(&mut lep, &mut exp);
+                    _occupant = Player::Leprechaun(lep)
+                }
+            }
+
+            _occupant
+        }
+    );
+    
+    exp
+}
+
+fn encounter_gnome(data: GnomeData, others: &mut Players) -> GnomeData {
+    let mut gnome = data;
+
+    exchange_with_occupants(&get_gnome_pos(&gnome), others,
+       |occupant: Player| {
+           let _occupant : Player;
+
+            match occupant {
+                Player::Explorer(mut exp) => {
+                    shake_down(&mut gnome, &mut exp);
+                    _occupant = Player::Explorer(exp)
+                },
+                Player::Gnome(other) => _occupant = Player::Gnome(other),
+                Player::Leprechaun(lep) => _occupant = Player::Leprechaun(lep)
+            }
+
+            _occupant
+        }
+    );
+    
+    gnome
+}
+
+fn encounter_leprechaun(data: LeprechaunData, others: &mut Players) -> LeprechaunData {
+    let mut lep = data;
+
+    exchange_with_occupants(&get_lep_pos(&lep), others,
+       |occupant: Player| {
+           let _occupant : Player;
+
+            match occupant {
+                Player::Explorer(mut exp) => {
+                    trick_or_treat(&mut lep, &mut exp);
+                    _occupant = Player::Explorer(exp)
+                },
+                Player::Gnome(gnome) => _occupant = Player::Gnome(gnome),
+                Player::Leprechaun(other) => _occupant = Player::Leprechaun(other)
+            }
+
+            _occupant
+        }
+    );
+    
+    lep
+}
+
+fn shake_down(gnome: &mut GnomeData, exp: &mut ExplorerData) {
+    unimplemented!()
+}
+
+fn trick_or_treat(lep: &mut LeprechaunData, exp: &mut ExplorerData) {
+    unimplemented!()
 }

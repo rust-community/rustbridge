@@ -33,21 +33,32 @@ pub struct LeprechaunData {
 pub fn build_players(board: &board::Board) -> Players {
     let mut players: Players = VecDeque::new();
 
-    // TODO things
     let explorer = Player::Explorer(
         ExplorerData { pos: board::Position::new(0, 0, board),
                        energy: 99,
-                       things: vec![inventory::Thing::Torch] }
+                       things: vec![inventory::Thing::Torch,
+                                    inventory::Thing::GoldCoin { denom: 5 },
+                                    inventory::Thing::GoldCoin { denom: 10 },
+                                    inventory::Thing::GoldCoin { denom: 25 }] }
     );
 
     let gnome = Player::Gnome(
         GnomeData { pos: board::Position::new(0, 4, board),
-                    things: vec![] }
+                    things: vec![inventory::Thing::GoldCoin { denom: 25 },
+                                 inventory::Thing::GoldCoin { denom: 25 },
+                                 inventory::Thing::GoldCoin { denom: 25 }] }
     );
 
+    let mut pot_of_gold = vec![];
+
+    pot_of_gold.append(&mut inventory::gold_coins());
+    pot_of_gold.append(&mut inventory::fake_coins());
+    pot_of_gold.append(&mut inventory::fake_words());
+
     let leprechaun = Player::Leprechaun(
+
         LeprechaunData { pos: board::Position::new(4, 4, board),
-                         things: vec![] }
+                         things: pot_of_gold }
     );
 
     players.push_back(explorer);
@@ -68,13 +79,13 @@ pub fn move_player(player: Player, board: &board::Board) -> Player {
 
     match player {
         Player::Explorer(data) => {
-            _player = Player::Explorer(move_explorer(data, board));
+            _player = Player::Explorer(move_exp(data, board));
         },
         Player::Gnome(data) => {
             _player = Player::Gnome(move_gnome(data, board));
         },
         Player::Leprechaun(data) => {
-            _player = Player::Leprechaun(move_leprechaun(data, board));
+            _player = Player::Leprechaun(move_lep(data, board));
         }
     }
 
@@ -89,16 +100,16 @@ pub fn is_occupant(other: &Player, pos: &board::Position) -> bool {
     }
 }
 
-pub fn get_explorer_position(data: &ExplorerData) -> &board::Position {
-    &data.pos
+pub fn get_exp_pos(data: &ExplorerData) -> board::Position {
+    data.pos
 }
 
-pub fn get_gnome_position(data: &GnomeData) -> &board::Position {
-    &data.pos
+pub fn get_gnome_pos(data: &GnomeData) -> board::Position {
+    data.pos
 }
 
-pub fn get_leprechaun_position(data: &LeprechaunData) -> &board::Position {
-    &data.pos
+pub fn get_lep_pos(data: &LeprechaunData) -> board::Position {
+    data.pos
 }
 
 enum Direction { North, South, East, West }
@@ -117,7 +128,7 @@ fn is_dead(player: &Player) -> bool {
     }
 }
 
-fn move_explorer(data: ExplorerData, board: &board::Board) -> ExplorerData {
+fn move_exp(data: ExplorerData, board: &board::Board) -> ExplorerData {
     let mut _data = data;
     let mut input = String::new();
 
@@ -132,11 +143,11 @@ fn move_explorer(data: ExplorerData, board: &board::Board) -> ExplorerData {
         match input.trim().chars().nth(0) {
             Some(command) => {
                 match command {
-                    'N' => { move_explorer_north(&mut _data, board); break; },
-                    'S' => { move_explorer_south(&mut _data, board); break; },
-                    'E' => { move_explorer_east(&mut _data, board); break; },
-                    'W' => { move_explorer_west(&mut _data, board); break; },
-                    'T' => if teleport_explorer(&mut _data, board) { break; }
+                    'N' => { move_exp_north(&mut _data, board); break; },
+                    'S' => { move_exp_south(&mut _data, board); break; },
+                    'E' => { move_exp_east(&mut _data, board); break; },
+                    'W' => { move_exp_west(&mut _data, board); break; },
+                    'T' => if teleport_exp(&mut _data, board) { break; }
                            else { println!("Cannot teleport"); },
                     _ => println!("Invalid command")
                 }
@@ -148,7 +159,7 @@ fn move_explorer(data: ExplorerData, board: &board::Board) -> ExplorerData {
     _data
 }
 
-fn direction_to_dx_dy(direction: &Direction) -> (i32, i32) {
+fn dir_to_dx_dy(direction: &Direction) -> (i32, i32) {
     match *direction {
         Direction::North => (0, 1),
         Direction::South => (0, -1),
@@ -164,7 +175,7 @@ fn move_gnome(data: GnomeData, board: &board::Board) -> GnomeData {
 
     loop {
         let index = rand::thread_rng().gen_range(0, choices.len());
-        let (_dx, _dy) = direction_to_dx_dy(&choices[index]);
+        let (_dx, _dy) = dir_to_dx_dy(&choices[index]);
 
         if board::move_in_bounds(&pos, &_dx, &_dy, board) {
             dx = _dx;
@@ -173,38 +184,38 @@ fn move_gnome(data: GnomeData, board: &board::Board) -> GnomeData {
         }
     }
 
-    GnomeData { pos: board::move_position(pos, dx, dy, board),
+    GnomeData { pos: board::move_pos(pos, dx, dy, board),
                 things: data.things }
 }
 
-fn move_leprechaun(data: LeprechaunData, board: &board::Board) -> LeprechaunData {
+fn move_lep(data: LeprechaunData, board: &board::Board) -> LeprechaunData {
     let mut _data = data;
 
-    teleport_leprechaun(&mut _data, board);
+    teleport_lep(&mut _data, board);
 
     _data
 }   
 
-fn teleport_leprechaun(data: &mut LeprechaunData, board: &board::Board) {
-    unimplemented!();
+fn teleport_lep(data: &mut LeprechaunData, board: &board::Board) {
+    unimplemented!()
 }
 
-fn move_explorer_north(data: &mut ExplorerData, board: &board::Board) {
-    unimplemented!();
+fn move_exp_north(data: &mut ExplorerData, board: &board::Board) {
+    unimplemented!()
 }
 
-fn move_explorer_south(data: &mut ExplorerData, board: &board::Board) {
-    unimplemented!();
+fn move_exp_south(data: &mut ExplorerData, board: &board::Board) {
+    unimplemented!()
 }
 
-fn move_explorer_east(data: &mut ExplorerData, board: &board::Board) {
-    unimplemented!();
+fn move_exp_east(data: &mut ExplorerData, board: &board::Board) {
+    unimplemented!()
 }
 
-fn move_explorer_west(data: &mut ExplorerData, board: &board::Board) {
-    unimplemented!();
+fn move_exp_west(data: &mut ExplorerData, board: &board::Board) {
+    unimplemented!()
 }
 
-fn teleport_explorer(data: &mut ExplorerData, board: &board::Board) -> bool {
-    unimplemented!();
+fn teleport_exp(data: &mut ExplorerData, board: &board::Board) -> bool {
+    unimplemented!()
 }
