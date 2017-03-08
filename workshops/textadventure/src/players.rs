@@ -14,6 +14,9 @@ pub enum Player {
     Leprechaun(LeprechaunData)  // NPC
 }
 
+#[derive(Clone, PartialEq, Eq)]
+pub enum Direction { North, South, East, West }
+
 pub struct ExplorerData {
     pos: board::Position,
     energy: i32,
@@ -22,6 +25,7 @@ pub struct ExplorerData {
 
 pub struct GnomeData {
     pos: board::Position,
+    energy: i32,
     things: Vec<inventory::Thing>
 }
 
@@ -35,34 +39,54 @@ pub fn build_players(board: &board::Board) -> Players {
 
     let explorer = Player::Explorer(
         ExplorerData { pos: board::Position::new(0, 0, board),
-                       energy: 99,
+                       energy: 65,
                        things: vec![inventory::Thing::Torch,
                                     inventory::Thing::GoldCoin { denom: 5 },
                                     inventory::Thing::GoldCoin { denom: 10 },
                                     inventory::Thing::GoldCoin { denom: 25 }] }
     );
 
-    let gnome = Player::Gnome(
+    let mut gnome_a_things = vec![];
+
+    gnome_a_things.append(&mut vec![inventory::Thing::GoldCoin { denom: 25 }; 3]);
+    gnome_a_things.append(&mut inventory::all_magic_words(board));
+
+    let gnome_a = Player::Gnome(
         GnomeData { pos: board::Position::new(0, 4, board),
-                    things: vec![inventory::Thing::GoldCoin { denom: 25 },
-                                 inventory::Thing::GoldCoin { denom: 25 },
-                                 inventory::Thing::GoldCoin { denom: 25 }] }
+                    energy: 41,
+                    things: gnome_a_things }
     );
 
-    let mut pot_of_gold = vec![];
+    let mut gnome_b_things = vec![];
 
-    pot_of_gold.append(&mut inventory::gold_coins());
-    pot_of_gold.append(&mut inventory::fake_coins());
-    pot_of_gold.append(&mut inventory::fake_words());
+    gnome_b_things.append(&mut vec![inventory::Thing::GoldCoin { denom: 25 }; 3]);
+    gnome_b_things.append(&mut inventory::all_magic_words(board));
+
+    let gnome_b = Player::Gnome(
+        GnomeData { pos: board::Position::new(2, 2, board),
+                    energy: 37,
+                    things: gnome_b_things }
+    );
+
+    let mut lep_things = vec![];
+
+    lep_things.append(&mut vec![inventory::Thing::GoldCoin { denom: 5 }; 8]);
+    lep_things.append(&mut vec![inventory::Thing::GoldCoin { denom: 10 }; 8]);
+    lep_things.append(&mut vec![inventory::Thing::GoldCoin { denom: 25 }; 8]);
+    lep_things.append(&mut vec![inventory::Thing::FakeCoin { denom: 5 }; 5]);
+    lep_things.append(&mut vec![inventory::Thing::FakeCoin { denom: 10 }; 5]);
+    lep_things.append(&mut vec![inventory::Thing::FakeCoin { denom: 25 }; 5]);
+    lep_things.append(&mut inventory::all_magic_words(board));
+    lep_things.append(&mut inventory::all_fake_words(board));
 
     let leprechaun = Player::Leprechaun(
-
         LeprechaunData { pos: board::Position::new(4, 4, board),
-                         things: pot_of_gold }
+                         things: lep_things }
     );
 
     players.push_back(explorer);
-    players.push_back(gnome);
+    players.push_back(gnome_a);
+    players.push_back(gnome_b);
     players.push_back(leprechaun);
 
     players
@@ -111,8 +135,6 @@ pub fn get_gnome_pos(data: &GnomeData) -> board::Position {
 pub fn get_lep_pos(data: &LeprechaunData) -> board::Position {
     data.pos
 }
-
-enum Direction { North, South, East, West }
 
 fn is_explorer(player: &Player) -> bool {
     match *player {
@@ -185,6 +207,7 @@ fn move_gnome(data: GnomeData, board: &board::Board) -> GnomeData {
     }
 
     GnomeData { pos: board::move_pos(pos, dx, dy, board),
+                energy: data.energy - 1,
                 things: data.things }
 }
 
@@ -196,26 +219,42 @@ fn move_lep(data: LeprechaunData, board: &board::Board) -> LeprechaunData {
     _data
 }   
 
+// TODO
 fn teleport_lep(data: &mut LeprechaunData, board: &board::Board) {
+}
+
+// TODO
+fn is_opening(room: &board::Position, wall: &Direction, board: &board::Board) -> bool {
+    false
+}
+
+// TODO
+fn find_magic_word(things: &Vec<inventory::Thing>, room: &board::Position, wall: &Direction) -> Option<String> {
     unimplemented!()
 }
 
+// TODO
+fn open_sesame(word: &String, room: &board::Position, wall: &Direction, board: &board::Board) -> bool {
+    false
+}
+
+// TODO
 fn move_exp_north(data: &mut ExplorerData, board: &board::Board) {
-    unimplemented!()
 }
 
+// TODO
 fn move_exp_south(data: &mut ExplorerData, board: &board::Board) {
-    unimplemented!()
 }
 
+// TODO
 fn move_exp_east(data: &mut ExplorerData, board: &board::Board) {
-    unimplemented!()
 }
 
+// TODO
 fn move_exp_west(data: &mut ExplorerData, board: &board::Board) {
-    unimplemented!()
 }
 
+// TODO
 fn teleport_exp(data: &mut ExplorerData, board: &board::Board) -> bool {
-    unimplemented!()
+    false
 }

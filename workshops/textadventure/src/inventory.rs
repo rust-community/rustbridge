@@ -1,37 +1,46 @@
+use players;
 use players::Players;
 use players::Player;
 use players::ExplorerData;
 use players::GnomeData;
 use players::LeprechaunData;
+use players::Direction;
 use players::is_occupant;
 use players::get_exp_pos;
 use players::get_gnome_pos;
 use players::get_lep_pos;
 use board;
 use std::io;
+use std::collections::HashSet;
 
+#[derive(Clone, PartialEq, Eq)]
 pub enum Thing {
-    Torch,
-    Teleporter,
     Food { name: String, energy: i32 },
     GoldCoin { denom: i32 },
     FakeCoin { denom: i32 },
-    MagicWord { word: String, room: board::Position },
+    Teleporter,
+    Torch,
+    MagicWord { word: String, room: board::Position, wall: players::Direction },
     FakeWord { word: String }
 }
 
-pub fn gold_coins() -> Vec<Thing> {
-    // TODO
+// FIXME
+pub fn display_exp_things(exp: &ExplorerData) {
     unimplemented!()
 }
 
-pub fn fake_coins() -> Vec<Thing> {
-    // TODO
+// TODO
+pub fn all_magic_words(board: &board::Board) -> Vec<Thing> {
     unimplemented!()
 }
 
-pub fn fake_words() -> Vec<Thing> {
-    // TODO
+// TODO
+pub fn all_fake_words() -> Vec<Thing> {
+    unimplemented!()
+}
+
+// TODO
+pub fn exp_has_torch(exp: &ExplorerData) -> bool {
     unimplemented!()
 }
 
@@ -146,10 +155,10 @@ fn encounter_leprechaun(data: LeprechaunData, others: &mut Players) -> Leprechau
     lep
 }
 
+// TODO
 fn shake_down(gnome: &mut GnomeData, exp: &mut ExplorerData) {
-    unimplemented!()
 }
 
+// TODO
 fn trick_or_treat(lep: &mut LeprechaunData, exp: &mut ExplorerData) {
-    unimplemented!()
 }

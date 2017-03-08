@@ -20,7 +20,7 @@ Here is what we need:
 **Things**
 + **Food** gives you **Energy** to keep going.
 + **Gold** pays the way.
-+ **Pyrite** is given to you by mischievous leprechauns - also good for giving to gnomes.
++ **Fake Gold** is given to you by mischievous leprechauns - also good for giving to gnomes.
 + **Teleporter** moves you at random to some other room.
 + **Torch** allows you to see in a dark room - tells you what’s in a dark room. 
  
@@ -30,4 +30,4 @@ Here is what we need:
 + **Teleport** allows you to teleport to some other room if you have a teleporter. 
 + Each move consumes 1 food unit and teleporting consumes 5. 
 
-A project skeleton of the game has already been created for you in the src directory. Open main.rs to see how the game works and begin filling in the various TODOs throughout the rest of the .rc files. As you add more of your code to the project use Cargo to rebuild the game and ensure that it still compiles. Run the game from the command line to try out new features as you implement them. For how to get started with Cargo see [section 2](http://doc.rust-lang.org/book/getting-started.html) of *The Rust Programming Language* book.
+A project skeleton of the game has already been created for you in the src directory. Open main.rs to see how the game works and begin filling in the various TODOs throughout the rest of the .rs files. As you add more of your code to the project use Cargo to rebuild the game and ensure that it still compiles. Run the game from the command line to try out new features as you implement them. For how to get started with Cargo see [section 2](http://doc.rust-lang.org/book/getting-started.html) of *The Rust Programming Language* book.

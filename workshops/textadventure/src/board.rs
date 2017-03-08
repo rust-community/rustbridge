@@ -1,24 +1,36 @@
 use players;
+use players::get_exp_pos;
 use inventory;
+use inventory::display_exp_things;
+use inventory::exp_has_torch;
 use std::io;
 
-// TODO Need 5 by 5 not 2 by 1 game board.
+// FIXME Need 5 by 5 not 2 by 1 game board.
 pub type Board = [[Room; 1]; 2];
 
-enum Wall { Opening, Solid, Magical }
+enum Wall {
+    Opening,
+    Solid,
+    Magical { word: String }
+}
 
 struct Room {
-    up: Wall,
-    right: Wall,
-    down: Wall,
-    left: Wall,
+    north: Wall,
+    east: Wall,
+    south: Wall,
+    west: Wall,
     contents: Vec<inventory::Thing>
 }
 
-// TODO Construct a maze.
+// FIXME Construct a maze.
 pub fn build_board() -> Board {
-    [[Room {up: Wall::Opening, right: Wall::Solid,   down: Wall::Opening, left: Wall::Solid, contents: vec![]}],
-     [Room {up: Wall::Opening, right: Wall::Opening, down: Wall::Solid,   left: Wall::Solid, contents: vec![]}]]
+    [[Room {north: Wall::Opening, east: Wall::Solid,   south: Wall::Opening, west: Wall::Solid, contents: vec![]}],
+     [Room {north: Wall::Opening, east: Wall::Opening, south: Wall::Solid,   west: Wall::Solid, contents: vec![]}]]
+}
+
+// FIXME
+pub fn display_map(board: &Board, players: &players::Players) {
+    unimplemented!()
 }
 
 #[derive(Copy, Clone, PartialEq, Eq)]
@@ -35,11 +47,6 @@ impl Position {
 
         Position { x: x, y: y }
     }
-}
-
-pub fn survey_room(player: players::Player, board: &Board) -> players::Player {
-    // TODO
-    unimplemented!()
 }
 
 pub fn move_in_bounds(pos: &Position, dx: &i32, dy: &i32, board: &Board) -> bool {
@@ -60,6 +67,34 @@ pub fn move_pos(pos: Position, dx: i32, dy: i32, board: &Board) -> Position {
     Position::new(x, y, board)
 }
 
+pub fn scavenge(player: players::Player, board: &mut Board) -> players::Player {
+    let _player: players::Player;
+
+    match player {
+        players::Player::Explorer(exp) => {
+            _player = players::Player::Explorer(exp_scavenge(exp, board));
+        },
+        players::Player::Gnome(gnome) => {
+            _player = players::Player::Gnome(gnome_scavenge(gnome, board));
+        },
+        players::Player::Leprechaun(lep) => {
+            _player = players::Player::Leprechaun(lep);
+        }
+    }
+
+    _player
+}
+
+// FIXME
+fn draw_room(pos: &Position, players: players::Players) {
+    unimplemented!()
+}
+
+// FIXME
+fn display_room_contents(pos: &Position, board: &Board) {
+    unimplemented!()
+}
+
 fn xy_in_bounds(x: &i32, y: &i32, board: &Board) -> bool {
     x_in_bounds(x, board) && y_in_bounds(y, board)
 }
@@ -70,4 +105,97 @@ fn x_in_bounds(x: &i32, board: &Board) -> bool {
 
 fn y_in_bounds(y: &i32, board: &Board) -> bool {
     *y < board[0].len() as i32
+}
+
+fn exp_scavenge(data: players::ExplorerData, board: &mut Board) -> players::ExplorerData {
+    let mut exp = data;
+    let mut input = String::new();
+
+    if room_has_torch(&get_exp_pos(&exp), board) || exp_has_torch(&exp) {
+        // FIXME loop until room is empty or done
+        loop {
+            display_exp_things(&exp);
+            display_room_contents(&get_exp_pos(&exp), board);
+
+            // FIXME display commands conditionally
+            println!("Enter letter command: FIXME");
+            
+            match io::stdin().read_line(&mut input) {
+                Ok(n) => (),
+                Err(why) => { println!("Failed to read line: {:?}", why); continue; }
+            }
+
+            match input.trim().chars().nth(0) {
+                Some(command) => {
+                    match command {
+                        'F' => { exp_pick_up_food(&mut exp, board); exp_eat_food(&mut exp) },
+                        'C' => exp_pick_up_coins(&mut exp, board),
+                        'X' => exp_pick_up_teleporter(&mut exp, board),
+                        'T' => exp_pick_up_torch(&mut exp, board),
+                        'D' => break,
+                        _ => println!("Invalid command")
+                    }
+                },
+                None => println!("Ignoring leading whitespace")
+            }
+        }
+    } else {
+        display_exp_things(&exp);
+    }
+
+    exp
+}
+
+// TODO
+fn gnome_scavenge(data: players::GnomeData, board: &mut Board) -> players::GnomeData {
+    let mut gnome = data;
+
+    // Your code goes here.
+
+    gnome
+}
+
+// TODO
+fn room_has_food(pos: &Position, board: &Board) -> bool {
+    false
+}
+
+// TODO
+fn room_has_coins(pos: &Position, board: &Board) -> bool {
+    false
+}
+
+// TODO
+fn room_has_teleporter(pos: &Position, board: &Board) -> bool {
+    false
+}
+
+// TODO
+fn room_has_torch(pos: &Position, board: &Board) -> bool {
+    false
+}
+
+// TODO
+fn exp_pick_up_food(exp: &mut players::ExplorerData, board: &mut Board) {
+    unimplemented!()
+}
+
+// TODO
+fn exp_eat_food(exp: &mut players::ExplorerData) {
+    unimplemented!()
+}
+
+// TODO
+fn exp_pick_up_coins(exp: &mut players::ExplorerData, board: &mut Board) {
+    unimplemented!()
+}
+
+// TODO
+fn exp_pick_up_teleporter(exp: &mut players::ExplorerData, board: &mut Board) {
+    unimplemented!()
+}
+
+// TODO
+fn exp_pick_up_torch(exp: &mut players::ExplorerData, board: &mut Board) {
+    unimplemented!()
 }
