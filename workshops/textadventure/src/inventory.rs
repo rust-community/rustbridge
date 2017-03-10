@@ -1,17 +1,14 @@
 use players;
-use players::Players;
 use players::Player;
+use players::Players;
 use players::ExplorerData;
 use players::GnomeData;
 use players::LeprechaunData;
-use players::Direction;
-use players::is_occupant;
-use players::get_exp_pos;
-use players::get_gnome_pos;
-use players::get_lep_pos;
 use board;
+use board::Board;
+use board::Position;
+
 use std::io;
-use std::collections::HashSet;
 
 #[derive(Clone, PartialEq, Eq)]
 pub enum Thing {
@@ -20,7 +17,7 @@ pub enum Thing {
     FakeCoin { denom: i32 },
     Teleporter,
     Torch,
-    MagicWord { word: String, room: board::Position, wall: players::Direction },
+    MagicWord { word: String, room: Position, wall: players::Direction },
     FakeWord { word: String }
 }
 
@@ -30,17 +27,17 @@ pub fn display_exp_things(exp: &ExplorerData) {
 }
 
 // TODO
-pub fn all_magic_words(board: &board::Board) -> Vec<Thing> {
-    unimplemented!()
-}
-
-// TODO
-pub fn all_fake_words() -> Vec<Thing> {
-    unimplemented!()
-}
-
-// TODO
 pub fn exp_has_torch(exp: &ExplorerData) -> bool {
+    unimplemented!()
+}
+
+// TODO
+pub fn all_magic_words(board: &Board) -> Vec<Thing> {
+    unimplemented!()
+}
+
+// TODO
+pub fn all_fake_words(board: &Board) -> Vec<Thing> {
     unimplemented!()
 }
 
@@ -62,7 +59,7 @@ pub fn encounter_others(player: Player, others: &mut Players) -> Player {
     _player
 }
 
-fn exchange_with_occupants<F>(pos: &board::Position, others: &mut Players, mut exchange: F)
+fn exchange_with_occupants<F>(pos: &Position, others: &mut Players, mut exchange: F)
 where F: FnMut(Player) -> Player {
     let rotation = others.len() as i32;
     let mut index = 0;
@@ -71,7 +68,7 @@ where F: FnMut(Player) -> Player {
         match others.pop_front() {
             Some(other) => {
                 index += 1;
-                if is_occupant(&other, pos) {
+                if players::is_occupant(&other, pos) {
                     let exchanged = exchange(other);
                     others.push_back(exchanged);
                 } else {
@@ -86,7 +83,7 @@ where F: FnMut(Player) -> Player {
 fn encounter_explorer(data: ExplorerData, others: &mut Players) -> ExplorerData {
     let mut exp = data;
 
-    exchange_with_occupants(&get_exp_pos(&exp), others,
+    exchange_with_occupants(&players::get_exp_pos(&exp), others,
        |occupant: Player| {
            let _occupant : Player;
 
@@ -112,7 +109,7 @@ fn encounter_explorer(data: ExplorerData, others: &mut Players) -> ExplorerData 
 fn encounter_gnome(data: GnomeData, others: &mut Players) -> GnomeData {
     let mut gnome = data;
 
-    exchange_with_occupants(&get_gnome_pos(&gnome), others,
+    exchange_with_occupants(&players::get_gnome_pos(&gnome), others,
        |occupant: Player| {
            let _occupant : Player;
 
@@ -135,7 +132,7 @@ fn encounter_gnome(data: GnomeData, others: &mut Players) -> GnomeData {
 fn encounter_leprechaun(data: LeprechaunData, others: &mut Players) -> LeprechaunData {
     let mut lep = data;
 
-    exchange_with_occupants(&get_lep_pos(&lep), others,
+    exchange_with_occupants(&players::get_lep_pos(&lep), others,
        |occupant: Player| {
            let _occupant : Player;
 

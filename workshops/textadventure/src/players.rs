@@ -1,7 +1,10 @@
 extern crate rand;
 
 use board;
+use board::Board;
+use board::Position;
 use inventory;
+use inventory::Thing;
 use std::io;
 use std::collections::VecDeque;
 use self::rand::Rng;
@@ -18,69 +21,60 @@ pub enum Player {
 pub enum Direction { North, South, East, West }
 
 pub struct ExplorerData {
-    pos: board::Position,
+    pos: Position,
     energy: i32,
-    things: Vec<inventory::Thing>
+    things: Vec<Thing>
 }
 
 pub struct GnomeData {
-    pos: board::Position,
+    pos: Position,
     energy: i32,
-    things: Vec<inventory::Thing>
+    things: Vec<Thing>
 }
 
 pub struct LeprechaunData {
-    pos: board::Position,
-    things: Vec<inventory::Thing>
+    pos: Position,
+    things: Vec<Thing>
 }
 
-pub fn build_players(board: &board::Board) -> Players {
+pub fn build_players(board: &Board) -> Players {
     let mut players: Players = VecDeque::new();
 
     let explorer = Player::Explorer(
-        ExplorerData { pos: board::Position::new(0, 0, board),
+        ExplorerData { pos: Position::new(0, 0, board),
                        energy: 65,
-                       things: vec![inventory::Thing::Torch,
-                                    inventory::Thing::GoldCoin { denom: 5 },
-                                    inventory::Thing::GoldCoin { denom: 10 },
-                                    inventory::Thing::GoldCoin { denom: 25 }] }
+                       things: vec![Thing::Torch,
+                                    Thing::GoldCoin { denom: 5 },
+                                    Thing::GoldCoin { denom: 10 },
+                                    Thing::GoldCoin { denom: 25 }] }
     );
-
-    let mut gnome_a_things = vec![];
-
-    gnome_a_things.append(&mut vec![inventory::Thing::GoldCoin { denom: 25 }; 3]);
-    gnome_a_things.append(&mut inventory::all_magic_words(board));
 
     let gnome_a = Player::Gnome(
-        GnomeData { pos: board::Position::new(0, 4, board),
+        GnomeData { pos: Position::new(0, 4, board),
                     energy: 41,
-                    things: gnome_a_things }
+                    things: vec![Thing::GoldCoin { denom: 25 }; 3] }
     );
 
-    let mut gnome_b_things = vec![];
-
-    gnome_b_things.append(&mut vec![inventory::Thing::GoldCoin { denom: 25 }; 3]);
-    gnome_b_things.append(&mut inventory::all_magic_words(board));
-
     let gnome_b = Player::Gnome(
-        GnomeData { pos: board::Position::new(2, 2, board),
+        GnomeData { pos: Position::new(2, 2, board),
                     energy: 37,
-                    things: gnome_b_things }
+                    things: vec![Thing::GoldCoin { denom: 25 }; 3] }
     );
 
     let mut lep_things = vec![];
 
-    lep_things.append(&mut vec![inventory::Thing::GoldCoin { denom: 5 }; 8]);
-    lep_things.append(&mut vec![inventory::Thing::GoldCoin { denom: 10 }; 8]);
-    lep_things.append(&mut vec![inventory::Thing::GoldCoin { denom: 25 }; 8]);
-    lep_things.append(&mut vec![inventory::Thing::FakeCoin { denom: 5 }; 5]);
-    lep_things.append(&mut vec![inventory::Thing::FakeCoin { denom: 10 }; 5]);
-    lep_things.append(&mut vec![inventory::Thing::FakeCoin { denom: 25 }; 5]);
+    lep_things.append(&mut vec![Thing::GoldCoin { denom: 5 }; 8]);
+    lep_things.append(&mut vec![Thing::GoldCoin { denom: 10 }; 8]);
+    lep_things.append(&mut vec![Thing::GoldCoin { denom: 25 }; 8]);
+    lep_things.append(&mut vec![Thing::FakeCoin { denom: 5 }; 5]);
+    lep_things.append(&mut vec![Thing::FakeCoin { denom: 10 }; 5]);
+    lep_things.append(&mut vec![Thing::FakeCoin { denom: 25 }; 5]);
     lep_things.append(&mut inventory::all_magic_words(board));
     lep_things.append(&mut inventory::all_fake_words(board));
+    // FIXME rand::Rng shuffle lep_things
 
     let leprechaun = Player::Leprechaun(
-        LeprechaunData { pos: board::Position::new(4, 4, board),
+        LeprechaunData { pos: Position::new(4, 4, board),
                          things: lep_things }
     );
 
@@ -98,7 +92,7 @@ pub fn is_game_over(players: &Players) -> bool {
            .fold(true, |acc, explorer| acc & is_dead(explorer))
 }
 
-pub fn move_player(player: Player, board: &board::Board) -> Player {
+pub fn move_player(player: Player, board: &Board) -> Player {
     let _player : Player;
 
     match player {
@@ -116,7 +110,7 @@ pub fn move_player(player: Player, board: &board::Board) -> Player {
     _player
 }
 
-pub fn is_occupant(other: &Player, pos: &board::Position) -> bool {
+pub fn is_occupant(other: &Player, pos: &Position) -> bool {
     match *other {
         Player::Explorer(ref data) => data.pos == *pos,
         Player::Gnome(ref data) => data.pos == *pos,
@@ -124,15 +118,15 @@ pub fn is_occupant(other: &Player, pos: &board::Position) -> bool {
     }
 }
 
-pub fn get_exp_pos(data: &ExplorerData) -> board::Position {
+pub fn get_exp_pos(data: &ExplorerData) -> Position {
     data.pos
 }
 
-pub fn get_gnome_pos(data: &GnomeData) -> board::Position {
+pub fn get_gnome_pos(data: &GnomeData) -> Position {
     data.pos
 }
 
-pub fn get_lep_pos(data: &LeprechaunData) -> board::Position {
+pub fn get_lep_pos(data: &LeprechaunData) -> Position {
     data.pos
 }
 
@@ -150,7 +144,7 @@ fn is_dead(player: &Player) -> bool {
     }
 }
 
-fn move_exp(data: ExplorerData, board: &board::Board) -> ExplorerData {
+fn move_exp(data: ExplorerData, board: &Board) -> ExplorerData {
     let mut _data = data;
     let mut input = String::new();
 
@@ -190,7 +184,7 @@ fn dir_to_dx_dy(direction: &Direction) -> (i32, i32) {
     }
 }
 
-fn move_gnome(data: GnomeData, board: &board::Board) -> GnomeData {
+fn move_gnome(data: GnomeData, board: &Board) -> GnomeData {
     let pos = data.pos;
     let choices = [Direction::North, Direction::South, Direction::East, Direction::West];
     let (dx, dy) : (i32, i32);
@@ -211,7 +205,7 @@ fn move_gnome(data: GnomeData, board: &board::Board) -> GnomeData {
                 things: data.things }
 }
 
-fn move_lep(data: LeprechaunData, board: &board::Board) -> LeprechaunData {
+fn move_lep(data: LeprechaunData, board: &Board) -> LeprechaunData {
     let mut _data = data;
 
     teleport_lep(&mut _data, board);
@@ -220,41 +214,46 @@ fn move_lep(data: LeprechaunData, board: &board::Board) -> LeprechaunData {
 }   
 
 // TODO
-fn teleport_lep(data: &mut LeprechaunData, board: &board::Board) {
+fn teleport_lep(data: &mut LeprechaunData, board: &Board) {
 }
 
 // TODO
-fn is_opening(room: &board::Position, wall: &Direction, board: &board::Board) -> bool {
+fn teleport_exp(data: &mut ExplorerData, board: &Board) -> bool {
     false
 }
 
 // TODO
-fn find_magic_word(things: &Vec<inventory::Thing>, room: &board::Position, wall: &Direction) -> Option<String> {
-    unimplemented!()
-}
-
-// TODO
-fn open_sesame(word: &String, room: &board::Position, wall: &Direction, board: &board::Board) -> bool {
+fn is_opening(room: &Position, wall: &Direction, board: &Board) -> bool {
     false
 }
 
 // TODO
-fn move_exp_north(data: &mut ExplorerData, board: &board::Board) {
+fn move_exp_north(data: &mut ExplorerData, board: &Board) {
 }
 
 // TODO
-fn move_exp_south(data: &mut ExplorerData, board: &board::Board) {
+fn move_exp_south(data: &mut ExplorerData, board: &Board) {
 }
 
 // TODO
-fn move_exp_east(data: &mut ExplorerData, board: &board::Board) {
+fn move_exp_east(data: &mut ExplorerData, board: &Board) {
 }
 
 // TODO
-fn move_exp_west(data: &mut ExplorerData, board: &board::Board) {
+fn move_exp_west(data: &mut ExplorerData, board: &Board) {
 }
 
 // TODO
-fn teleport_exp(data: &mut ExplorerData, board: &board::Board) -> bool {
+fn find_word<'a, 'b>(word: &'a String, things: &'b Vec<Thing>) -> Option<&'b Thing> {
+    None
+}
+
+// TODO
+fn is_magic_word(word: &Thing, board: &Board) -> bool {
+    false
+}
+
+// TODO
+fn open_sesame(word: &Thing, board: &Board) -> bool {
     false
 }

@@ -1,8 +1,12 @@
+extern crate serde_json;
+
 use players;
-use players::get_exp_pos;
+use players::Player;
+use players::Players;
+use players::ExplorerData;
+use players::GnomeData;
 use inventory;
-use inventory::display_exp_things;
-use inventory::exp_has_torch;
+use inventory::Thing;
 use std::io;
 
 // FIXME Need 5 by 5 not 2 by 1 game board.
@@ -19,17 +23,17 @@ struct Room {
     east: Wall,
     south: Wall,
     west: Wall,
-    contents: Vec<inventory::Thing>
+    contents: Vec<Thing>
 }
 
-// FIXME Construct a maze.
+// FIXME Load board from JSON file
 pub fn build_board() -> Board {
     [[Room {north: Wall::Opening, east: Wall::Solid,   south: Wall::Opening, west: Wall::Solid, contents: vec![]}],
      [Room {north: Wall::Opening, east: Wall::Opening, south: Wall::Solid,   west: Wall::Solid, contents: vec![]}]]
 }
 
-// FIXME
-pub fn display_map(board: &Board, players: &players::Players) {
+// TODO Iterate through Board
+pub fn display_map(board: &Board, players: &Players) {
     unimplemented!()
 }
 
@@ -67,18 +71,18 @@ pub fn move_pos(pos: Position, dx: i32, dy: i32, board: &Board) -> Position {
     Position::new(x, y, board)
 }
 
-pub fn scavenge(player: players::Player, board: &mut Board) -> players::Player {
-    let _player: players::Player;
+pub fn scavenge(player: Player, board: &mut Board) -> Player {
+    let _player: Player;
 
     match player {
-        players::Player::Explorer(exp) => {
-            _player = players::Player::Explorer(exp_scavenge(exp, board));
+        Player::Explorer(exp) => {
+            _player = Player::Explorer(exp_scavenge(exp, board));
         },
-        players::Player::Gnome(gnome) => {
-            _player = players::Player::Gnome(gnome_scavenge(gnome, board));
+        Player::Gnome(gnome) => {
+            _player = Player::Gnome(gnome_scavenge(gnome, board));
         },
-        players::Player::Leprechaun(lep) => {
-            _player = players::Player::Leprechaun(lep);
+        Player::Leprechaun(lep) => {
+            _player = Player::Leprechaun(lep);
         }
     }
 
@@ -86,12 +90,17 @@ pub fn scavenge(player: players::Player, board: &mut Board) -> players::Player {
 }
 
 // FIXME
-fn draw_room(pos: &Position, players: players::Players) {
+fn pos_to_room<'a, 'b>(pos: &'a Position, board: &'b Board) -> &'b Room {
+    unimplemented!()
+}
+
+// FIXME ASCII graphics
+fn draw_room(room: &Room, occupant: Option<&Player>) {
     unimplemented!()
 }
 
 // FIXME
-fn display_room_contents(pos: &Position, board: &Board) {
+fn display_room_contents(room: &Room) {
     unimplemented!()
 }
 
@@ -107,15 +116,15 @@ fn y_in_bounds(y: &i32, board: &Board) -> bool {
     *y < board[0].len() as i32
 }
 
-fn exp_scavenge(data: players::ExplorerData, board: &mut Board) -> players::ExplorerData {
+fn exp_scavenge(data: ExplorerData, board: &mut Board) -> ExplorerData {
     let mut exp = data;
     let mut input = String::new();
 
-    if room_has_torch(&get_exp_pos(&exp), board) || exp_has_torch(&exp) {
+    if room_has_torch(&players::get_exp_pos(&exp), board) || inventory::exp_has_torch(&exp) {
         // FIXME loop until room is empty or done
         loop {
-            display_exp_things(&exp);
-            display_room_contents(&get_exp_pos(&exp), board);
+            inventory::display_exp_things(&exp);
+            display_room_contents(pos_to_room(&players::get_exp_pos(&exp), board));
 
             // FIXME display commands conditionally
             println!("Enter letter command: FIXME");
@@ -140,14 +149,19 @@ fn exp_scavenge(data: players::ExplorerData, board: &mut Board) -> players::Expl
             }
         }
     } else {
-        display_exp_things(&exp);
+        inventory::display_exp_things(&exp);
     }
 
     exp
 }
 
 // TODO
-fn gnome_scavenge(data: players::GnomeData, board: &mut Board) -> players::GnomeData {
+fn latest_occupant<'a, 'b, 'c>(pos: &Position, board: &Board, players: Players) -> Option<&'c Player> {
+    None
+}
+
+// TODO
+fn gnome_scavenge(data: GnomeData, board: &mut Board) -> GnomeData {
     let mut gnome = data;
 
     // Your code goes here.
@@ -176,26 +190,26 @@ fn room_has_torch(pos: &Position, board: &Board) -> bool {
 }
 
 // TODO
-fn exp_pick_up_food(exp: &mut players::ExplorerData, board: &mut Board) {
+fn exp_pick_up_food(exp: &mut ExplorerData, board: &mut Board) {
     unimplemented!()
 }
 
 // TODO
-fn exp_eat_food(exp: &mut players::ExplorerData) {
+fn exp_eat_food(exp: &mut ExplorerData) {
     unimplemented!()
 }
 
 // TODO
-fn exp_pick_up_coins(exp: &mut players::ExplorerData, board: &mut Board) {
+fn exp_pick_up_coins(exp: &mut ExplorerData, board: &mut Board) {
     unimplemented!()
 }
 
 // TODO
-fn exp_pick_up_teleporter(exp: &mut players::ExplorerData, board: &mut Board) {
+fn exp_pick_up_teleporter(exp: &mut ExplorerData, board: &mut Board) {
     unimplemented!()
 }
 
 // TODO
-fn exp_pick_up_torch(exp: &mut players::ExplorerData, board: &mut Board) {
+fn exp_pick_up_torch(exp: &mut ExplorerData, board: &mut Board) {
     unimplemented!()
 }
