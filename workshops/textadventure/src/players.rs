@@ -38,37 +38,39 @@ pub struct LeprechaunData {
 }
 
 pub fn build_players(board: &Board) -> Players {
+    use self::Thing::*;
+
     let mut players: Players = VecDeque::new();
 
     let explorer = Player::Explorer(
         ExplorerData { pos: Position::new(0, 0, board),
                        energy: 65,
-                       things: vec![Thing::Torch,
-                                    Thing::GoldCoin { denom: 5 },
-                                    Thing::GoldCoin { denom: 10 },
-                                    Thing::GoldCoin { denom: 25 }] }
+                       things: vec![Torch,
+                                    GoldCoin { denom: 5 },
+                                    GoldCoin { denom: 10 },
+                                    GoldCoin { denom: 25 }] }
     );
 
     let gnome_a = Player::Gnome(
         GnomeData { pos: Position::new(0, 4, board),
                     energy: 41,
-                    things: vec![Thing::GoldCoin { denom: 25 }; 3] }
+                    things: vec![GoldCoin { denom: 25 }; 3] }
     );
 
     let gnome_b = Player::Gnome(
         GnomeData { pos: Position::new(2, 2, board),
                     energy: 37,
-                    things: vec![Thing::GoldCoin { denom: 25 }; 3] }
+                    things: vec![GoldCoin { denom: 25 }; 3] }
     );
 
     let mut lep_things = vec![];
 
-    lep_things.append(&mut vec![Thing::GoldCoin { denom: 5 }; 8]);
-    lep_things.append(&mut vec![Thing::GoldCoin { denom: 10 }; 8]);
-    lep_things.append(&mut vec![Thing::GoldCoin { denom: 25 }; 8]);
-    lep_things.append(&mut vec![Thing::FakeCoin { denom: 5 }; 5]);
-    lep_things.append(&mut vec![Thing::FakeCoin { denom: 10 }; 5]);
-    lep_things.append(&mut vec![Thing::FakeCoin { denom: 25 }; 5]);
+    lep_things.append(&mut vec![GoldCoin { denom: 5 }; 8]);
+    lep_things.append(&mut vec![GoldCoin { denom: 10 }; 8]);
+    lep_things.append(&mut vec![GoldCoin { denom: 25 }; 8]);
+    lep_things.append(&mut vec![FakeCoin { denom: 5 }; 5]);
+    lep_things.append(&mut vec![FakeCoin { denom: 10 }; 5]);
+    lep_things.append(&mut vec![FakeCoin { denom: 25 }; 5]);
     lep_things.append(&mut inventory::all_magic_words(board));
     lep_things.append(&mut inventory::all_fake_words(board));
     // FIXME rand::Rng shuffle lep_things
@@ -176,17 +178,21 @@ fn move_exp(data: ExplorerData, board: &Board) -> ExplorerData {
 }
 
 fn dir_to_dx_dy(direction: &Direction) -> (i32, i32) {
+    use self::Direction::*;
+
     match *direction {
-        Direction::North => (0, 1),
-        Direction::South => (0, -1),
-        Direction::East => (1, 0),
-        Direction::West => (-1, 0)
+        North => (0, 1),
+        South => (0, -1),
+        East => (1, 0),
+        West => (-1, 0)
     }
 }
 
 fn move_gnome(data: GnomeData, board: &Board) -> GnomeData {
+    use self::Direction::*;
+
     let pos = data.pos;
-    let choices = [Direction::North, Direction::South, Direction::East, Direction::West];
+    let choices = [North, South, East, West];
     let (dx, dy) : (i32, i32);
 
     loop {

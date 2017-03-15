@@ -4,6 +4,7 @@ use players::Players;
 use players::ExplorerData;
 use players::GnomeData;
 use players::LeprechaunData;
+use players::Direction;
 use board;
 use board::Board;
 use board::Position;
@@ -17,7 +18,7 @@ pub enum Thing {
     FakeCoin { denom: i32 },
     Teleporter,
     Torch,
-    MagicWord { word: String, room: Position, wall: players::Direction },
+    MagicWord { word: String, room: Position, wall: Direction },
     FakeWord { word: String }
 }
 

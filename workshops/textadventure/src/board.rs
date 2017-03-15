@@ -28,8 +28,10 @@ struct Room {
 
 // FIXME Load board from JSON file
 pub fn build_board() -> Board {
-    [[Room {north: Wall::Opening, east: Wall::Solid,   south: Wall::Opening, west: Wall::Solid, contents: vec![]}],
-     [Room {north: Wall::Opening, east: Wall::Opening, south: Wall::Solid,   west: Wall::Solid, contents: vec![]}]]
+    use self::Wall::*;
+
+    [[Room {north: Opening, east: Solid,   south: Opening, west: Solid, contents: vec![]}],
+     [Room {north: Opening, east: Opening, south: Solid,   west: Solid, contents: vec![]}]]
 }
 
 // TODO Iterate through Board
