@@ -11,7 +11,7 @@ use board::Position;
 
 use std::io;
 
-#[derive(Clone, PartialEq, Eq)]
+#[derive(Clone, PartialEq, Eq, Debug)]
 pub enum Thing {
     Food { name: String, energy: i32 },
     GoldCoin { denom: i32 },
@@ -22,24 +22,34 @@ pub enum Thing {
     FakeWord { word: String }
 }
 
-// FIXME
 pub fn display_exp_things(exp: &ExplorerData) {
-    unimplemented!()
+    println!("explorer has:");
+
+    if exp.things.is_empty() {
+        println!("nothing\n");
+        return
+    }
+
+    for thing in exp.things.iter() {
+        println!("{:?}", thing)
+    }
+
+    println!()
 }
 
 // TODO
 pub fn exp_has_torch(exp: &ExplorerData) -> bool {
-    unimplemented!()
+    false
 }
 
 // TODO
 pub fn all_magic_words(board: &Board) -> Vec<Thing> {
-    unimplemented!()
+    vec![]
 }
 
 // TODO
 pub fn all_fake_words(board: &Board) -> Vec<Thing> {
-    unimplemented!()
+    vec![]
 }
 
 pub fn encounter_others(player: Player, others: &mut Players) -> Player {
@@ -47,13 +57,13 @@ pub fn encounter_others(player: Player, others: &mut Players) -> Player {
 
     match player {
         Player::Explorer(exp) => {
-            _player = Player::Explorer(encounter_explorer(exp, others));
+            _player = Player::Explorer(encounter_explorer(exp, others))
         },
         Player::Gnome(gnome) => {
-            _player = Player::Gnome(encounter_gnome(gnome, others));
+            _player = Player::Gnome(encounter_gnome(gnome, others))
         },
         Player::Leprechaun(lep) => {
-            _player = Player::Leprechaun(encounter_leprechaun(lep, others));
+            _player = Player::Leprechaun(encounter_leprechaun(lep, others))
         }
     }
 
@@ -71,9 +81,9 @@ where F: FnMut(Player) -> Player {
                 index += 1;
                 if players::is_occupant(&other, pos) {
                     let exchanged = exchange(other);
-                    others.push_back(exchanged);
+                    others.push_back(exchanged)
                 } else {
-                    others.push_back(other);
+                    others.push_back(other)
                 }
             },
             None => panic!("missing other")

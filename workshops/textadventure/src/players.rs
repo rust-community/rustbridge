@@ -17,24 +17,24 @@ pub enum Player {
     Leprechaun(LeprechaunData)  // NPC
 }
 
-#[derive(Clone, PartialEq, Eq)]
+#[derive(Clone, PartialEq, Eq, Debug)]
 pub enum Direction { North, South, East, West }
 
 pub struct ExplorerData {
     pos: Position,
     energy: i32,
-    things: Vec<Thing>
+    pub things: Vec<Thing>
 }
 
 pub struct GnomeData {
     pos: Position,
     energy: i32,
-    things: Vec<Thing>
+    pub things: Vec<Thing>
 }
 
 pub struct LeprechaunData {
     pos: Position,
-    things: Vec<Thing>
+    pub things: Vec<Thing>
 }
 
 pub fn build_players(board: &Board) -> Players {
@@ -65,11 +65,11 @@ pub fn build_players(board: &Board) -> Players {
 
     let mut lep_things = vec![];
 
-    lep_things.append(&mut vec![GoldCoin { denom: 5 }; 8]);
-    lep_things.append(&mut vec![GoldCoin { denom: 10 }; 8]);
-    lep_things.append(&mut vec![GoldCoin { denom: 25 }; 8]);
-    lep_things.append(&mut vec![FakeCoin { denom: 5 }; 5]);
-    lep_things.append(&mut vec![FakeCoin { denom: 10 }; 5]);
+    lep_things.append(&mut vec![GoldCoin { denom: 5 }; 3]);
+    lep_things.append(&mut vec![GoldCoin { denom: 10 }; 3]);
+    lep_things.append(&mut vec![GoldCoin { denom: 25 }; 6]);
+    lep_things.append(&mut vec![FakeCoin { denom: 5 }; 2]);
+    lep_things.append(&mut vec![FakeCoin { denom: 10 }; 2]);
     lep_things.append(&mut vec![FakeCoin { denom: 25 }; 5]);
     lep_things.append(&mut inventory::all_magic_words(board));
     lep_things.append(&mut inventory::all_fake_words(board));
@@ -99,13 +99,13 @@ pub fn move_player(player: Player, board: &Board) -> Player {
 
     match player {
         Player::Explorer(data) => {
-            _player = Player::Explorer(move_exp(data, board));
+            _player = Player::Explorer(move_exp(data, board))
         },
         Player::Gnome(data) => {
-            _player = Player::Gnome(move_gnome(data, board));
+            _player = Player::Gnome(move_gnome(data, board))
         },
         Player::Leprechaun(data) => {
-            _player = Player::Leprechaun(move_lep(data, board));
+            _player = Player::Leprechaun(move_lep(data, board))
         }
     }
 
@@ -151,27 +151,33 @@ fn move_exp(data: ExplorerData, board: &Board) -> ExplorerData {
     let mut input = String::new();
 
     loop {
-        println!("Enter letter command: [N]orth [S]outh [E]ast [W]est [T]eleport");
+        println!("Enter letter command: Move [N]orth [S]outh [E]ast [W]est or [T]eleport");
 
         match io::stdin().read_line(&mut input) {
-            Ok(n) => (),
-            Err(why) => { println!("Failed to read line: {:?}", why); continue; }
+            Ok(_) => (),
+            Err(why) => {
+                println!("Failed to read line: {:?}", why);
+                input.clear();
+                continue
+            }
         }
 
-        match input.trim().chars().nth(0) {
+        match input.trim().to_uppercase().chars().nth(0) {
             Some(command) => {
                 match command {
-                    'N' => { move_exp_north(&mut _data, board); break; },
-                    'S' => { move_exp_south(&mut _data, board); break; },
-                    'E' => { move_exp_east(&mut _data, board); break; },
-                    'W' => { move_exp_west(&mut _data, board); break; },
-                    'T' => if teleport_exp(&mut _data, board) { break; }
-                           else { println!("Cannot teleport"); },
+                    'N' => { move_exp_north(&mut _data, board); break },
+                    'S' => { move_exp_south(&mut _data, board); break },
+                    'E' => { move_exp_east(&mut _data, board); break },
+                    'W' => { move_exp_west(&mut _data, board); break },
+                    'T' => if teleport_exp(&mut _data, board) { break }
+                           else { println!("Cannot teleport") },
                     _ => println!("Invalid command")
                 }
             },
             None => println!("Ignoring leading whitespace")
         }
+
+        input.clear()
     }
 
     _data
@@ -202,7 +208,7 @@ fn move_gnome(data: GnomeData, board: &Board) -> GnomeData {
         if board::move_in_bounds(&pos, &_dx, &_dy, board) {
             dx = _dx;
             dy = _dy;
-            break;
+            break
         }
     }
 

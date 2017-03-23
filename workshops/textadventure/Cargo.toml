@@ -5,4 +5,3 @@ authors = ["Frank Vasquez <Frank.Vasquez@gmail.com>"]
 
 [dependencies]
 rand="0.3.15"
-serde_json="0.9.9"

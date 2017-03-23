@@ -1,5 +1,3 @@
-extern crate serde_json;
-
 use players;
 use players::Player;
 use players::Players;
@@ -9,12 +7,12 @@ use inventory;
 use inventory::Thing;
 use std::io;
 
-// FIXME Need 5 by 5 not 2 by 1 game board.
-pub type Board = [[Room; 1]; 2];
+// 5 by 5 room game board
+pub type Board = [[Room; 5]; 5];
 
 enum Wall {
-    Opening,
     Solid,
+    Opening,
     Magical { word: String }
 }
 
@@ -26,20 +24,104 @@ struct Room {
     contents: Vec<Thing>
 }
 
-// FIXME Load board from JSON file
+// FIXM Add contents to rooms
 pub fn build_board() -> Board {
     use self::Wall::*;
 
-    [[Room {north: Opening, east: Solid,   south: Opening, west: Solid, contents: vec![]}],
-     [Room {north: Opening, east: Opening, south: Solid,   west: Solid, contents: vec![]}]]
+    [[Room {north: Solid, east: Solid, south: Opening, west: Solid,
+            contents: vec![]},
+      Room {north: Solid, east: Opening, south: Opening, west: Opening,
+            contents: vec![]},
+      Room {north: Solid, east: Opening, south: Solid, west: Opening,
+            contents: vec![]},
+      Room {north: Solid, east: Opening, south: Solid, west: Opening,
+            contents: vec![]},
+      Room {north: Solid, east: Solid, south: Opening, west: Solid,
+            contents: vec![]}
+     ],
+     [Room {north: Opening, east: Opening, south: Solid, west: Solid,
+            contents: vec![]},
+      Room {north: Opening, east: Solid, south: Solid, west: Opening,
+            contents: vec![]},
+      Room {north: Solid, east: Opening, south: Opening, west: Solid,
+            contents: vec![]},
+      Room {north: Solid, east: Opening, south: Opening, west: Opening,
+            contents: vec![]},
+      Room {north: Opening, east: Solid, south: Opening, west: Opening,
+            contents: vec![]}
+     ],
+     [Room {north: Solid, east: Opening, south: Opening, west: Solid,
+            contents: vec![]},
+      Room {north: Solid, east: Solid, south: Opening, west: Opening,
+            contents: vec![]},
+      Room {north: Opening, east: Solid, south: Opening, west: Solid,
+            contents: vec![]},
+      Room {north: Opening, east: Solid, south: Opening, west: Solid,
+            contents: vec![]},
+      Room {north: Opening, east: Solid, south: Solid, west: Solid,
+            contents: vec![]}
+     ],
+     [Room {north: Opening, east: Solid, south: Opening, west: Solid,
+            contents: vec![]},
+      Room {north: Opening, east: Opening, south: Solid, west: Solid,
+            contents: vec![]},
+      Room {north: Opening, east: Solid, south: Solid, west: Opening,
+            contents: vec![]},
+      Room {north: Opening, east: Opening, south: Solid, west: Solid,
+            contents: vec![]},
+      Room {north: Solid, east: Solid, south: Opening, west: Opening,
+            contents: vec![]}
+     ],
+     [Room {north: Opening, east: Opening, south: Solid, west: Solid,
+            contents: vec![]},
+      Room {north: Solid, east: Solid, south: Solid, west: Opening,
+            contents: vec![]},
+      Room {north: Solid, east: Opening, south: Solid, west: Solid,
+            contents: vec![]},
+      Room {north: Solid, east: Opening, south: Solid, west: Opening,
+            contents: vec![]},
+      Room {north: Opening, east: Solid, south: Solid, west: Opening,
+            contents: vec![]}
+     ]]
 }
 
-// TODO Iterate through Board
 pub fn display_map(board: &Board, players: &Players) {
-    unimplemented!()
+    for room in board[0].iter() {
+        match room.north {
+            Wall::Solid => print!(" ----"),
+            Wall::Magical{ref word} => print!(" ~~~~"),
+            Wall::Opening => print!("     ")
+        }
+    }
+    println!();
+    for row in board.iter() {        
+        for col in 0..board.len() {
+            if col == 0 {
+                match row[col].west {
+                    Wall::Solid => print!("|"),
+                    Wall::Magical { ref word } => print!(":"),
+                    Wall::Opening => print!(" ")
+                }
+            }
+            match row[col].east {
+                Wall::Solid => print!("    |"),
+                Wall::Magical { ref word } => print!("    :"),
+                Wall::Opening => print!("     ")
+            }
+        }
+        println!();
+        for room in row.iter() {
+            match room.south {
+                Wall::Solid => print!(" ----"),
+                Wall::Magical { ref word } => print!(" ~~~~"),
+                Wall::Opening => print!("     ")
+            }
+        }
+        println!()
+    }
 }
 
-#[derive(Copy, Clone, PartialEq, Eq)]
+#[derive(Copy, Clone, PartialEq, Eq, Debug)]
 pub struct Position {
     x: i32,
     y: i32
@@ -48,7 +130,7 @@ pub struct Position {
 impl Position {
     pub fn new(x: i32, y: i32, board: &Board) -> Position {
         if !xy_in_bounds(&x, &y, board) {
-            panic!("position out of bounds");
+            panic!("position out of bounds")
         }
 
         Position { x: x, y: y }
@@ -78,32 +160,36 @@ pub fn scavenge(player: Player, board: &mut Board) -> Player {
 
     match player {
         Player::Explorer(exp) => {
-            _player = Player::Explorer(exp_scavenge(exp, board));
+            _player = Player::Explorer(exp_scavenge(exp, board))
         },
         Player::Gnome(gnome) => {
-            _player = Player::Gnome(gnome_scavenge(gnome, board));
+            _player = Player::Gnome(gnome_scavenge(gnome, board))
         },
         Player::Leprechaun(lep) => {
-            _player = Player::Leprechaun(lep);
+            _player = Player::Leprechaun(lep)
         }
     }
 
     _player
 }
 
-// FIXME
 fn pos_to_room<'a, 'b>(pos: &'a Position, board: &'b Board) -> &'b Room {
-    unimplemented!()
+    &board[pos.y as usize][pos.x as usize]
 }
 
-// FIXME ASCII graphics
-fn draw_room(room: &Room, occupant: Option<&Player>) {
-    unimplemented!()
-}
-
-// FIXME
 fn display_room_contents(room: &Room) {
-    unimplemented!()
+    println!("room contains:");
+
+    if room.contents.is_empty() {
+        println!("nothing\n");
+        return
+    }
+
+    for thing in room.contents.iter() {
+        println!("{:?}", thing)
+    }
+
+    println!()
 }
 
 fn xy_in_bounds(x: &i32, y: &i32, board: &Board) -> bool {
@@ -120,28 +206,33 @@ fn y_in_bounds(y: &i32, board: &Board) -> bool {
 
 fn exp_scavenge(data: ExplorerData, board: &mut Board) -> ExplorerData {
     let mut exp = data;
+    let pos = players::get_exp_pos(&exp);
     let mut input = String::new();
+    
+    if room_has_torch(&pos, board) || inventory::exp_has_torch(&exp) {
+        let empty = pos_to_room(&pos, board).contents.is_empty();
 
-    if room_has_torch(&players::get_exp_pos(&exp), board) || inventory::exp_has_torch(&exp) {
-        // FIXME loop until room is empty or done
-        loop {
+        while !empty {
             inventory::display_exp_things(&exp);
-            display_room_contents(pos_to_room(&players::get_exp_pos(&exp), board));
+            display_room_contents(pos_to_room(&pos, board));
 
-            // FIXME display commands conditionally
-            println!("Enter letter command: FIXME");
+            println!("Enter letter command: Pick up [F]ood [C]oins tele[P]orter [T]orch or [D]one");
             
             match io::stdin().read_line(&mut input) {
-                Ok(n) => (),
-                Err(why) => { println!("Failed to read line: {:?}", why); continue; }
+                Ok(_) => (),
+                Err(why) => {
+                    println!("Failed to read line: {:?}", why);
+                    input.clear();
+                    continue
+                }
             }
 
-            match input.trim().chars().nth(0) {
+            match input.trim().to_uppercase().chars().nth(0) {
                 Some(command) => {
                     match command {
                         'F' => { exp_pick_up_food(&mut exp, board); exp_eat_food(&mut exp) },
                         'C' => exp_pick_up_coins(&mut exp, board),
-                        'X' => exp_pick_up_teleporter(&mut exp, board),
+                        'P' => exp_pick_up_teleporter(&mut exp, board),
                         'T' => exp_pick_up_torch(&mut exp, board),
                         'D' => break,
                         _ => println!("Invalid command")
@@ -149,9 +240,11 @@ fn exp_scavenge(data: ExplorerData, board: &mut Board) -> ExplorerData {
                 },
                 None => println!("Ignoring leading whitespace")
             }
+
+            input.clear()
         }
     } else {
-        inventory::display_exp_things(&exp);
+        inventory::display_exp_things(&exp)
     }
 
     exp
@@ -172,46 +265,31 @@ fn gnome_scavenge(data: GnomeData, board: &mut Board) -> GnomeData {
 }
 
 // TODO
-fn room_has_food(pos: &Position, board: &Board) -> bool {
-    false
-}
-
-// TODO
-fn room_has_coins(pos: &Position, board: &Board) -> bool {
-    false
-}
-
-// TODO
-fn room_has_teleporter(pos: &Position, board: &Board) -> bool {
-    false
-}
-
-// TODO
 fn room_has_torch(pos: &Position, board: &Board) -> bool {
     false
 }
 
 // TODO
 fn exp_pick_up_food(exp: &mut ExplorerData, board: &mut Board) {
-    unimplemented!()
+    println!("Feature not implemented.")
 }
 
 // TODO
 fn exp_eat_food(exp: &mut ExplorerData) {
-    unimplemented!()
+    println!("Feature not implemented.")
 }
 
 // TODO
 fn exp_pick_up_coins(exp: &mut ExplorerData, board: &mut Board) {
-    unimplemented!()
+    println!("Feature not implemented.")
 }
 
 // TODO
 fn exp_pick_up_teleporter(exp: &mut ExplorerData, board: &mut Board) {
-    unimplemented!()
+    println!("Feature not implemented.")
 }
 
 // TODO
 fn exp_pick_up_torch(exp: &mut ExplorerData, board: &mut Board) {
-    unimplemented!()
+    println!("Feature not implemented.")
 }
