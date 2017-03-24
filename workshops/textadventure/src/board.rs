@@ -24,49 +24,49 @@ struct Room {
     contents: Vec<Thing>
 }
 
-// FIXM Add contents to rooms
 pub fn build_board() -> Board {
     use self::Wall::*;
+    use inventory::Thing::*;
 
     [[Room {north: Solid, east: Solid, south: Opening, west: Solid,
             contents: vec![]},
       Room {north: Solid, east: Opening, south: Opening, west: Opening,
             contents: vec![]},
       Room {north: Solid, east: Opening, south: Solid, west: Opening,
-            contents: vec![]},
+            contents: vec![GoldCoin { denom: 5 }, GoldCoin { denom: 10 }]},
       Room {north: Solid, east: Opening, south: Solid, west: Opening,
             contents: vec![]},
       Room {north: Solid, east: Solid, south: Opening, west: Solid,
-            contents: vec![]}
+            contents: vec![Food { name: String::from("chicken"), energy: 8 }]}
      ],
-     [Room {north: Opening, east: Opening, south: Solid, west: Solid,
+     [Room {north: Opening, east: Opening, south: Magical { word: String::from("aberto") }, west: Solid,
             contents: vec![]},
-      Room {north: Opening, east: Solid, south: Solid, west: Opening,
-            contents: vec![]},
+      Room {north: Magical { word: String::from("aberto") }, east: Solid, south: Solid, west: Opening,
+            contents: vec![Torch, Food { name: String::from("ham"), energy: 9 }]},
       Room {north: Solid, east: Opening, south: Opening, west: Solid,
             contents: vec![]},
       Room {north: Solid, east: Opening, south: Opening, west: Opening,
             contents: vec![]},
       Room {north: Opening, east: Solid, south: Opening, west: Opening,
-            contents: vec![]}
+            contents: vec![GoldCoin { denom: 10 }, GoldCoin { denom: 25 }]}
      ],
      [Room {north: Solid, east: Opening, south: Opening, west: Solid,
             contents: vec![]},
       Room {north: Solid, east: Solid, south: Opening, west: Opening,
+            contents: vec![GoldCoin { denom: 10 }, GoldCoin { denom: 10 }]},
+      Room {north: Opening, east: Magical { word: String::from("godzilla") }, south: Opening, west: Solid,
             contents: vec![]},
-      Room {north: Opening, east: Solid, south: Opening, west: Solid,
-            contents: vec![]},
-      Room {north: Opening, east: Solid, south: Opening, west: Solid,
+      Room {north: Opening, east: Solid, south: Opening, west: Magical { word: String::from("godzilla") },
             contents: vec![]},
       Room {north: Opening, east: Solid, south: Solid, west: Solid,
-            contents: vec![]}
+            contents: vec![Torch]}
      ],
      [Room {north: Opening, east: Solid, south: Opening, west: Solid,
             contents: vec![]},
       Room {north: Opening, east: Opening, south: Solid, west: Solid,
-            contents: vec![]},
+            contents: vec![Torch]},
       Room {north: Opening, east: Solid, south: Solid, west: Opening,
-            contents: vec![]},
+            contents: vec![Food { name: String::from("steak"), energy: 12 }]},
       Room {north: Opening, east: Opening, south: Solid, west: Solid,
             contents: vec![]},
       Room {north: Solid, east: Solid, south: Opening, west: Opening,
@@ -74,14 +74,14 @@ pub fn build_board() -> Board {
      ],
      [Room {north: Opening, east: Opening, south: Solid, west: Solid,
             contents: vec![]},
-      Room {north: Solid, east: Solid, south: Solid, west: Opening,
-            contents: vec![]},
-      Room {north: Solid, east: Opening, south: Solid, west: Solid,
-            contents: vec![]},
+      Room {north: Solid, east: Magical { word: String::from("shazam") }, south: Solid, west: Opening,
+            contents: vec![GoldCoin { denom: 25 }, GoldCoin { denom: 10 }, GoldCoin { denom: 5 }]},
+      Room {north: Solid, east: Opening, south: Solid, west: Magical { word: String::from("shazam") },
+            contents: vec![Teleporter, Food { name: String::from("fruit"), energy: 6 }]},
       Room {north: Solid, east: Opening, south: Solid, west: Opening,
             contents: vec![]},
       Room {north: Opening, east: Solid, south: Solid, west: Opening,
-            contents: vec![]}
+            contents: vec![GoldCoin { denom: 25 }, GoldCoin { denom: 25 }]}
      ]]
 }
 
@@ -89,31 +89,41 @@ pub fn display_map(board: &Board, players: &Players) {
     for room in board[0].iter() {
         match room.north {
             Wall::Solid => print!(" ----"),
-            Wall::Magical{ref word} => print!(" ~~~~"),
+            Wall::Magical{ref word} => print!(" ++++"),
             Wall::Opening => print!("     ")
         }
     }
     println!();
-    for row in board.iter() {        
-        for col in 0..board.len() {
+    for row in 0..board.len() {        
+        for col in 0..board[0].len() {
             if col == 0 {
-                match row[col].west {
+                match board[row][col].west {
                     Wall::Solid => print!("|"),
-                    Wall::Magical { ref word } => print!(":"),
+                    Wall::Magical { ref word } => print!("+"),
                     Wall::Opening => print!(" ")
                 }
             }
-            match row[col].east {
-                Wall::Solid => print!("    |"),
-                Wall::Magical { ref word } => print!("    :"),
-                Wall::Opening => print!("     ")
+            let pos = Position::new(col as i32, row as i32, board);
+            let anyone = last_occupant(&pos, players);
+            let character = match anyone {
+                Some(occupant) => match *occupant {
+                    Player::Explorer(_) => "E",
+                    Player::Gnome(_) => "G",
+                    Player::Leprechaun(_) => "L"
+                },
+                None => " "
+            };
+            match board[row][col].east {
+                Wall::Solid => print!("  {} |", character),
+                Wall::Magical { ref word } => print!("  {} +", character),
+                Wall::Opening => print!("  {}  ", character)
             }
         }
         println!();
-        for room in row.iter() {
+        for room in board[row].iter() {
             match room.south {
                 Wall::Solid => print!(" ----"),
-                Wall::Magical { ref word } => print!(" ~~~~"),
+                Wall::Magical { ref word } => print!(" ++++"),
                 Wall::Opening => print!("     ")
             }
         }
@@ -197,11 +207,11 @@ fn xy_in_bounds(x: &i32, y: &i32, board: &Board) -> bool {
 }
 
 fn x_in_bounds(x: &i32, board: &Board) -> bool {
-    *x < board.len() as i32
+    *x >= 0 && *x < board[0].len() as i32
 }
 
 fn y_in_bounds(y: &i32, board: &Board) -> bool {
-    *y < board[0].len() as i32
+    *y >= 0 && *y < board.len() as i32
 }
 
 fn exp_scavenge(data: ExplorerData, board: &mut Board) -> ExplorerData {
@@ -250,9 +260,10 @@ fn exp_scavenge(data: ExplorerData, board: &mut Board) -> ExplorerData {
     exp
 }
 
-// TODO
-fn latest_occupant<'a, 'b, 'c>(pos: &Position, board: &Board, players: Players) -> Option<&'c Player> {
-    None
+fn last_occupant<'a, 'b>(pos: &'a Position, players: &'b Players) -> Option<&'b Player> {
+    players.iter()
+           .filter(|&player| players::is_occupant(player, pos))
+           .last()
 }
 
 // TODO

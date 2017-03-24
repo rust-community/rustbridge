@@ -73,7 +73,7 @@ pub fn build_players(board: &Board) -> Players {
     lep_things.append(&mut vec![FakeCoin { denom: 25 }; 5]);
     lep_things.append(&mut inventory::all_magic_words(board));
     lep_things.append(&mut inventory::all_fake_words(board));
-    // FIXME rand::Rng shuffle lep_things
+    rand::thread_rng().shuffle(lep_things.as_mut_slice());
 
     let leprechaun = Player::Leprechaun(
         LeprechaunData { pos: Position::new(4, 4, board),

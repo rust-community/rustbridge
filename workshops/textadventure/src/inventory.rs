@@ -8,7 +8,6 @@ use players::Direction;
 use board;
 use board::Board;
 use board::Position;
-
 use std::io;
 
 #[derive(Clone, PartialEq, Eq, Debug)]
