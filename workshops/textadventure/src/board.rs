@@ -24,6 +24,9 @@ struct Room {
     contents: Vec<Thing>
 }
 
+// A hard-coded maze definition.  A maze generator would be a lot cooler.
+// Since the game board is modeled as a 2D array for simplicity walls are
+// double-sided so their types need to match up across adjacent rooms.
 pub fn build_board() -> Board {
     use self::Wall::*;
     use inventory::Thing::*;
@@ -85,6 +88,7 @@ pub fn build_board() -> Board {
      ]]
 }
 
+// Displays the game board and players' positions on it as ASCII art.
 pub fn display_map(board: &Board, players: &Players) {
     for room in board[0].iter() {
         match room.north {
@@ -181,6 +185,16 @@ pub fn scavenge(player: Player, board: &mut Board) -> Player {
     }
 
     _player
+}
+
+// TODO
+pub fn is_opening(room: &Position, wall: &players::Direction, board: &Board) -> bool {
+    false
+}
+
+// TODO
+pub fn open_sesame(word: &String, source: &Position, target: &Position, board: &Board) -> bool {
+    false
 }
 
 fn pos_to_room<'a, 'b>(pos: &'a Position, board: &'b Board) -> &'b Room {

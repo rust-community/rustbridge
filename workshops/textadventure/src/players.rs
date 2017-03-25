@@ -235,11 +235,6 @@ fn teleport_exp(data: &mut ExplorerData, board: &Board) -> bool {
 }
 
 // TODO
-fn is_opening(room: &Position, wall: &Direction, board: &Board) -> bool {
-    false
-}
-
-// TODO
 fn move_exp_north(data: &mut ExplorerData, board: &Board) {
 }
 
@@ -256,16 +251,6 @@ fn move_exp_west(data: &mut ExplorerData, board: &Board) {
 }
 
 // TODO
-fn find_word<'a, 'b>(word: &'a String, things: &'b Vec<Thing>) -> Option<&'b Thing> {
-    None
-}
-
-// TODO
-fn is_magic_word(word: &Thing, board: &Board) -> bool {
-    false
-}
-
-// TODO
-fn open_sesame(word: &Thing, board: &Board) -> bool {
+fn has_word(word: &String, things: &Vec<Thing>) -> bool {
     false
 }
