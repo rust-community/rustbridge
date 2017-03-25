@@ -2,7 +2,6 @@
 name = "rustbridge"
 version = "0.1.0"
 authors = ["Brian Anderson <banderson@mozilla.com>"]
-
 build = "build.rs"
 
 [dependencies]
@@ -13,3 +12,25 @@ walkdir = "1.0.7"
 
 [dev-dependencies]
 skeptic = "0.7.1"
+image = "0.12.3"
+
+[workspace]
+members = [
+    "workshops/beginners/01_single_color_image/",
+    "workshops/beginners/02_simple_image/",
+    "workshops/beginners/03_random_image/",
+    "workshops/machine_learning/spam_or_ham/",
+    "workshops/machine_learning/step_1/",
+    "workshops/machine_learning/step_2/",
+    "workshops/machine_learning/step_3/",
+    "workshops/mondrian-pattern/codebase/mondpaint/",
+    "workshops/textadventure/",
+    "workshops/url_shortener/",
+    "workshops/web-scraper/step000/scraper/",
+    "workshops/web-scraper/step005/scraper/",
+    "workshops/web-scraper/step010/scraper/",
+    "workshops/web-scraper/step015/scraper/",
+    "workshops/web-scraper/step015-alternate/scraper/",
+    "workshops/web-scraper/step999/scraper/",
+    "workshops/web-scraper/step999-alternate/scraper/",
+]
