@@ -1,0 +1,460 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Spam Or Ham? - Rustbridge workshop kit</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <base href="../">
+
+        <link rel="stylesheet" href="book.css">
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+
+        <!-- MathJax -->
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Fetch JQuery from CDN but have a local fallback -->
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script>
+            if (typeof jQuery == 'undefined') {
+                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
+            }
+        </script>
+    </head>
+    <body class="light">
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = localStorage.getItem('theme');
+            if (theme == null) { theme = 'light'; }
+            $('body').removeClass().addClass(theme);
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = localStorage.getItem('sidebar');
+            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
+            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+        </script>
+
+        <div id="sidebar" class="sidebar">
+            <ul class="chapter"><li class="affix"><a href="intro.html">Introduction</a></li><li><a href="./beginners/README.html"><strong>1.</strong> Beginners</a></li><li><ul class="section"><li><a href="./beginners/tutorial-text.html"><strong>1.1.</strong> Tutorial</a></li></ul></li><li><a href="./installfest/README.html"><strong>2.</strong> Installfest</a></li><li><ul class="section"><li><a href="./installfest/user-guide.html"><strong>2.1.</strong> User guide</a></li><li><a href="installfest/presentation-outline.html"><strong>2.2.</strong> Presenter notes</a></li></ul></li><li><a href="./machine_learning/readme.html" class="active"><strong>3.</strong> Spam Or Ham?</a></li><li><a href="./mondrian-pattern/README.html"><strong>4.</strong> Mondrian Pattern Generator</a></li><li><ul class="section"><li><a href="./mondrian-pattern/part1.html"><strong>4.1.</strong> Part 1</a></li><li><a href="./mondrian-pattern/part2.html"><strong>4.2.</strong> Part 2 (WIP)</a></li><li><a href="./mondrian-pattern/CONTRIBUTING.html"><strong>4.3.</strong> Speaker notes</a></li></ul></li><li><a href="./textadventure/textadventure.html"><strong>5.</strong> Text Adventure</a></li><li><a href="./url_shortener/README.html"><strong>6.</strong> URL Shortener</a></li><li><a href="./web-scraper/README.html"><strong>7.</strong> Web Scraper</a></li><li><ul class="section"><li><a href="./web-scraper/doc/demo.html"><strong>7.1.</strong> Tutorial</a></li></ul></li></ul>
+        </div>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar" class="menu-bar">
+                    <div class="left-buttons">
+                        <i id="sidebar-toggle" class="fa fa-bars"></i>
+                        <i id="theme-toggle" class="fa fa-paint-brush"></i>
+                    </div>
+
+                    <h1 class="menu-title">Rustbridge workshop kit</h1>
+
+                    <div class="right-buttons">
+                        <i id="print-button" class="fa fa-print" title="Print this book"></i>
+                    </div>
+                </div>
+
+                <div id="content" class="content">
+                    <a class="header" href="./machine_learning/readme.html#spam-or-ham" name="spam-or-ham"><h1>Spam Or Ham?</h1></a>
+<p>In this tutorial we'll try to carry out a simple classification task using Rust, starting with setting up a new project, through collecting and parsing data, to fitting the model and evaluation.</p>
+<p>We'll proceed through the following steps:</p>
+<ol>
+<li>Setting up a new Rust project</li>
+<li>Programmatically downloading the data</li>
+<li>Unpacking and parsing the data</li>
+<li>Fitting a model and evaluating it</li>
+</ol>
+<p>(If you're impatient, <a href="https://github.com/rust-community/rustbridge/tree/master/workshops/src/machine_learning/spam_or_ham/src/main.rs">here</a> is the finished article.)</p>
+<a class="header" href="./machine_learning/readme.html#preliminaries-getting-rust" name="preliminaries-getting-rust"><h2>Preliminaries: getting Rust</h2></a>
+<p>If you haven't installed Rust yet, don't fret. <a href="https://rustup.rs/">Rustup.rs</a> is a very quick and painless way of installing Rust. Executing <code>curl https://sh.rustup.rs -sSf | sh</code> will download and install a Rust distribution and you'll be ready to go.</p>
+<a class="header" href="./machine_learning/readme.html#setting-up-a-new-project" name="setting-up-a-new-project"><h2>Setting up a new project</h2></a>
+<p>We can set up a new project using Cargo, the Rust package manager. We can do that by executing</p>
+<pre><code>cargo new spam_or_ham --bin
+</code></pre>
+<p>This does a couple of things:</p>
+<ol>
+<li>Creates a new directory, <code>spam_or_ham</code> that contains the structure of a typical Rust project.</li>
+<li>It initializes a new Git repository in that directory.</li>
+<li>It creates a file called <code>Cargo.toml</code> which contains the metadata describing our new package (called a <code>crate</code> in Rust) as well as the specification of it dependencies.</li>
+<li>Finally, it creates a <code>main.rs</code> file in the <code>src/</code> subdirectory, which contains the entry point of our program. Because we passed the <code>--bin</code> flag to Cargo when creating the project, our project builds an executable binary.</li>
+</ol>
+<p>At the beginning, our <code>main.rs</code> looks like this:</p>
+<pre><pre class="playpen"><code class="language-rust">fn main() {
+    println!(&quot;Hello, world!&quot;);
+}
+</code></pre></pre>
+<p>The exclamation mark denotes <a href="https://doc.rust-lang.org/book/macros.html">marcos</a>: in the case of <code>println!</code>, this allows variadic calls.</p>
+<p>We can run it to verify that it works through invoking Cargo:</p>
+<pre><code>&gt; cargo run
+&gt;&gt;&gt;     Compiling spam_or_ham v0.1.0 (file:///home/maciej/Code/rustbridge/workshop/machine_learning/spam_or_ham)
+&gt;&gt;&gt;     Running `target/debug/spam_or_ham`
+&gt;&gt;&gt;     Hello, world!
+</code></pre>
+<p><code>cargo run</code> builds the project (resolving any dependencies) and runs it; <code>cargo build</code> will simply compile it, and <code>cargo test</code> will run the tests (but we don't have any yet).</p>
+<a class="header" href="./machine_learning/readme.html#getting-the-data" name="getting-the-data"><h2>Getting the data</h2></a>
+<p>For this example, we'll use the <a href="https://archive.ics.uci.edu/ml/datasets/SMS+Spam+Collection#">SMS Spam Dataset</a>. It contains 5574 text messages labelled as either spam or ham. The data looks roughly like this:</p>
+<pre><code>ham Go until jurong point, crazy.. Available only in bugis n great world la e buffet... 
+ham Ok lar... Joking wif u oni...
+spam    Free entry in 2 a wkly comp to win FA Cup final tkts 21st May 2005.
+ham U dun say so early hor... U c already then say...
+</code></pre>
+<a class="header" href="./machine_learning/readme.html#downloading-the-data" name="downloading-the-data"><h3>Downloading the data</h3></a>
+<p>Let's write a function to download the data.</p>
+<p>To do this, we need to talk about dependencies: the Rust standard library has a fairly narrow focus, and a lot of key tasks are delegated to third-party libraries (called crates). For downloading the dataset we'll use a package called <code>hyper</code>.</p>
+<p>The package repository is <a href="crates.io">crates.io</a>. The crates.io <code>hyper</code> <a href="https://crates.io/crates/hyper">page</a> gives us a couple of pieces of information about the package</p>
+<ol>
+<li>A link to its <a href="http://hyperium.github.io/hyper">documentation</a></li>
+<li>A link to its <a href="https://github.com/hyperium/hyper">repository</a></li>
+<li>Its download statistics. This is a good guide to figuring out which library is the standard way of doing a given thing in Rust.</li>
+<li>Its <code>Cargo.toml</code> line: the line you to include in your <code>Cargo.toml</code> file to include it as a dependency for your project.</li>
+</ol>
+<p>We copy that line into the dependencies section of <code>Cargo.toml</code>. It should look like this:</p>
+<pre><code>[package]
+name = &quot;spam_or_ham&quot;
+version = &quot;0.1.0&quot;
+
+[dependencies]
+hyper = &quot;0.9.10&quot;
+</code></pre>
+<p>That's it! If we run <code>cargo run</code>, we should see output similar to the following:</p>
+<pre><code>&gt; cargo run
+&gt;&gt;&gt; Updating registry `https://github.com/rust-lang/crates.io-index`
+&gt;&gt;&gt; Downloading hyper v0.9.10
+&gt;&gt;&gt; Downloading language-tags v0.2.2
+&gt;&gt;&gt; Downloading mime v0.2.2
+&gt;&gt;&gt; &lt;snip&gt;
+&gt;&gt;&gt; Compiling cookie v0.2.5
+&gt;&gt;&gt; Compiling hyper v0.9.10
+&gt;&gt;&gt; Compiling spam_or_ham v0.1.0
+&gt;&gt;&gt; Running `target/debug/spam_or_ham`
+&gt;&gt;&gt; Hello, world!
+</code></pre>
+<p>(If you're on a Mac, you may need to <a href="http://apple.stackexchange.com/questions/126830/how-to-upgrade-openssl-in-os-x">install OpenSSL</a> via Homebrew.</p>
+<p>This means cargo has downloaded and compiled <code>hyper</code> (and all of its dependencies) before building our project. We are now set to start using it!</p>
+<p>Our download function will look something like this</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+fn download(url: &amp;str) -&gt; Vec&lt;u8&gt; {
+   // snip
+}
+
+#}</code></pre></pre>
+<p>We download a resource by its URL and return an array of bytes (a <code>Vec&lt;u8&gt;&gt;</code>). In order to start writing the body of the function, we need to impor the <code>hyper</code> dependency. We do this by putting <code>extern crate hyper;</code> at the top of <code>main.rs</code>. This imports the <code>hyper</code> module into the scope of our project.</p>
+<p>Looking at the GET example in the <code>hyper</code> <a href="http://hyper.rs/hyper/v0.9.10/hyper/client/index.html#get">documentation</a>, we should be able to write somthing along the lines of</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+let client = Client::new();
+let mut response = client.get(url).send().unwrap();
+
+#}</code></pre></pre>
+<p>The first line instantiates a HTTP client; the second one makes the request. There are two interesting things about it.</p>
+<p>Firstly, the <a href="http://hyper.rs/hyper/v0.9.10/hyper/client/struct.RequestBuilder.html#method.send">return type</a> of <code>send()</code> is <code>Result&lt;Response&gt;</code> --- why is that? Rust uses <code>Result</code> types to handle the results of computations that can fail. In this instance, downloading the data can succeed (in which case we would get an <code>Ok&lt;Response&gt;</code> variant of <code>Result&lt;Response&gt;</code>), or fail (due to network issues, a moved resource and so on). In that case, we'd get an <code>Err</code> variant. That the compiler then forces us to properly handle both cases is part of Rust's focus on safety.</p>
+<p>So how do we handle a <code>Result</code> type? Rust provides an extremely powerful <a href="https://doc.rust-lang.org/book/patterns.html">pattern matching</a> paradigm, but in this simple case we're just going to skip error handling and call <code>unwrap</code> on all of the <code>Result</code>s we encounter. This causes the program to abort whenever there is an error.</p>
+<p>Secondly, we want to bind the resulting response to a mutable variable, and so we use the <code>mut</code> modifier when binding the response variable. While Rust's <a href="https://doc.rust-lang.org/book/mutability.html">mutability</a> system is simple, it is somewhat beyond the scope of this tutorial. All we need to know is that we modify the response when reading from it, so we need to declare it as mutable.</p>
+<p>Once we have our response we want to convert it to a byte array with something like the following:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+let mut data = Vec::new();
+response.read_to_end(&amp;mut data).unwrap()
+
+#}</code></pre></pre>
+<p>For this to work, we also need to import the <code>Read</code> <a href="https://doc.rust-lang.org/book/traits.html">trait</a> into our scope by adding <code>use std::io::Read;</code> at the top of the file. The reasons for this are somewhat arcane so we'll skip them here.</p>
+<p>Once that's completed we simply return the <code>data</code> variable by including it on the last line of the function (the last line of any expression is its return value):</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+fn download(url: &amp;str) -&gt; Vec&lt;u8&gt; {
+
+    let client = Client::new();
+    let mut response = client.get(url).send().unwrap();
+
+    let mut data = Vec::new();
+    response.read_to_end(&amp;mut data).unwrap();
+
+    data
+}
+
+#}</code></pre></pre>
+<p>We can check that it works by calling it in the <code>main</code> function:</p>
+<pre><pre class="playpen"><code class="language-rust">fn main() {
+    let zipped = download(&quot;https://archive.ics.uci.\
+                           edu/ml/machine-learning-databases/00228/smsspamcollection.zip&quot;);
+    println!(&quot;Downloaded {} bytes of data&quot;, zipped.len());
+}
+</code></pre></pre>
+<p>At this stage, we should have something like <a href="step_1">this</a>.</p>
+<a class="header" href="./machine_learning/readme.html#unzipping-the-data" name="unzipping-the-data"><h3>Unzipping the data</h3></a>
+<p>We have downloaded a zipped archive: the next step is to unzip it. We'll need another dependency to do that, the <a href="https://crates.io/crates/zip">zip</a> crate. As before, we add it to the <code>Cargo.toml</code> file</p>
+<pre><code>[dependencies]
+hyper = &quot;0.9.10&quot;
+zip = &quot;0.1.18&quot;
+</code></pre>
+<p>and then import it in <code>main.rs</code>, together with the <code>ZipArchive</code> struct:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+extern crate zip;
+&lt;snip&gt;
+use zip::read::ZipArchive;
+
+#}</code></pre></pre>
+<p>Our unzip function will take the vector of bytes from the download function, and return a <code>String</code>. It could look like this:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+// We need to add the Cursor import 
+use std::io::{Cursor, Read};
+
+&lt;snip&gt;
+
+fn unzip(zipped: Vec&lt;u8&gt;) -&gt; String {
+    let mut archive = ZipArchive::new(Cursor::new(zipped)).unwrap();
+    let mut file = archive.by_name(&quot;SMSSpamCollection&quot;).unwrap();
+
+    let mut data = String::new();
+    file.read_to_string(&amp;mut data).unwrap();
+
+    data
+}
+
+#}</code></pre></pre>
+<p>We open the archive, select the file we want from it, and read it into a <code>String</code> which we then return (dealing with <code>Result</code> types by unwrapping them.</p>
+<p>We can print some lines as a quick sanity check:</p>
+<pre><pre class="playpen"><code class="language-rust">fn main() {
+    let zipped = download(&quot;https://archive.ics.uci.\
+                           edu/ml/machine-learning-databases/00228/smsspamcollection.zip&quot;);
+    let raw_data = unzip(zipped);
+
+    for line in raw_data.lines().take(3) {
+        println!(&quot;{}&quot;, line);
+    }
+}
+</code></pre></pre>
+<p>This gives us a first look at Rust iterators <code>raw_data.lines()</code> creates an iterator over slices of the string, separates by newlines; we then take 3 elements from it and print them. Rust's functional features manifest themselves in a a large array of powerful <a href="https://doc.rust-lang.org/book/iterators.html#iterator-adaptors">iterator adapters</a> which are not only convenient but also compile to efficient machine code equivalent to traditional C and C++ for loops.</p>
+<p>The source at this stage should look like <a href="https://github.com/rust-community/rustbridge/tree/master/workshops/src/machine_learning/step_2">this</a>.</p>
+<a class="header" href="./machine_learning/readme.html#building-training-matrices" name="building-training-matrices"><h3>Building training matrices</h3></a>
+<p>We're going to use a package called <a href="https://crates.io/crates/rustlearn">rustlearn</a> for model fitting an evaluation. As before, we add it to <code>Cargo.toml</code> and import it:</p>
+<pre><code>[dependencies]
+hyper = &quot;0.9.10&quot;
+zip = &quot;0.1.18&quot;
+rustlearn = &quot;0.4.0&quot;
+</code></pre>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+extern crate rustlearn;
+
+&lt;snip&gt;
+
+use rustlearn::prelude::*;
+
+#}</code></pre></pre>
+<p>The first step is to transform the data into a feature matrix and a target array. We'll transform every label into either a 1 (ham) or 0 (spam), and use one-hot-encoded bag of words features. For one-hot-encoding we're going to use <a href="https://maciejkula.github.io/rustlearn/doc/rustlearn/feature_extraction/dict_vectorizer/struct.DictVectorizer.html">DictVectorizer</a>, and return a sparse array for features and a dense array for labels:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+use rustlearn::feature_extraction::DictVectorizer;
+
+&lt;snip&gt;
+
+fn parse(data: &amp;str) -&gt; (SparseRowArray, Array) {
+
+    // Initialise the vectorizer
+    let mut vectorizer = DictVectorizer::new();
+    let mut labels = Vec::new();
+
+    // Like Python enumerate(), this will iterate
+    // over pairs of (row_number, line).
+    for (row_num, line) in data.lines().enumerate() {
+        // The label and text message content is separated by a tab.
+        // We split the line in two here.
+        let (label, text) = line.split_at(line.find('\t').unwrap());
+
+        // Convert the labels to binary. We use pattern matching
+        // to ensure that the program is aborted if an unexpected
+        // label is encountered.
+        labels.push(match label {
+            &quot;spam&quot; =&gt; 0.0,
+            &quot;ham&quot; =&gt; 1.0,
+            _ =&gt; panic!(format!(&quot;Invalid label: {}&quot;, label))
+        });
+
+        // The vectorizer will keep a mapping from tokens
+        // to column indices.
+        for token in text.split_whitespace() {
+            vectorizer.partial_fit(row_num, token, 1.0);
+        }
+    }
+
+    (vectorizer.transform(), Array::from(labels))
+}
+
+#}</code></pre></pre>
+<p>Calling the function</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+let (X, y) = parse(&amp;raw_data);
+
+println!(&quot;X: {} rows, {} columns, {} non-zero entries&quot;,
+          X.rows(), X.cols(), X.nnz());
+
+#}</code></pre></pre>
+<p>should print <code>X: 5574 rows, 15733 columns, 81085 non-zero entries. Y: 86.60% positive class</code>.</p>
+<p>The code should look like <a href="https://github.com/rust-community/rustbridge/tree/master/workshops/src/machine_learning/step_3">this</a>.</p>
+<a class="header" href="./machine_learning/readme.html#fitting-and-evaluating-the-model" name="fitting-and-evaluating-the-model"><h3>Fitting and evaluating the model</h3></a>
+<p>Once we have the data, model fitting is easy. We can create a <a href="https://maciejkula.github.io/rustlearn/doc/rustlearn/linear_models/sgdclassifier/index.html">logistic regression model</a> like so:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+use rustlearn::linear_models::sgdclassifier;
+
+&lt;snip&gt;
+
+let mut model = sgdclassifier::Hyperparameters::new(X.cols())
+            .learning_rate(0.05)
+            .l2_penalty(0.01)
+            .build();
+
+#}</code></pre></pre>
+<p>Adding cross validation and evaluation gives us:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+use rustlearn::cross_validation::CrossValidation;
+use rustlearn::metrics::accuracy_score;
+
+&lt;snip&gt;
+
+fn fit(X: &amp;SparseRowArray, y: &amp;Array) -&gt; (f32, f32) {
+
+    let num_epochs = 10;
+    let num_folds = 10;
+
+    let mut test_accuracy = 0.0;
+    let mut train_accuracy = 0.0;
+
+    // The cross validation interator returns indices of train and test rows
+    for (train_indices, test_indices) in CrossValidation::new(y.rows(), num_folds) {
+
+        // Slice the feature matrices
+        let X_train = X.get_rows(&amp;train_indices);
+        let X_test = X.get_rows(&amp;test_indices);
+
+        // Slice the target vectors
+        let y_train = y.get_rows(&amp;train_indices);
+        let y_test = y.get_rows(&amp;test_indices);
+
+        let mut model = sgdclassifier::Hyperparameters::new(X.cols())
+            .learning_rate(0.05)
+            .l2_penalty(0.01)
+            .build();
+
+        // Repeated calls to `fit` perform epochs of training
+        for _ in 0..num_epochs {
+            model.fit(&amp;X_train, &amp;y_train).unwrap();
+        }
+
+        let fold_test_accuracy = accuracy_score(&amp;y_test, &amp;model.predict(&amp;X_test).unwrap());
+        let fold_train_accuracy = accuracy_score(&amp;y_train, &amp;model.predict(&amp;X_train).unwrap());
+
+        test_accuracy += fold_test_accuracy;
+        train_accuracy += fold_train_accuracy;
+    }
+
+    (test_accuracy / num_folds as f32,
+     train_accuracy / num_folds as f32)
+}
+
+#}</code></pre></pre>
+<p>Calling it</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+let (test_accuracy, train_accuracy) = fit(&amp;X, &amp;y);
+
+println!(&quot;Test accuracy: {:.3}, train accuracy: {:.3}&quot;,
+         test_accuracy, train_accuracy);
+
+#}</code></pre></pre>
+<p>should print <code>Test accuracy: 0.974, train accuracy: 0.994</code>: slight overfitting, but still a pretty decent model.</p>
+<p>We can also try timing the model fitting be using the <code>time</code> crate:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+extern crate time;
+
+&lt;snip&gt;
+
+let start_time = time::precise_time_ns();
+let (test_accuracy, train_accuracy) = fit(&amp;X, &amp;y);
+let duration = time::precise_time_ns() - start_time;
+
+println!(&quot;Training time: {:.3} seconds&quot;,
+         duration as f64 / 1.0e+9);
+
+#}</code></pre></pre>
+<p>On my machine, this prints <code>Training time: 5.519 seconds</code>, which is pretty slow --- and that's because we have so far been compiling in debug mode. To compile in release mode, run <code>cargo run --release</code>. This brings the execution time down to just over 1 second.</p>
+<p>The final source is <a href="https://github.com/rust-community/rustbridge/tree/master/workshops/src/machine_learning/spam_or_ham/src/main.rs">here</a>.</p>
+
+                </div>
+
+                <!-- Mobile navigation buttons -->
+                
+                    <a href="installfest/presentation-outline.html" class="mobile-nav-chapters previous">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="./mondrian-pattern/README.html" class="mobile-nav-chapters next">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+
+            </div>
+
+            
+                <a href="installfest/presentation-outline.html" class="nav-chapters previous" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+            
+
+            
+                <a href="./mondrian-pattern/README.html" class="nav-chapters next" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if ($(".fa").css("font-family") !== "FontAwesome") {
+                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            }
+        </script>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+    </body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Mondrian Pattern Generator - Rustbridge workshop kit</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <base href="../">
+
+        <link rel="stylesheet" href="book.css">
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+
+        <!-- MathJax -->
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Fetch JQuery from CDN but have a local fallback -->
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script>
+            if (typeof jQuery == 'undefined') {
+                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
+            }
+        </script>
+    </head>
+    <body class="light">
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = localStorage.getItem('theme');
+            if (theme == null) { theme = 'light'; }
+            $('body').removeClass().addClass(theme);
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = localStorage.getItem('sidebar');
+            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
+            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+        </script>
+
+        <div id="sidebar" class="sidebar">
+            <ul class="chapter"><li class="affix"><a href="intro.html">Introduction</a></li><li><a href="./beginners/README.html"><strong>1.</strong> Beginners</a></li><li><ul class="section"><li><a href="./beginners/tutorial-text.html"><strong>1.1.</strong> Tutorial</a></li></ul></li><li><a href="./installfest/README.html"><strong>2.</strong> Installfest</a></li><li><ul class="section"><li><a href="./installfest/user-guide.html"><strong>2.1.</strong> User guide</a></li><li><a href="installfest/presentation-outline.html"><strong>2.2.</strong> Presenter notes</a></li></ul></li><li><a href="./machine_learning/readme.html"><strong>3.</strong> Spam Or Ham?</a></li><li><a href="./mondrian-pattern/README.html" class="active"><strong>4.</strong> Mondrian Pattern Generator</a></li><li><ul class="section"><li><a href="./mondrian-pattern/part1.html"><strong>4.1.</strong> Part 1</a></li><li><a href="./mondrian-pattern/part2.html"><strong>4.2.</strong> Part 2 (WIP)</a></li><li><a href="./mondrian-pattern/CONTRIBUTING.html"><strong>4.3.</strong> Speaker notes</a></li></ul></li><li><a href="./textadventure/textadventure.html"><strong>5.</strong> Text Adventure</a></li><li><a href="./url_shortener/README.html"><strong>6.</strong> URL Shortener</a></li><li><a href="./web-scraper/README.html"><strong>7.</strong> Web Scraper</a></li><li><ul class="section"><li><a href="./web-scraper/doc/demo.html"><strong>7.1.</strong> Tutorial</a></li></ul></li></ul>
+        </div>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar" class="menu-bar">
+                    <div class="left-buttons">
+                        <i id="sidebar-toggle" class="fa fa-bars"></i>
+                        <i id="theme-toggle" class="fa fa-paint-brush"></i>
+                    </div>
+
+                    <h1 class="menu-title">Rustbridge workshop kit</h1>
+
+                    <div class="right-buttons">
+                        <i id="print-button" class="fa fa-print" title="Print this book"></i>
+                    </div>
+                </div>
+
+                <div id="content" class="content">
+                    <a class="header" href="./mondrian-pattern/README.html#mondrian-pattern-generator" name="mondrian-pattern-generator"><h1>Mondrian Pattern Generator</h1></a>
+<p><a title="Piet Mondrian [Public domain], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File%3ATableau_I%2C_by_Piet_Mondriaan.jpg"><img width="512" alt="Tableau I, by Piet Mondriaan" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Tableau_I%2C_by_Piet_Mondriaan.jpg/512px-Tableau_I%2C_by_Piet_Mondriaan.jpg"/>
+</a></p>
+<p>Piet Mondrian (7 March 1872 - 1 February 1944) is probably best known for establishing a distinctive visual pattern in our cultural heritage. Its characteristic way of creating images by making subsequent, orthogonal subdivisions has inspired not only fashion designers and confectioners but also <a href="https://github.com/qiyuangong/Mondrian">computer scientists</a>.</p>
+<p><a title="By Eric Koch / Anefo (Nationaal Archief) [CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0)], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File%3AMondriaanmode_door_Yves_St_Laurent_(1966).jpg"><img width="30%" alt="Mondriaanmode door Yves St Laurent (1966)" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Mondriaanmode_door_Yves_St_Laurent_%281966%29.jpg/512px-Mondriaanmode_door_Yves_St_Laurent_%281966%29.jpg"/></a>
+<a title="By Heidi De Vries [CC BY 2.0 (http://creativecommons.org/licenses/by/2.0)], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File%3AMondrian_Cake.jpg"><img width="30%" alt="Mondrian Cake" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Mondrian_Cake.jpg/512px-Mondrian_Cake.jpg"/></a></p>
+<p>[Images from: <a href="https://commons.wikimedia.org/">Wikimedia Commons</a>]</p>
+<a class="header" href="./mondrian-pattern/README.html#what-you-will-learn" name="what-you-will-learn"><h2>What you will learn</h2></a>
+<p>The workshop gives priority to <em>doing</em> rather than <em>understanding</em>. Precise instructions will be given without much theoretical background. To do something for the first time is a great experience in itself even if you only have a sketchy picture of what is going on.</p>
+<p>This sounds odd for learning a new technology skill where there is a lot of background required, no doubt! There will be plenty of situations that require you to continue without full understanding. However, if you enjoy your first contact with rust you will have the energy and motivation develop your skills further. You will need that motivation! If you are motivated and have patience to reflect on the explanations and to do further practical exercises you will be better of on the long run.</p>
+<p><strong>Bon courage!</strong></p>
+<a class="header" href="./mondrian-pattern/README.html#intro" name="intro"><h2>Intro</h2></a>
+<p>If you want to make a piece of silicon do what you want you have to give it extremely precise instructions. We call this activity <em>programming</em>. In the end, all computers, mobile phones etc. are just wires, silicon and so on.</p>
+<p>The first step is to understand the problem in a precise way. The universe is incredibly complex.</p>
+<ul>
+<li>
+<p>What am I interested in?</p>
+</li>
+<li>
+<p>What am I <em>not</em> interested in?</p>
+</li>
+<li>
+<p>Which information do I have?</p>
+</li>
+<li>
+<p>Which information do I need?</p>
+</li>
+<li>
+<p>How can I derive or <em>create</em> the information I need based on the information I have.</p>
+</li>
+</ul>
+<a class="header" href="./mondrian-pattern/README.html#the-mondrian-universe" name="the-mondrian-universe"><h3>The Mondrian Universe</h3></a>
+<p><img src="images/mondrian-associations.jpg" alt="" /></p>
+<p>[Image from: <a href="http://visuwords.com">Visuwords (TM)</a>]</p>
+<a class="header" href="./mondrian-pattern/README.html#what-to-focus-on" name="what-to-focus-on"><h3>What to focus on?</h3></a>
+<p><img src="images/mondrian-associations-focus.jpg" alt="" /></p>
+<p><strong>What are we not interested in?</strong> (At least not for our little project here.) His biography. The techniques of painting. And so on.</p>
+<p><strong>What are we interested in?</strong> The paintings of Piet Mondrian. They are oil paintings on canvas. The canvas is made of some fabric (linen) which is a plant... The paint is some colourful substances mixed with oil as a suspension -- We could continue like this for ever.</p>
+<p><strong>What aspect(s) of his paintings are we interested in?</strong> The distinctive visual patterns.</p>
+<p>For us as humans, all these things are often immediately clear but for the machines we want to program they are not.</p>
+<a class="header" href="./mondrian-pattern/README.html#mondrian-patterns" name="mondrian-patterns"><h3>Mondrian Patterns</h3></a>
+<p>What makes this type of pattern <em>this</em> type of pattern?</p>
+<ul>
+<li>
+<p>We see the <em>canvas</em> as a rectangular surface that has a colour at each location. Initially it is white or some other more or less uniform colour.</p>
+</li>
+<li>
+<p>The Mondrian Painting is a canvas filled with coloured rectangular areas bounded by black borders.</p>
+</li>
+</ul>
+<p>With this description we certainly make an over-simplification, omitting many aspects of the choices he made regarding composition, geometry, colour... We will see more of the complexity as we proceed.</p>
+<p>Nonetheless, this is (still) not precise enough to define the distinctive pattern we are interested in. It could also mean something like <a href="https://williamaadams.wordpress.com/2013/12/12/multitask-ui-like-its-1995/">random rectangles</a>.</p>
+<p>Also, although we can discuss what Piet Mondrian considered a &quot;valid&quot; mondrian pattern, for this course we also do not want any of these to be produced:</p>
+<p><img width="20%" style="padding:10px" src="images/oddPatterns01.jpg"/>
+<img width="20%" style="padding:10px" src="images/oddPatterns02.jpg"/>
+<img width="20%" style="padding:10px" src="images/oddPatterns03.jpg"/></p>
+<p>Up to now, nothing in our <em>definition</em> makes sure the rectangles</p>
+<ul>
+<li>
+<p>are aligned with the edge of the canvas,</p>
+</li>
+<li>
+<p>cover the whole canvas,</p>
+</li>
+<li>
+<p>do not overlap, producing non-rectangular remainders.</p>
+</li>
+</ul>
+<p>With <em>Mondrian Pattern</em> we will refer to a rectangular area, the <em>canvas</em>, filled <em>completely</em> with differently <em>coloured rectangles</em>. The rectangles are oriented 'upright' so that their edges are aligned with the borders of the canvas.</p>
+<a class="header" href="./mondrian-pattern/README.html#processing-mondrian-patterns" name="processing-mondrian-patterns"><h3>Processing Mondrian Patterns</h3></a>
+<p>To fill a given rectangular <em>canvas</em> with a pattern that satisfies the criteria of the definition we can use these steps:</p>
+<ol>
+<li>
+<p>Make vertical/horizontal subdivisions so that rectangular sub-regions emerge.</p>
+</li>
+<li>
+<p>Paint each sub-region with a coloured rectangle and paint a black border around it.</p>
+</li>
+</ol>
+<p>There are other ways of achieving similar or the same type of pattern. Also, we are far from a level of precision that would suit programming a machine to do it. But for us humans, we have gained a lot of precision already.</p>
+<a class="header" href="./mondrian-pattern/README.html#practice-the-workshops" name="practice-the-workshops"><h2>Practice: &quot;The Workshops&quot;</h2></a>
+<p>Each step in the instructions is marked by a ▶▶.</p>
+<a class="header" href="./mondrian-pattern/README.html#before-you-start" name="before-you-start"><h3>Before you start</h3></a>
+<p>▶▶ If you have not <a href="https://github.com/rust-community/rustbridge/blob/master/workshops/installfest/user-guide.md">set up your machine for coding</a> please do so, now.</p>
+<p>▶▶ Currently (but hopefully this is going to change in the near future), you need <code>gcc</code> installed in order to have graphics output available.</p>
+<p>TODO: Add link to gcc install instructions as soon as they exist.</p>
+<a class="header" href="./mondrian-pattern/README.html#alternative-learning-ressources" name="alternative-learning-ressources"><h3>Alternative learning ressources</h3></a>
+<p><strong>If you are a programming newcomer</strong> and if you do not want to (or failed to) set up a computer for coding right now, we suggest to have a look at these alternatives:</p>
+<ul>
+<li>
+<p><a href="http://rustbyexample.com/">rustbyexample.com</a></p>
+</li>
+<li>
+<p><a href="http://exercism.io/languages/rust">exercism.io</a></p>
+</li>
+</ul>
+<a class="header" href="./mondrian-pattern/README.html#setup-a-first-project" name="setup-a-first-project"><h3>Setup a first project</h3></a>
+<p>Make a new project named <code>mondpaint</code>:</p>
+<p>▶▶ Type <code>cargo new --bin mondpaint</code> into the console and hit the <code>Enter</code> key.</p>
+<p>▶▶ Type <code>cd mondpaint</code> into the console, and hit the <code>Enter</code> key.</p>
+<a class="header" href="./mondrian-pattern/README.html#testing" name="testing"><h4>[Testing]</h4></a>
+<p>Create an executable program and execute it:</p>
+<p>▶▶ Type <code>cargo run</code> into the console and hit the <code>Enter</code> key.</p>
+<p>Your console should now look something like this:
+<img src="images/console_run-hello-world.jpg" alt="" /></p>
+<a class="header" href="./mondrian-pattern/README.html#part-i" name="part-i"><h3>Part I</h3></a>
+<p>This part is dedicated to people with no prior programming experience. Detailed instructions guide learners through minimal interventions in an existing piece of rust code. Each step changes the Mondrian pattern in an important way, in turn providing visual feedback to the learner.</p>
+<p><a href="part1.md">continue to Part I</a></p>
+<a class="header" href="./mondrian-pattern/README.html#part-ii" name="part-ii"><h3>Part II</h3></a>
+<p>TODO: The second part is yet to be developed!</p>
+<p>It is dedicated to people who have made some more coding experience for themselves, either in rust or in another language.</p>
+<p>The mondrian pattern generator follows the idea of rust as a parallel processing systems programming language. Part II will directly address rust-specific concepts related to multi-threading.</p>
+<p><a href="part2.md">sneek into unfinnished Part II</a></p>
+<hr />
+<p><a href="part1.md">Continue to Part I</a> | <a href="part2.md">sneek into unfinnished Part II</a></p>
+
+                </div>
+
+                <!-- Mobile navigation buttons -->
+                
+                    <a href="./machine_learning/readme.html" class="mobile-nav-chapters previous">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="./mondrian-pattern/part1.html" class="mobile-nav-chapters next">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+
+            </div>
+
+            
+                <a href="./machine_learning/readme.html" class="nav-chapters previous" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+            
+
+            
+                <a href="./mondrian-pattern/part1.html" class="nav-chapters next" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if ($(".fa").css("font-family") !== "FontAwesome") {
+                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            }
+        </script>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+    </body>
+</html>

@@ -1,0 +1,403 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Part 1 - Rustbridge workshop kit</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <base href="../">
+
+        <link rel="stylesheet" href="book.css">
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+
+        <!-- MathJax -->
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Fetch JQuery from CDN but have a local fallback -->
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script>
+            if (typeof jQuery == 'undefined') {
+                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
+            }
+        </script>
+    </head>
+    <body class="light">
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = localStorage.getItem('theme');
+            if (theme == null) { theme = 'light'; }
+            $('body').removeClass().addClass(theme);
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = localStorage.getItem('sidebar');
+            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
+            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+        </script>
+
+        <div id="sidebar" class="sidebar">
+            <ul class="chapter"><li class="affix"><a href="intro.html">Introduction</a></li><li><a href="./beginners/README.html"><strong>1.</strong> Beginners</a></li><li><ul class="section"><li><a href="./beginners/tutorial-text.html"><strong>1.1.</strong> Tutorial</a></li></ul></li><li><a href="./installfest/README.html"><strong>2.</strong> Installfest</a></li><li><ul class="section"><li><a href="./installfest/user-guide.html"><strong>2.1.</strong> User guide</a></li><li><a href="installfest/presentation-outline.html"><strong>2.2.</strong> Presenter notes</a></li></ul></li><li><a href="./machine_learning/readme.html"><strong>3.</strong> Spam Or Ham?</a></li><li><a href="./mondrian-pattern/README.html"><strong>4.</strong> Mondrian Pattern Generator</a></li><li><ul class="section"><li><a href="./mondrian-pattern/part1.html" class="active"><strong>4.1.</strong> Part 1</a></li><li><a href="./mondrian-pattern/part2.html"><strong>4.2.</strong> Part 2 (WIP)</a></li><li><a href="./mondrian-pattern/CONTRIBUTING.html"><strong>4.3.</strong> Speaker notes</a></li></ul></li><li><a href="./textadventure/textadventure.html"><strong>5.</strong> Text Adventure</a></li><li><a href="./url_shortener/README.html"><strong>6.</strong> URL Shortener</a></li><li><a href="./web-scraper/README.html"><strong>7.</strong> Web Scraper</a></li><li><ul class="section"><li><a href="./web-scraper/doc/demo.html"><strong>7.1.</strong> Tutorial</a></li></ul></li></ul>
+        </div>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar" class="menu-bar">
+                    <div class="left-buttons">
+                        <i id="sidebar-toggle" class="fa fa-bars"></i>
+                        <i id="theme-toggle" class="fa fa-paint-brush"></i>
+                    </div>
+
+                    <h1 class="menu-title">Rustbridge workshop kit</h1>
+
+                    <div class="right-buttons">
+                        <i id="print-button" class="fa fa-print" title="Print this book"></i>
+                    </div>
+                </div>
+
+                <div id="content" class="content">
+                    <p><a href="./mondrian-pattern/README.md">Back to the introduction</a> | <a href="./mondrian-pattern/part2.md">Continue to Part II</a></p>
+<hr />
+<a class="header" href="./mondrian-pattern/part1.html#mondrian-pattern-generator-part-i" name="mondrian-pattern-generator-part-i"><h1>Mondrian Pattern Generator (Part I)</h1></a>
+<a class="header" href="./mondrian-pattern/part1.html#what-to-learn-in-this-part" name="what-to-learn-in-this-part"><h2>What to learn in this part?</h2></a>
+<ul>
+<li>Invoke Operations (Alias: Call Functions)</li>
+<li>Variables</li>
+<li>When invoking an operation, specify how it should do its job in detail (Alias: Arguments/Parameter variables)</li>
+<li>Define new Operations (Alias: Function definitions)</li>
+<li>How to read rust error messages</li>
+<li>Let Operations invoke other operations in non-trivial combinations</li>
+</ul>
+<a class="header" href="./mondrian-pattern/part1.html#exercises" name="exercises"><h2>Exercises</h2></a>
+<a class="header" href="./mondrian-pattern/part1.html#exercise-0-start-with-a-prepared-minimal-mondrian-pattern" name="exercise-0-start-with-a-prepared-minimal-mondrian-pattern"><h3>Exercise 0: Start with a prepared minimal Mondrian pattern</h3></a>
+<p><img src="./mondrian-pattern/images/fig00_exercise-start.jpg" alt="" /></p>
+<p>At this point, you have executed a minimal <code>Hello World</code> rust project already! If not, please go <a href="./mondrian-pattern/README.md">back to the introduction</a>.
+Now, replace that first project with the minimal Mondrian pattern generator:</p>
+<p>▶▶ Open the files <code>main.rs</code> (in the subfolder <code>src</code>) and <code>Cargo.toml</code> in your text editor.</p>
+<p>If you are unsure where to find the files and/or how to open them in a text editor there are <a href="https://github.com/broesamle/RustWorkshop/blob/master/minimals/countinghands.md#step-2-where-is-the-program">very detailed instructions in Step 2 and 3 here</a>.</p>
+<p>▶▶ Clicking the links will show the file content in the browser window.</p>
+<ul>
+<li>
+<p><a href="https://raw.githubusercontent.com/rust-community/rustbridge/master/workshops/src/mondrian-pattern/codebase/mondpaint/src/main.rs">new main.rs</a></p>
+</li>
+<li>
+<p><a href="https://raw.githubusercontent.com/rust-community/rustbridge/master/workshops/src/mondrian-pattern/codebase/mondpaint/Cargo.toml">new Cargo.toml</a></p>
+</li>
+</ul>
+<p>What you see looks quite complex and like a foreign language. True, it is rust, the language you will learn now! At this point, you don't need to understand it. You just have to copy and paste it :-)</p>
+<p><img src="./mondrian-pattern/images/main-rs_in-browser.jpg" alt="" /></p>
+<p>▶▶ Copy and paste it from there into the file in the text editor. (Do it for both files in the same way.)</p>
+<p>▶▶ Save the files in your editor.</p>
+<a class="header" href="./mondrian-pattern/part1.html#testing" name="testing"><h4>[Testing]</h4></a>
+<p>▶▶ Make sure your machine has an internet connection working.</p>
+<p>▶▶ To execute the program do again <code>cargo run</code>.</p>
+<p>Your rust compiler will work for some time now</p>
+<p>▶▶ Then, see what happens: can you see a very minimal Mondrian pattern (a red rectangle with a black frame) in a window?</p>
+<p>In windows, it happens that the window is hidden behind other open windows. [TODO: Fix that!]</p>
+<p>You should see something similar to this:
+<img src="./mondrian-pattern/images/console+mondrianwindow.jpg" alt="" /></p>
+<p>Congratulations! You have made a project, adapted it so that it matches an example, and executed it successfully.</p>
+<a class="header" href="./mondrian-pattern/part1.html#explanation" name="explanation"><h4>[Explanation]</h4></a>
+<p>Although the Mondrian pattern in the window is what we're here for, it is worth looking at the console window as well. Don't worry about the warnings for now. Rust tells us that there are things in the program that are never used. We will use them soon!</p>
+<a class="header" href="./mondrian-pattern/part1.html#exercise-1-make-one-vertical-split" name="exercise-1-make-one-vertical-split"><h3>Exercise 1: Make one vertical split</h3></a>
+<p><img src="./mondrian-pattern/images/fig01_onevertical.jpg" alt="" /></p>
+<p>It is now time to have a closer look at the rust code. It is located in <code>src</code> folder and the file is <code>main.rs</code>.</p>
+<p>▶▶ Open the file <code>main.rs</code> located in folder <code>src</code> in your editor.</p>
+<p>Most of the code you will never touch. Only the highlighted areas are important for you.</p>
+<p><img src="./mondrian-pattern/images/code_highlight-learners-area.jpg" alt="" /></p>
+<p>Furthermore, you only need to make tiny modifications at first:</p>
+<p>▶▶ Look at the upper highlighted area. Change the line <br><code>paint_rectangle(20.0, 20.0, 300.0, 250.0, chn)</code> into <br><code>vsplit_and_paint(20.0, 20.0, 300.0, 250.0, chn)</code>.</p>
+<a class="header" href="./mondrian-pattern/part1.html#testing" name="testing"><h4>[Testing]</h4></a>
+<p>▶▶ To execute the program do again <code>cargo run</code>.</p>
+<p>Can you see the window open with the two-rectangles-pattern, as given in the sketch?</p>
+<a class="header" href="./mondrian-pattern/part1.html#snapshot-1" name="snapshot-1"><h4>[Snapshot] 1</h4></a>
+<p>From time to time there will be such &quot;snapshots&quot;: What are the exact changes in the code. The second link gives <em>a snapshot</em> of how the code should look at this point.</p>
+<p><a href="https://raw.githubusercontent.com/rust-community/rustbridge/mondrian_exercise-snapshots/workshops/src/mondrian-pattern/codebase/mondpaint/src/snapshnots/main_0001-One-vertical-split-1-2-1-2.rs">main.rs snapshot</a></p>
+<a class="header" href="./mondrian-pattern/part1.html#explanation" name="explanation"><h4>Explanation</h4></a>
+<p>The line you have changed is the line that <em>invokes</em> the Mondrian painting activity. Technically speaking this line tells rust to <em>invoke an operation</em>, named <code>paint_rectangle</code>. Before, you have changed that line so as to execute a different operation, <code>vsplit_and_paint</code>.</p>
+<a class="header" href="./mondrian-pattern/part1.html#exercise-2-split-position" name="exercise-2-split-position"><h3>Exercise 2: Split position</h3></a>
+<p><img src="./mondrian-pattern/images/fig02_onevertical-1third-2thirds.jpg" alt="" /></p>
+<p>Line 64 calculates the position where to split the canvas into two areas:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+let splitpos = width / 2.0;
+
+#}</code></pre></pre>
+<p>▶▶ Replace the <code>2.0</code> with a <code>3.0</code>.</p>
+<a class="header" href="./mondrian-pattern/part1.html#testing---as-usual--" name="testing---as-usual--"><h4>[Testing] --as usual--</h4></a>
+<a class="header" href="./mondrian-pattern/part1.html#snapshot-2" name="snapshot-2"><h4>[Snapshot] 2</h4></a>
+<p><a href="https://raw.githubusercontent.com/rust-community/rustbridge/master/src/workshops/mondrian-pattern/codebase/mondpaint/src/snapshnots/main_0002-One-vertical-split-1-3-2-3.rs">main.rs snapshot</a></p>
+<a class="header" href="./mondrian-pattern/part1.html#explanation" name="explanation"><h4>Explanation</h4></a>
+<p>The first highlighted area, the one you have modified in <em>Exercise 1</em> executes the operation <code>vsplit_and_paint</code>. The second highlighted area <em>defines</em> the operations <code>vsplit_and_paint</code> and <code>paint_rectangle</code>.
+An operation is defined as a sequence of (other) operations to be executed on invocation.</p>
+<p>Defining an operation can be compared to writing a recipe, invoking it means to actually prepare the dish <em>one time</em>. This can be repeated any number of times even though there is only one definition/recipe.</p>
+<p>What you have done in this exercise is to modify the operations that are executed, whenever <code>vsplit_and_paint</code> is executed. In this case you changed the ratio between the left and the right side of the split to <em>one third:two thirds</em>.</p>
+<a class="header" href="./mondrian-pattern/part1.html#exercise-3a-specify-the-colour-for-paint_rectangle" name="exercise-3a-specify-the-colour-for-paint_rectangle"><h3>Exercise 3a: Specify the colour for <code>paint_rectangle</code></h3></a>
+<p><img src="./mondrian-pattern/images/fig03_colour-as-parameter.jpg" alt="" /></p>
+<p>▶▶ Find the lines where <code>paint_rectangle</code> is defined:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+fn paint_rectangle(x :f64, y :f64, width :f64, height :f64, chn: SendChannel)
+{
+    println!(&quot;paint_rectangle: {:}, {:}, {:}, {:}&quot;, x, y, width, height);
+    chn.send( ([x, y, width, height], RED) ).unwrap();
+}
+
+#}</code></pre></pre>
+<p>The stuff in the <code>( . . . )</code> is called <em>parameters</em>, separated by <code>,</code>. Parameters are used to specify the details, how an operation should be executed in detail. This exercise wants to <em>specify the colour for paint_rectangle</em>. Here we go!</p>
+<p>▶▶ Add an extra parameter <code>c</code> to the definition of <code>paint_rectangle</code> like this:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+fn paint_rectangle(x :f64, y :f64, width :f64, height :f64, c: types::Color, chn: SendChannel)
+
+#}</code></pre></pre>
+<a class="header" href="./mondrian-pattern/part1.html#testing" name="testing"><h4>Testing</h4></a>
+<p>▶▶ Save the file.</p>
+<p>▶▶ <code>cargo run</code></p>
+<p><strong>Bam! Your first rust build-error!</strong></p>
+<p><img src="./mondrian-pattern/images/console_paintrect-parameter-error.jpg" alt="" /></p>
+<a class="header" href="./mondrian-pattern/part1.html#explanation" name="explanation"><h4>Explanation</h4></a>
+<p>They look scary in the beginning!</p>
+<p><img src="./mondrian-pattern/images/build-error_explained.jpg" alt="" /></p>
+<p>We added one little thing in the definition of an operation and we get this amount of error!</p>
+<p>This is what rust is complaining about: <code>this function takes 6 parameters but 5 parameters were supplied</code>. Makes sense. We changed the operation and now it requires more information to be executed: The colour of the rectangle. The error occurs because this information is required by the operation but it is not provided.</p>
+<p>Where should it be given? ...at each point in the code where the execution of <code>paint_rectangle</code> is invoked: Lines 67 and 72; exactly the lines where the two (identical) errors are reported. Makes sense.</p>
+<a class="header" href="./mondrian-pattern/part1.html#exercise-3b-different-colours-on-each-side" name="exercise-3b-different-colours-on-each-side"><h3>Exercise 3b: Different colours on each side</h3></a>
+<p><img src="./mondrian-pattern/images/fig04_two-different-colours.jpg" alt="" /></p>
+<p>The issue encountered in Exercise 3 is that colour information is required on the one hand but not provided. When fixing this, we will (as a side effect) have a Mondrian pattern with different colours on each side!</p>
+<p>Where do the error messages direct you?</p>
+<pre><code>src/main.rs:67:9: 67:57 error: this function takes 6 parameters but 5 parameters were supplied [E0061]
+. . .
+src/main.rs:72:9: 72:73 error: this function takes 6 parameters but 5 parameters were supplied [E0061]
+</code></pre>
+<p>Lines 67 and 73:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+paint_rectangle(x, y, splitpos, height, chnleft)
+. . .
+paint_rectangle(x+splitpos, y, width-splitpos, height, chnright)
+
+#}</code></pre></pre>
+<p>Both lines invoke <code>paint_rectangle</code> with slightly different parameters.</p>
+<p>▶▶ In each line, behind the parameter <code>height</code>, the colour has to be provided, i.e. like this:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+paint_rectangle(x, y, splitpos, height, RED, chnleft)
+. . .
+paint_rectangle(x+splitpos, y, width-splitpos, height, BLUE, chnright)
+
+#}</code></pre></pre>
+<a class="header" href="./mondrian-pattern/part1.html#testing" name="testing"><h4>[Testing]</h4></a>
+<p>Testing this via <code>cargo run</code> should make rust happy again and it runs the example. Yeah! But both sides are red hmmm.</p>
+<p>And the warnings have changed:</p>
+<pre><code>src/main.rs:17:1: 17:48 warning: constant item is never used: `GREEN`, #[warn(dead_code)] on by default
+src/main.rs:17 const GREEN:   [f32; 4] = [0.0, 1.0, 0.0, 1.0];
+               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/main.rs:19:1: 19:48 warning: constant item is never used: `YELLOW`, #[warn(dead_code)] on by default
+src/main.rs:19 const YELLOW:  [f32; 4] = [1.0, 1.0, 0.0, 1.0];
+               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/main.rs:78:61: 78:62 warning: unused variable: `c`, #[warn(unused_variables)] on by default
+src/main.rs:78 fn paint_rectangle(x :f64, y :f64, width :f64, height :f64, c: types::Color, chn: SendChannel)
+
+</code></pre>
+<a class="header" href="./mondrian-pattern/part1.html#explanation" name="explanation"><h4>Explanation</h4></a>
+<p>Yes, there is still two colours unused, that's fine. But there is an <code>unused variable</code>, <code>c</code> in line 78.</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+fn paint_rectangle(x :f64, y :f64, width :f64, height :f64, c: types::Color, chn: SendChannel)
+
+#}</code></pre></pre>
+<p>This is the line where you added the new parameter for colour. Rust calls this a <em>variable</em> because parameters are special sorts of variables.
+What is a variable? A variable is a container that can carry some value during program execution. To make things easier for you, you can give names to these containers, here <code>c</code> for colour. We decided to give <code>paint_rectangle</code> some information about the colour to be used and we do that via the parameter variable c.</p>
+<p>Rust was happy because all required parameters are now given again. It was happy enough to make and run the program but it was also a bit suspicious because there is c, which is never used (remember the warning).</p>
+<p>The last thing we have to adapt the definition of <code>paint_rectangle</code> so as to use colour information. We just need to get the information from <code>c</code> into the painting of the rectangle. The actual painting of the rectangle is invoked here:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+chn.send( ([x, y, width, height], RED) ).unwrap();
+
+#}</code></pre></pre>
+<p>▶▶ <strong>Final Thing to do:</strong> Replace <code>RED</code> with <code>c</code> and give it should all be working as planned!</p>
+<a class="header" href="./mondrian-pattern/part1.html#snapshot-3" name="snapshot-3"><h4>[Snapshot] 3</h4></a>
+<p><a href="https://raw.githubusercontent.com/rust-community/rustbridge/master/workshops/src/mondrian-pattern/codebase/mondpaint/src/snapshnots/main_0003-Add-parameter-c-Color-to-paint_rectangle.rs">main.rs snapshot</a></p>
+<a class="header" href="./mondrian-pattern/part1.html#exercise-4-random-split-position" name="exercise-4-random-split-position"><h3>Exercise 4: Random split position</h3></a>
+<p><img src="./mondrian-pattern/images/fig05_random-splitpostition.jpg" alt="" /></p>
+<p>This Exercise will give the Mondrian painter a bit of 'artistic' (!?!) freedom. It can randomly choose the position of where to split the canvas. You will modify the operation <code>vsplit_and_paint</code> to use a random number for the split position.</p>
+<p>A couple of things are already prepared in the example code.
+There is an operation for generating random numbers available: For instance, <code>rng.gen_range(0.0, 20.0)</code> will produce a random number between <code>0.0</code> and <code>20.0</code>.</p>
+<p>Currently it is deactivated in the example; it is placed in a comment <em>comment</em>:</p>
+<pre><code>// the remainder of a line after a double forward slash will be ignored
+
+/*
+Furthermore, everything between 'slash star' and
+'star slash' is also ignored, even over multiple lines.
+*/
+</code></pre>
+<p>▶▶ Uncomment lines 7 and 61 by removing the dashes:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+use rand::Rng;
+. . .
+let mut rng = rand::thread_rng();   //init a random number generator`.
+
+#}</code></pre></pre>
+<p>▶▶ Run the example in order to know whether rust is still happy with the changes. (It should run as before except for two more warnings, which is not a problem right now.)</p>
+<p>From <em>Exercise 2</em> you already know where the split position is calculated.</p>
+<p>▶▶ Find the relevant line in the code again and replace it with</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+let splitpos = rng.gen_range(0.0, width);
+
+#}</code></pre></pre>
+<a class="header" href="./mondrian-pattern/part1.html#testing" name="testing"><h4>[Testing]</h4></a>
+<p>You will have to run the example a couple of times in order to see the different split positions across several runs.</p>
+<a class="header" href="./mondrian-pattern/part1.html#explanation" name="explanation"><h4>Explanation</h4></a>
+<p><code>vsplit_and_paint</code> receives a number of parameters which define the position and dimensions of where to paint the Mondrian pattern: x, y coordinates of the upper left corner and width and height of the canvas (and the colour and some technical stuff).</p>
+<p>It decides on a position where to split the canvas vertically and calculates two smaller areas, left and right of that split so as to fully cover the canvas. Technically speaking, the split position is the width of the left side. The width of the right side is the width of the whole canvas minus the width of the left side. Similar calculations are done for the x position of the right hand part.</p>
+<p>The next step is to delegate the two parts to some other operation(s) that will take care of each side. This happens by invoking <code>paint_rectangle</code> with according coordinates.</p>
+<p><strong>If you are confused, making a sketch of the subdivision will help you to understand what is going on in detail!</strong></p>
+<a class="header" href="./mondrian-pattern/part1.html#snapshot-4" name="snapshot-4"><h4>[Snapshot] 4</h4></a>
+<p><a href="https://raw.githubusercontent.com/rust-community/rustbridge/master/workshops/src/mondrian-pattern/codebase/mondpaint/src/snapshnots/main_0004-Randomise-the-split-position.rs">main.rs snapshot</a></p>
+<a class="header" href="./mondrian-pattern/part1.html#exercise-5-horizontal-split" name="exercise-5-horizontal-split"><h3>Exercise 5: Horizontal split</h3></a>
+<p><img src="./mondrian-pattern/images/fig06_horizontal-split.jpg" alt="" /></p>
+<p>You will <em>define an operation</em> that works in the same way as <code>vsplit_and_paint</code> except that it does Horizontal splits.</p>
+<p>▶▶ If you have not made a sketch of the vertical canvas split before, now you will need it.</p>
+<p>▶▶ You will also need one for a horizontal split.</p>
+<p>▶▶ Make a copy of the operation definition of <code>vsplit_and_paint</code> and rename it to <code>hsplit_and_paint</code>.</p>
+<p>▶▶ Identify the code lines where the height and the y-coordinates are calculated.</p>
+<ul>
+<li>
+<p>this will involve all lines that touch <code>splitpos</code>, <code>width</code> and <code>x</code></p>
+</li>
+<li>
+<p><code>height</code> and <code>y</code> have to be calculated depending on the split position</p>
+</li>
+<li>
+<p>Remember the order of the parameters for <code>paint_rectangle</code>: <code>x, y, width, height, ...</code>. You have to give the new coordinates in the exact same order!</p>
+</li>
+<li>
+<p>Take some time, it is not trivial!</p>
+</li>
+</ul>
+<a class="header" href="./mondrian-pattern/part1.html#testing" name="testing"><h4>[Testing]</h4></a>
+<p>The new operation has to be invoked at some point:</p>
+<p>▶▶ For testing it, find the spot where <code>vsplit_and_paint</code> is invoked and replace it with <code>hsplit_and_paint</code>.</p>
+<p>▶▶ Run the example.</p>
+<p>If you get error messages, most likely, you have done smaller errors. Finding and fixing errors is one of the key skills in programming.</p>
+<p>▶▶ If you feel adventurous you should try to find them yourself! Otherwise, you might need some smaller advice to continue by yourself.</p>
+<p>Copying the snapshot is the last option. If you do so, please take some time to figure out, what is going on!</p>
+<p>▶▶ Feel free to use more interesting colours :-)</p>
+<a class="header" href="./mondrian-pattern/part1.html#snapshot-5" name="snapshot-5"><h4>[Snapshot] 5</h4></a>
+<p><a href="https://raw.githubusercontent.com/rust-community/rustbridge/master/workshops/src/mondrian-pattern/codebase/mondpaint/src/snapshnots/main_0005-Horizontal-split.rs">main.rs snapshot</a></p>
+<a class="header" href="./mondrian-pattern/part1.html#exercise-6-7-combine-split-and-delegate-operations" name="exercise-6-7-combine-split-and-delegate-operations"><h3>Exercise 6, 7: Combine split and delegate operations</h3></a>
+<p><code>paint_rectangle(x, y, splitpos . . .</code> and <code>paint_rectangle(x+splitpo, y, . . .</code>.</p>
+<p>It is now time to play with the new operations!</p>
+<p>▶▶ If you fell adventurous, try to figure out for yourself how to achieve one of the new patterns.</p>
+<p><strong>In more detail:</strong> Currently, <code>hsplit_and_paint</code> triggers <code>paint_rectangle</code> for both sides of the split. For the first pattern</p>
+<p>▶▶ Modify <code>vsplit_and_paint</code> so that it triggers <code>paint_rectangle</code> on the left side of the split and <code>hsplit_and_paint</code> on the right side.</p>
+<p>▶▶ Don't forget to adapt the initially invoked operation in line 53.</p>
+<p><img src="./mondrian-pattern/images/fig07_vertical+horizontal-split.jpg" alt="" /></p>
+<p>▶▶ Modify <code>hsplit_and_paint</code> so that it triggers <code>paint_rectangle</code> on the left side of the split and <code>hsplit_and_paint</code> on the right side.</p>
+<p>▶▶ Don't forget to adapt the initially invoked operation in line 53.</p>
+<p><img src="./mondrian-pattern/images/fig08_vertical+2horizontal-splits.jpg" alt="" /></p>
+<a class="header" href="./mondrian-pattern/part1.html#snapshot-6" name="snapshot-6"><h4>[Snapshot] 6</h4></a>
+<p><a href="https://raw.githubusercontent.com/rust-community/rustbridge/master/workshops/src/mondrian-pattern/codebase/mondpaint/src/snapshnots/main_0006-One-vertical-and-one-horizontal-split.rs">main.rs snapshot</a></p>
+<a class="header" href="./mondrian-pattern/part1.html#snapshot-7" name="snapshot-7"><h4>[Snapshot] 7</h4></a>
+<p><a href="https://raw.githubusercontent.com/rust-community/rustbridge/master/workshops/src/mondrian-pattern/codebase/mondpaint/src/snapshnots/main_0007-One-horiz.-two-vert.-splits-above-and-below.rs">main.rs snapshot</a></p>
+<a class="header" href="./mondrian-pattern/part1.html#exercise-8-an-infinite-pattern-generation-process" name="exercise-8-an-infinite-pattern-generation-process"><h3>Exercise 8: An infinite pattern generation process</h3></a>
+<p><img src="./mondrian-pattern/images/fig09_nontricial-nested.jpg" alt="" /></p>
+<p><strong>Warning!</strong> Some changes here may crash the program or make your machine unresponsive. That's okay and it's a natural part of learning programming. You can just close the program and/or restart your machine and continue.
+Save your data before you run.</p>
+<p>There is one way of achieving this pattern by defining more specific operations. However, things will be much more interesting if you</p>
+<p>▶▶ Try to modify and recombined the existing operations, only.</p>
+<p>▶▶ Make a diagram of the pattern you want to achieve. Sketch out step-by-step all the operations that will be invoked and in what order. For example, for the first pattern in Exercise 7 this will be:</p>
+<ul>
+<li><code>vsplit_and_paint</code> invokes for
+<ul>
+<li>left side: <code>paint_rectangle</code></li>
+<li>right side: <code>hsplit_and_paint</code> invokes for
+<ul>
+<li>top side: <code>paint_rectangle</code></li>
+<li>bottom side: <code>paint_rectangle</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>The <em>split</em> operations invoke to others, which actually run in parallel! The pattern painting process is artificially delayed so that you can see that in detail.</p>
+<a class="header" href="./mondrian-pattern/part1.html#snapshot-8" name="snapshot-8"><h4>[Snapshot] 8</h4></a>
+<p><a href="https://raw.githubusercontent.com/rust-community/rustbridge/master/workshops/src/mondrian-pattern/codebase/mondpaint/src/snapshnots/main_0008-Fail-in-a-funny-way-infinite-recursion.rs">main.rs snapshot</a></p>
+<a class="header" href="./mondrian-pattern/part1.html#exercise-9-avoiding-the-infinite-pattern-generation-process" name="exercise-9-avoiding-the-infinite-pattern-generation-process"><h3>Exercise 9: Avoiding the infinite pattern generation process.</h3></a>
+<p><strong>TODO!!</strong></p>
+<a class="header" href="./mondrian-pattern/part1.html#snapshot-9" name="snapshot-9"><h4>[Snapshot] 9</h4></a>
+<p><a href="https://github.com/rust-community/rustbridge/commit/6a51b31a396e7a9200ac21a0cc5ab574915a3b2f">view changes</a>
+|
+<a href="https://raw.githubusercontent.com/rust-community/rustbridge/master/workshops/src/mondrian-pattern/codebase/mondpaint/src/snapshnots/main_0009-Controlled-recursion.rs">main.rs snapshot</a></p>
+<hr />
+<p><a href="./mondrian-pattern/README.md">Back to the introduction</a> | <a href="./mondrian-pattern/part2.md">Continue to Part II</a></p>
+
+                </div>
+
+                <!-- Mobile navigation buttons -->
+                
+                    <a href="./mondrian-pattern/README.html" class="mobile-nav-chapters previous">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="./mondrian-pattern/part2.html" class="mobile-nav-chapters next">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+
+            </div>
+
+            
+                <a href="./mondrian-pattern/README.html" class="nav-chapters previous" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+            
+
+            
+                <a href="./mondrian-pattern/part2.html" class="nav-chapters next" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if ($(".fa").css("font-family") !== "FontAwesome") {
+                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            }
+        </script>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+    </body>
+</html>

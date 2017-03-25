@@ -1,0 +1,188 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Speaker notes - Rustbridge workshop kit</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <base href="../">
+
+        <link rel="stylesheet" href="book.css">
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+
+        <!-- MathJax -->
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Fetch JQuery from CDN but have a local fallback -->
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script>
+            if (typeof jQuery == 'undefined') {
+                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
+            }
+        </script>
+    </head>
+    <body class="light">
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = localStorage.getItem('theme');
+            if (theme == null) { theme = 'light'; }
+            $('body').removeClass().addClass(theme);
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = localStorage.getItem('sidebar');
+            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
+            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+        </script>
+
+        <div id="sidebar" class="sidebar">
+            <ul class="chapter"><li class="affix"><a href="intro.html">Introduction</a></li><li><a href="./beginners/README.html"><strong>1.</strong> Beginners</a></li><li><ul class="section"><li><a href="./beginners/tutorial-text.html"><strong>1.1.</strong> Tutorial</a></li></ul></li><li><a href="./installfest/README.html"><strong>2.</strong> Installfest</a></li><li><ul class="section"><li><a href="./installfest/user-guide.html"><strong>2.1.</strong> User guide</a></li><li><a href="installfest/presentation-outline.html"><strong>2.2.</strong> Presenter notes</a></li></ul></li><li><a href="./machine_learning/readme.html"><strong>3.</strong> Spam Or Ham?</a></li><li><a href="./mondrian-pattern/README.html"><strong>4.</strong> Mondrian Pattern Generator</a></li><li><ul class="section"><li><a href="./mondrian-pattern/part1.html"><strong>4.1.</strong> Part 1</a></li><li><a href="./mondrian-pattern/part2.html"><strong>4.2.</strong> Part 2 (WIP)</a></li><li><a href="./mondrian-pattern/CONTRIBUTING.html" class="active"><strong>4.3.</strong> Speaker notes</a></li></ul></li><li><a href="./textadventure/textadventure.html"><strong>5.</strong> Text Adventure</a></li><li><a href="./url_shortener/README.html"><strong>6.</strong> URL Shortener</a></li><li><a href="./web-scraper/README.html"><strong>7.</strong> Web Scraper</a></li><li><ul class="section"><li><a href="./web-scraper/doc/demo.html"><strong>7.1.</strong> Tutorial</a></li></ul></li></ul>
+        </div>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar" class="menu-bar">
+                    <div class="left-buttons">
+                        <i id="sidebar-toggle" class="fa fa-bars"></i>
+                        <i id="theme-toggle" class="fa fa-paint-brush"></i>
+                    </div>
+
+                    <h1 class="menu-title">Rustbridge workshop kit</h1>
+
+                    <div class="right-buttons">
+                        <i id="print-button" class="fa fa-print" title="Print this book"></i>
+                    </div>
+                </div>
+
+                <div id="content" class="content">
+                    <a class="header" href="./mondrian-pattern/CONTRIBUTING.html#contributing-and-teaching" name="contributing-and-teaching"><h1>Contributing and Teaching</h1></a>
+<p>This document is <em>not</em> dedicated learners new to rust. Developers and teachers using and contributing to the workshop material will find relevant background here.
+It outlines how the material is organised and how this serves the overall concept underlying the workshop.</p>
+<a class="header" href="./mondrian-pattern/CONTRIBUTING.html#implementation-outline" name="implementation-outline"><h2>Implementation Outline</h2></a>
+<ol>
+<li>root process</li>
+</ol>
+<ul>
+<li>sets up a canvas</li>
+<li>based on given parameters/settings</li>
+<li>subdivides canvas</li>
+<li>initiates subprocesses</li>
+</ul>
+<ol start="2">
+<li>each subprocess</li>
+</ol>
+<ul>
+<li>handles a part of the canvas</li>
+<li>makes further subdevisions</li>
+<li>may check on neighbours and negotiate with them <a href="mondrian-rules_avoid-unlucky-encounters.png">subdivisions and colours</a> etc</li>
+</ul>
+<ol start="3">
+<li>negotiation with neighbours to avoid unlucky encounters</li>
+</ol>
+<ul>
+<li>requires inter-process communication</li>
+</ul>
+<p><img src="mondrian-rules_avoid-unlucky-encounters.png" alt="unlucky encounters" /></p>
+<a class="header" href="./mondrian-pattern/CONTRIBUTING.html#roadmap-and-architecture" name="roadmap-and-architecture"><h3>Roadmap and Architecture</h3></a>
+<p><img src="architecture-sketch1.jpg" alt="architecture sketch 1" /></p>
+<p>Ideally, learners will only have to work on the highlighted parts.
+The Minimals should not be part of the workshop itself but serve as backend for those who want to do follow-up research on what is going on &quot;behind the scenes&quot;.</p>
+<p>Numbers indicate the priorities of components:</p>
+<p>(1) a server thread for doing actual basic painting in a window</p>
+<p>(2) a <code>main</code> that would create initial threads (1) and (3) as well as a canvas (6) for coordinating child tasks</p>
+<p>(3) The mondrian patternizer parent</p>
+<p>(4) Have (3) send painting messages to (1)</p>
+<p>(5) Have (3) create children which also send messages to (1)</p>
+<p>(6) Have a coordinating data structure for organising the canvas across painters (3 and 5)</p>
+<a class="header" href="./mondrian-pattern/CONTRIBUTING.html#ownership-of-canvas-regions" name="ownership-of-canvas-regions"><h3>Ownership of Canvas Regions</h3></a>
+<ul>
+<li>
+<p>The root thread will <code>borrow</code> parts of the canvas to other threads which will then paint it.</p>
+<ul>
+<li>
+<p>For an easy example we do not have to borrow but can simply hand over a reference to a part of the canvas, which will then be painted by the subordinate threads.</p>
+</li>
+<li>
+<p>If we want to post-process the results we may need borrowing, indeed.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>The superordinate thread will connect neighbouring regions by establishing <code>channel</code>s so that the subthreads can negotiate colours and split positions</p>
+</li>
+<li>
+<p>Overlaps, which do not happen to be exactly mondrianish, make a case for shared resources and <code>locking</code> (so that we do not overpaint in an uncontrolled manner)</p>
+</li>
+<li>
+<p><a href="https://blog.rust-lang.org/2015/04/10/Fearless-Concurrency.html">cf. Fearless Concurrency</a></p>
+</li>
+<li>
+<p><a href="https://coderwall.com/p/w1yuza/take-two-or-more-mutable-slices-from-a-vector-in-rust">cf. multiple mutable slices of one vector</a></p>
+</li>
+</ul>
+<a class="header" href="./mondrian-pattern/CONTRIBUTING.html#datastructure" name="datastructure"><h3>Datastructure</h3></a>
+<ul>
+<li>Patches or areas should be something like two-dimensional <code>slices</code></li>
+<li>They may be of a more abstract kind in order to later get painted or rendered</li>
+<li>On the other hand, having truely parallel rendering would be nice!</li>
+<li><a href="http://rustbyexample.com/primitives/array.html">cf. Slices</a></li>
+</ul>
+
+                </div>
+
+                <!-- Mobile navigation buttons -->
+                
+                    <a href="./mondrian-pattern/part2.html" class="mobile-nav-chapters previous">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="./textadventure/textadventure.html" class="mobile-nav-chapters next">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+
+            </div>
+
+            
+                <a href="./mondrian-pattern/part2.html" class="nav-chapters previous" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+            
+
+            
+                <a href="./textadventure/textadventure.html" class="nav-chapters next" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if ($(".fa").css("font-family") !== "FontAwesome") {
+                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            }
+        </script>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+    </body>
+</html>

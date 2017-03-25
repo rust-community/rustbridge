@@ -1,0 +1,300 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Tutorial - Rustbridge workshop kit</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <base href="../../">
+
+        <link rel="stylesheet" href="book.css">
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+
+        <!-- MathJax -->
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Fetch JQuery from CDN but have a local fallback -->
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script>
+            if (typeof jQuery == 'undefined') {
+                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
+            }
+        </script>
+    </head>
+    <body class="light">
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = localStorage.getItem('theme');
+            if (theme == null) { theme = 'light'; }
+            $('body').removeClass().addClass(theme);
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = localStorage.getItem('sidebar');
+            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
+            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+        </script>
+
+        <div id="sidebar" class="sidebar">
+            <ul class="chapter"><li class="affix"><a href="intro.html">Introduction</a></li><li><a href="./beginners/README.html"><strong>1.</strong> Beginners</a></li><li><ul class="section"><li><a href="./beginners/tutorial-text.html"><strong>1.1.</strong> Tutorial</a></li></ul></li><li><a href="./installfest/README.html"><strong>2.</strong> Installfest</a></li><li><ul class="section"><li><a href="./installfest/user-guide.html"><strong>2.1.</strong> User guide</a></li><li><a href="installfest/presentation-outline.html"><strong>2.2.</strong> Presenter notes</a></li></ul></li><li><a href="./machine_learning/readme.html"><strong>3.</strong> Spam Or Ham?</a></li><li><a href="./mondrian-pattern/README.html"><strong>4.</strong> Mondrian Pattern Generator</a></li><li><ul class="section"><li><a href="./mondrian-pattern/part1.html"><strong>4.1.</strong> Part 1</a></li><li><a href="./mondrian-pattern/part2.html"><strong>4.2.</strong> Part 2 (WIP)</a></li><li><a href="./mondrian-pattern/CONTRIBUTING.html"><strong>4.3.</strong> Speaker notes</a></li></ul></li><li><a href="./textadventure/textadventure.html"><strong>5.</strong> Text Adventure</a></li><li><a href="./url_shortener/README.html"><strong>6.</strong> URL Shortener</a></li><li><a href="./web-scraper/README.html"><strong>7.</strong> Web Scraper</a></li><li><ul class="section"><li><a href="./web-scraper/doc/demo.html" class="active"><strong>7.1.</strong> Tutorial</a></li></ul></li></ul>
+        </div>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar" class="menu-bar">
+                    <div class="left-buttons">
+                        <i id="sidebar-toggle" class="fa fa-bars"></i>
+                        <i id="theme-toggle" class="fa fa-paint-brush"></i>
+                    </div>
+
+                    <h1 class="menu-title">Rustbridge workshop kit</h1>
+
+                    <div class="right-buttons">
+                        <i id="print-button" class="fa fa-print" title="Print this book"></i>
+                    </div>
+                </div>
+
+                <div id="content" class="content">
+                    <a class="header" href="./web-scraper/doc/demo.html#rust-html-parsing-workshop" name="rust-html-parsing-workshop"><h1>Rust HTML Parsing Workshop</h1></a>
+<p>Suppose you have an Amazon.com wishlist of products and you want to find and
+print a list the prices of each item using a command line program.</p>
+<a class="header" href="./web-scraper/doc/demo.html#lets-get-started" name="lets-get-started"><h2>Let's get started!</h2></a>
+<p>In this workshop we'll learn to use an external HTTP client library (<code>hyper</code>)
+and an HTML DOM parser (<code>select</code>). We will take that data and process it using
+<code>Iterators</code> into a product name and price which we will print to the screen.</p>
+<a class="header" href="./web-scraper/doc/demo.html#step-000-setup-your-local-project" name="step-000-setup-your-local-project"><h2>Step 000: Setup your local project</h2></a>
+<p>Open a command line terminal. This will be your primary way of building your
+Rust code. Open a directory where you want to save your project and run.</p>
+<pre><code class="language-sh">cargo new --bin scraper
+cd scraper
+</code></pre>
+<p>This command uses <code>cargo</code>, is the Rust Package Manager, to create a new project
+structure that will build and run out of the box. Cargo simplifies the build and
+run steps of projects. The basic initial structure of a new cargo project has 3
+files.</p>
+<pre><code>scraper
+├── Cargo.lock
+├── Cargo.toml
+└── src
+    └── main.rs
+
+1 directory, 3 files
+</code></pre>
+<p>To build your project run the following.</p>
+<pre><code class="language-sh">$ cargo build
+   Compiling scraper v0.1.0 (file:///Users/foo/code/demo/scraper)
+    Finished debug [unoptimized + debuginfo] target(s) in 0.98 secs
+</code></pre>
+<p>You can also execute the build as follows.</p>
+<pre><code class="language-sh">$ cargo run
+    Finished debug [unoptimized + debuginfo] target(s) in 0.0 secs
+     Running `target/debug/scraper`
+Hello, world!
+</code></pre>
+<a class="header" href="./web-scraper/doc/demo.html#step-005-using-the-hyper-http-client" name="step-005-using-the-hyper-http-client"><h2>Step 005: Using the hyper HTTP client</h2></a>
+<p>The wishlist is an HTML page delivered over HTTP. What is HTML? What
+is HTTP?</p>
+<p>To download over HTTP we use the <em>hyper</em> <em>crate</em>. What is a crate?</p>
+<p>Here's how to add the hyper dependency to Cargo.toml:</p>
+<pre><code class="language-toml">[package]
+name = &quot;scraper&quot;
+version = &quot;0.1.0&quot;
+authors = [&quot;Your Name &lt;you@example.com&gt;&quot;]
+
+[dependencies]
+hyper = &quot;0.9.10&quot;
+</code></pre>
+<p>In <code>main.rs</code>, import hyper by writing <code>extern crate hyper;</code> at the top.</p>
+<p>To make an HTTP request we need a hyper <em>http client</em>. Bring the hyper <code>Client</code>
+into scope by adding <code>use hyper::Client;</code> just after <code>extern crate hyper;</code>.</p>
+<p>In your main function, create a new instance of a hyper client:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+let client = Client::new();
+
+#}</code></pre></pre>
+<p><code>let</code> <em>declares</em> a variable named client, which is set to the value created
+by <code>Client::new()</code>.</p>
+<p><code>Client::new()</code> is a function on the <code>Client</code> <em>type</em> that creates a
+new <code>Client</code>. Every value in Rust has a type. We can talk about types
+more later.</p>
+<p>Next we are going to make an HTTP request to Amazon's server.</p>
+<p>To do that we're going to write this series of lines:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+let response =
+    client.get(&quot;https://brson.github.io/demo/wishlist.html&quot;)
+    .send()
+    .expect(&quot;Request failed&quot;);
+
+#}</code></pre></pre>
+<p>There's a lot going on here.</p>
+<p>What we're looking at is a <em>chain</em> of method calls. <code>client.get(...)</code>
+is calling <code>get</code> on the client we just created. That's what the 'dot'
+operator means - a method call. What are &quot;methods&quot;?</p>
+<p><code>send</code> and <code>expect</code> are also method calls. The details aren't important
+right now, but feel free to read the documentation for those.</p>
+<a class="header" href="./web-scraper/doc/demo.html#step-010-reading-the-response-body" name="step-010-reading-the-response-body"><h2>Step 010: Reading the response body</h2></a>
+<p>To read the response body, first we need to make <code>response</code> mutable by changing
+<code>let response</code> to <code>let mut response</code>. Next, you'll create a new mutable
+<code>String</code> variable. Add the following lines to the end of your main function.</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+let mut body = String::new();
+response.read_to_string(&amp;mut body).expect(&quot;Read failed&quot;);
+println!(&quot;{:?}&quot;, body);
+
+#}</code></pre></pre>
+<p>That's how you use Hyper to read the HTTP response body into your program and
+print it.</p>
+<pre><code class="language-sh">$ cargo build
+   Compiling scraper v0.1.0 (file:///Users/foo/code/demo/step010/scraper)
+error: no method named `read_to_string` found for type `hyper::client::Response` in the current scope
+  --&gt; src/main.rs:14:14
+   |
+14 |     response.read_to_string(&amp;mut body).expect(&quot;Read failed&quot;);
+   |              ^^^^^^^^^^^^^^
+   |
+   = help: items from traits can only be used if the trait is in scope; the following trait is implemented but not in scope, perhaps add a `use` for it:
+   = help: candidate #1: `use std::io::Read`
+
+error: aborting due to previous error
+
+error: Could not compile `scraper`.
+
+To learn more, run the command again with --verbose.
+</code></pre>
+<p>The rust compiler tells us that it can't find the given method. It also tries to
+suggest a fix by adding <code>use std::io::Read</code> to our code. Try that fix and see if
+it works. Add the following line of code to the block of using statements at the
+top. This will import the necessary implementation for reading the response as a
+string.</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+use std::io::Read;
+
+#}</code></pre></pre>
+<p>Now you can build and run your program successfully. It will download the page
+and print it to the screen.</p>
+<a class="header" href="./web-scraper/doc/demo.html#step-015-parsing-the-html" name="step-015-parsing-the-html"><h2>Step 015: Parsing the HTML</h2></a>
+<p>We'll be using the <code>select</code> library to find the data we care about on the
+wishlist. Add the following dependency to your <code>[dependencies]</code> section of your
+<code>Cargo.toml</code> file.</p>
+<pre><code>select = &quot;0.3.0&quot;
+</code></pre>
+<p>Then you can use the <code>Document</code> parser in your rust function. Add the following
+two statements to your <code>main.rs</code>.</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+use select::document::Document;
+use select::predicate::{Class};
+
+#}</code></pre></pre>
+<p>The <code>select</code> library is used to find HTML objects in a variety of ways.
+We can see that the products are all contained in an HTML div with a class
+<code>a-row</code>. We can get a list of all <code>a-row</code> HTML elements using the following
+code snippet.</p>
+<pre><code>let document = Document::from(body.as_str());
+let rows = document.find(Class(&quot;a-row&quot;));
+</code></pre>
+<p>Iterating to print the contents of each row:</p>
+<pre><code>for row in rows.iter() {
+    println!(&quot; * Row {}&quot;, row.text());
+}
+</code></pre>
+<a class="header" href="./web-scraper/doc/demo.html#step-999-finding-the-product-name-and-price" name="step-999-finding-the-product-name-and-price"><h2>Step 999: Finding the Product Name and Price</h2></a>
+<p>The actual elements containing the product name and price are somewhere in the
+rows we printed last time. Running your program in the current state will also
+print out several rows that don't contain any products so these will also have
+to be filtered out.</p>
+<p>First we can see that product names are all contained in <code>&lt;h5&gt;</code> elements, and
+the prices are within elements with the class <code>a-color-price</code>. We can find the
+names and prices with the following snippet:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+let maybe_name_node = row.find(Name(&quot;h5&quot;)).first();
+let maybe_price_node = row.find(Class(&quot;a-color-price&quot;)).first();
+
+#}</code></pre></pre>
+<p>The names of these variables start with <code>maybe</code> because this row might not have
+names and prices. We can write an <code>if let</code> with a pattern that will match and
+run a block of code only if a row has both a name and a price:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+if let (Some(name_node), Some(price_node)) = (maybe_name_node, maybe_price_node) {
+
+#}</code></pre></pre>
+<p>If we do have both, we want to trim off leading and trailing whitespace from the text of the nodes and then print them out:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+let name = name_node.text().trim();
+let price = price_node.text().trim();
+println!(&quot; * Book \&quot;{}\&quot;, with price {}&quot;, name, price);
+
+#}</code></pre></pre>
+<a class="header" href="./web-scraper/doc/demo.html#bonus-tasks-to-try-next" name="bonus-tasks-to-try-next"><h2>Bonus tasks to try next</h2></a>
+<ul>
+<li>Parse and sum the prices</li>
+<li>Extract more information</li>
+<li>Scrape data from a different page</li>
+<li>Scrape data from multiple pages in parallel and aggregate the results</li>
+</ul>
+
+                </div>
+
+                <!-- Mobile navigation buttons -->
+                
+                    <a href="./web-scraper/README.html" class="mobile-nav-chapters previous">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+
+            </div>
+
+            
+                <a href="./web-scraper/README.html" class="nav-chapters previous" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+            
+
+            
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if ($(".fa").css("font-family") !== "FontAwesome") {
+                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            }
+        </script>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+    </body>
+</html>

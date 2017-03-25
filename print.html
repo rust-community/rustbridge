@@ -1,0 +1,1760 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Tutorial - Rustbridge workshop kit</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <base href="">
+
+        <link rel="stylesheet" href="book.css">
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+
+        <!-- MathJax -->
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Fetch JQuery from CDN but have a local fallback -->
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script>
+            if (typeof jQuery == 'undefined') {
+                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
+            }
+        </script>
+    </head>
+    <body class="light">
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = localStorage.getItem('theme');
+            if (theme == null) { theme = 'light'; }
+            $('body').removeClass().addClass(theme);
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = localStorage.getItem('sidebar');
+            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
+            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+        </script>
+
+        <div id="sidebar" class="sidebar">
+            <ul class="chapter"><li class="affix"><a href="intro.html">Introduction</a></li><li><a href="./beginners/README.html"><strong>1.</strong> Beginners</a></li><li><ul class="section"><li><a href="./beginners/tutorial-text.html"><strong>1.1.</strong> Tutorial</a></li></ul></li><li><a href="./installfest/README.html"><strong>2.</strong> Installfest</a></li><li><ul class="section"><li><a href="./installfest/user-guide.html"><strong>2.1.</strong> User guide</a></li><li><a href="installfest/presentation-outline.html"><strong>2.2.</strong> Presenter notes</a></li></ul></li><li><a href="./machine_learning/readme.html"><strong>3.</strong> Spam Or Ham?</a></li><li><a href="./mondrian-pattern/README.html"><strong>4.</strong> Mondrian Pattern Generator</a></li><li><ul class="section"><li><a href="./mondrian-pattern/part1.html"><strong>4.1.</strong> Part 1</a></li><li><a href="./mondrian-pattern/part2.html"><strong>4.2.</strong> Part 2 (WIP)</a></li><li><a href="./mondrian-pattern/CONTRIBUTING.html"><strong>4.3.</strong> Speaker notes</a></li></ul></li><li><a href="./textadventure/textadventure.html"><strong>5.</strong> Text Adventure</a></li><li><a href="./url_shortener/README.html"><strong>6.</strong> URL Shortener</a></li><li><a href="./web-scraper/README.html"><strong>7.</strong> Web Scraper</a></li><li><ul class="section"><li><a href="./web-scraper/doc/demo.html"><strong>7.1.</strong> Tutorial</a></li></ul></li></ul>
+        </div>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar" class="menu-bar">
+                    <div class="left-buttons">
+                        <i id="sidebar-toggle" class="fa fa-bars"></i>
+                        <i id="theme-toggle" class="fa fa-paint-brush"></i>
+                    </div>
+
+                    <h1 class="menu-title">Rustbridge workshop kit</h1>
+
+                    <div class="right-buttons">
+                        <i id="print-button" class="fa fa-print" title="Print this book"></i>
+                    </div>
+                </div>
+
+                <div id="content" class="content">
+                    <a class="header" href="print.html#introduction" name="introduction"><h1>Introduction</h1></a>
+<p>This is a collection of tutorials and workshop material, along with code.</p>
+<a class="header" href="print.html#making-images-with-rust" name="making-images-with-rust"><h1>Making images with Rust</h1></a>
+<p>This tutorial will teach basic rust primitives by making an image-generating program.</p>
+<a class="header" href="print.html#step-1-single-color-image" name="step-1-single-color-image"><h2>Step 1: Single-color image</h2></a>
+<p><a href="https://github.com/rust-community/rustbridge/tree/master/workshops/src/beginners/01_single_color_image">This program</a> always makes a 400x400 image filled with red.</p>
+<p><img src="./beginners/01_single_color_image/image.png" alt="Red image" /></p>
+<a class="header" href="print.html#step-2-simple-image-with-multiple-colors" name="step-2-simple-image-with-multiple-colors"><h2>Step 2: Simple image with multiple colors</h2></a>
+<p><a href="https://github.com/rust-community/rustbridge/tree/master/workshops/src/beginners/02_simple_image">This program</a> always makes the same multi-colored image below.</p>
+<p><img src="./beginners/02_simple_image/image.png" alt="Image with multiple colors" /></p>
+<a class="header" href="print.html#step-3-image-with-randomly-picked-colors" name="step-3-image-with-randomly-picked-colors"><h2>Step 3: Image with randomly picked colors</h2></a>
+<p><a href="./beginners/03_random_image">This program</a> makes an image with squares of red, blue, green, and black, picked
+randomly. You'll get a different image every time you run it.</p>
+<p><img src="https://github.com/rust-community/rustbridge/tree/master/workshops/src/beginners/03_random_image/image.png" alt="Image with multiple colors" /></p>
+<a class="header" href="print.html#image-generation" name="image-generation"><h1>Image generation</h1></a>
+<p>We're going to use Rust to build an image-generation program. This program will
+automatically generate images in the style of Ellsworth Kelly's painting
+<a href="https://www.sfmoma.org/artwork/99.352">Spectrum Colors Arranged by Chance</a> -
+that is to say, an image made up of a bunch of brighly-colored squares
+arrainged in a random pattern. This is a fairly straightforward programming
+exercise that you could do in many different programming languages, and we're going
+to teach you how to use Rust to do it.</p>
+<a class="header" href="print.html#what-you-already-know" name="what-you-already-know"><h2>What you already know</h2></a>
+<p>For this tutorial, we are assuming that you've already written and successfully
+compiled some Rust programs before, and that you understand how to use cargo to
+create a bare Rust project. If you haven't, try taking a look at tutorials
+like {link to tutorial} first before attempting this one.</p>
+<a class="header" href="print.html#goal-1---a-plain-red-square" name="goal-1---a-plain-red-square"><h1>Goal 1 - a plain red square</h1></a>
+<p>The first step to writing a program that will generate a random image is
+writing a program that will generate any image at all. We're going to generate
+an image that is plain red with nothing else (the exact color doesn't matter,
+the important thing is that there's no complexity, it's just one color).</p>
+<p>Go ahead and run</p>
+<p><code>cargo new --bin image-generator</code></p>
+<p>to create a new blank Rust project, and run <code>cargo run</code> in the directory
+to make sure that it builds a hello world program.</p>
+<a class="header" href="print.html#using-external-crates" name="using-external-crates"><h2>Using external crates</h2></a>
+<p>In Rust, external libraries are referred to as <em>crates</em>. You can import an
+external crate into your project to use someone else's code to accomplish a
+task.  For the image generator, we're going to use the
+<a href="https://github.com/PistonDevelopers/image">image</a> crate to work with image
+files.</p>
+<p>In your Cargo.toml file, right below the <code>[dependencies]</code> line, type <code>image = &quot;*&quot;</code>. The Cargo.toml file contains metadata about a Rust project, and was
+automatically created for you when you ran <code>cargo new</code>. It probably already has
+some lines that indicate what the name of the project is and who the authors
+are, which are useful when you share your code with other people. One of the
+other jobs of Cargo.toml is to indicate which external crates your project is
+using, so cargo can download them from a repository when it compiles your
+program.</p>
+<p><code>image = &quot;*&quot;</code> means that your project requires the <code>image</code> crate, and
+TODO: rewrite the code to use a specific versoin of image and explain why we care</p>
+<p>At the top of your <code>src/main.rs</code> file, type</p>
+<p><code>extern crate image;</code></p>
+<p>This line of code indicates that you want to include the image crate in this file,
+you can access code provided by the image crate by prefixing it with <code>image::</code>.</p>
+<p>The next time you run <code>cargo run</code>, you should see cargo take some time to download
+the image crate before it compiles your code and runs the default hello program.
+Even though we're not using any of the functionality in image yet, we're including
+it in our project, so cargo needs to fetch the code in order to successfully compile it.</p>
+<a class="header" href="print.html#using-standard-library-code" name="using-standard-library-code"><h2>Using standard library code</h2></a>
+<p>Rust comes built-in with a lot of code to do basic tasks that are relevant for almost all
+software projects, such as opening and writing to files, or getting some information about
+the operating system. Since this <em>standard library</em> code already comes built into Rust, we don't
+need to include an external crate to make use of it. Instead, we use the <code>use</code> command:</p>
+<p>Go ahead and type:</p>
+<pre><code>use std::fs::File;
+use std::path::Path;
+</code></pre>
+<p>at the top of your main.rs, right below the <code>extern crate image;</code> line (note
+the semicolons!).  This tells Rust that in your source file, you want to
+include two pieces of standard library functionality.  <code>File</code> is a Rust struct
+(we'll talk more later about what a struct is) that lets you do things
+involving files, like creating them or writing to them. Since we want to create
+an image file and write it to the filesystem, we'll need something like this.
+<code>Path</code> is a rust struct that lets you manipulate filesystem paths (like
+<code>C:/Users/</code> in Windows or <code>/usr/bin/</code> in a Unix-like operating system). We'll need this
+to tell <code>File</code> where we should put the image file that we're going to generate.</p>
+<a class="header" href="print.html#using-the-image-crate" name="using-the-image-crate"><h2>Using the image crate</h2></a>
+<p>Okay, now that we have our dependencies set up, it's time to actually make an
+image happen!  Let's look at the entire contents of the <code>main()</code> function -
+remember, when you run a Rust program, execution starts at the beginning of the
+<code>main()</code> function, and the program quits when it gets to the end of <code>main()</code>.</p>
+<pre><code>fn main() {
+    let image_size = 400;
+
+    let mut imgbuf = image::ImageBuffer::new(image_size, image_size);
+
+    let red = [255, 0, 0];
+
+    for (_, _, pixel) in imgbuf.enumerate_pixels_mut() {
+        *pixel = image::Rgb(red);
+    }
+
+    let ref mut fout = File::create(&amp;Path::new(&quot;image.png&quot;)).unwrap();
+
+    let _ = image::ImageRgb8(imgbuf).save(fout, image::PNG);
+}
+</code></pre>
+<p><code>let image_size = 400;</code> we decided (arbitrarily) that 400x400 pixels is a good
+size for an image, so let's assign that number to a variable with a name that
+makes sense. <code>let</code> is the keyword for assigning a value to a variable.</p>
+<p>It's important that we end this line with a semicolon - some
+programming languages use a newline to indicate that we are done with one
+statement and will move onto the next one, but in Rust we use a semicolon for
+this, and the newline isn't meaningful in and of itself.  Later on, we'll talk
+about some cases where a line of code <em>doesn't</em> end in a semicolon, and why
+that is, but for now you can think of a semicolon as the thing that separates one
+statement from another in Rust.</p>
+<p><code>let mut imgbuf = image::ImageBuffer::new(image_size, image_size);</code> Remember
+how we included the external crate image? Well, here's where we use it.
+<code>image::ImageBuffer::new</code> is a function on the ImageBuffer struct within the
+image crate to make a new, default image of a given width and height. How did
+we know what function we needed to call to do this?  <a href="http://www.piston.rs/image/image/struct.ImageBuffer.html#method.new">The documentation for the
+image crate says
+so</a>.</p>
+<p>And what's this <code>mut</code> business? In Rust, when you declare a variable with
+<code>let</code>, it is <em>immutable</em>. You cannot change the value stored in the variable,
+and your program will not compile if you try. Sometimes, however, you do want
+to be able to change the value stored in a variable after you define it, and in
+these cases you can declare the variable with <code>let mut</code> to indicate that you
+want the variable to be <em>mutable</em>.</p>
+<p><code>let red = [255, 0, 0]</code>. Rust, like most programming languages, has a way to
+talk about a group of several values. In Rust, this is called a <em>slice</em>. We
+declare a slice by putting any number of comma-separated values in between <code>[ ]</code>, and then we can treat the entire slice as a unit when we assign it to a
+variable or pass it to a function.</p>
+<p>It's very common in programming languages to represent a specific color as a
+tuple of three numbers between 0 and 255, which represent the amount of pure
+red, pure green, and pure blue in the color, in that order. [0, 0, 0] is
+completely black, [255, 255, 255] is completely white, [128, 128, 128] is a
+neutral grey, and [255, 0, 0] is red. And red is exactly what we want right
+now. We'll use more interesting colors later.</p>
+<a class="header" href="print.html#iterators-and-references" name="iterators-and-references"><h2>Iterators and References</h2></a>
+<p>These next three lines of code aren't very long, but they introduce a number of concepts
+that are pervasive in Rust. Let's take it slow:</p>
+<pre><code>for (_, _, pixel) in imgbuf.enumerate_pixels_mut() {
+    *pixel = image::Rgb(red);
+}
+</code></pre>
+<p>You're probably familiar with the concept of a for loop - <em>for</em> every item in a collection
+of items, { <em>do something</em> with each item in turn }. <code>imgbuf.enumerate_pixels_mut()</code> returns a
+value called an <em>Iterator</em>, and, put simply, an Iterator is something that you can loop over
+in a for loop. In this case, <code>.enumerate_pixels_mut()</code> is a method we can call on an ImageBuffer
+(remember, we created this ImageBuffer a few lines up).</p>
+<p>(NOTE: right here, we <em>could</em> put in a long discussion about how to read a type
+signature. this would be kind of a long and complicated digression, but it <em>is</em>
+relevant to understanding what <code>.enumerate_pixels_mut()</code> does, and this is the
+place in the source code where someone using the image library needs to know
+that)</p>
+<p>(TODO: finish this section)</p>
+<p><code>let ref mut fout = File::create(&amp;Path::new(&quot;image.png&quot;)).unwrap();</code>
+Now that we've gone through every pixel in our image and set it to red, we're ready to save it to a file.
+<code>Path::new(&quot;image.png&quot;)</code> creates a <em>path</em> relative to the current directory whose name is &quot;image.png&quot; - this is
+the file we will save our image to, and that's why we had to <code>use std::path::Path</code>. <code>File::create()</code> takes a path
+as an argument and creates a file there. Why the <code>&amp;</code>? That creates a reference.</p>
+<a class="header" href="print.html#errors-and-unwrapping" name="errors-and-unwrapping"><h2>Errors and unwrapping</h2></a>
+<p><code>.unwrap()</code> is a very common idiom in Rust code. TODO explain more about unwrap() and when to use it and when not to use it</p>
+<p><code>let _ = image::ImageRgb8(imgbuf).save(fout, image::PNG);</code> Finally, now that we've prepared the <code>fout</code> file handler, we use
+the image crate's <code>.save()</code> functionality to save it to a file. Our program is complete.</p>
+<p>Run the program with <code>cargo run</code>, and, if all went well, you should see a file in teh current directory called &quot;image.png&quot;. If you
+open it up in an image viewing program, you should see a completely red square.</p>
+<p>It's sorta like &quot;hello world&quot; for images. Now, let's make some more interesting stuf!</p>
+<a class="header" href="print.html#goal-2" name="goal-2"><h1>Goal 2</h1></a>
+<a class="header" href="print.html#installfest" name="installfest"><h1>Installfest</h1></a>
+<p>This tutorial will walk you through the steps of building and running Rust</p>
+<a class="header" href="print.html#rustbridge-installfest-user-guide" name="rustbridge-installfest-user-guide"><h1>RustBridge InstallFest: User Guide</h1></a>
+<a class="header" href="print.html#introduction" name="introduction"><h2>Introduction</h2></a>
+<p>Welcome!
+This tutorial walks you through the process of installing Rust on your computer and setting up a text editor to start programming with Rust.
+You don't need to have any programming experience to use this tutorial.
+However, an understanding of basic operations of your computer, such as downloading an app, is assumed.
+The entire process should take you less than 30 minutes.</p>
+<p>Before you begin, make sure you have a computer with:</p>
+<ul>
+<li>Access to the Internet</li>
+<li>An operating system that supports Rust, including macOS, Linux, or Windows.</li>
+</ul>
+<p>Let's get started!</p>
+<a class="header" href="print.html#using-the-terminal" name="using-the-terminal"><h2>Using the Terminal</h2></a>
+<p>A terminal is a text-based way of interacting with your computer without a graphical interface.
+We're using a terminal because it's the standard method of installing and working with programming tools.
+Your computer already has a terminal tool installed by default.
+Review the instructions for the operating system of your choice.</p>
+<a class="header" href="print.html#macos" name="macos"><h3>macOS</h3></a>
+<ol>
+<li>
+<p>Open Terminal by either selecting the Spotlight menu (magnifying glass in the upper right) or by pressing the command and space keys together, then typing &quot;Terminal&quot;.)</p>
+<p>When you first open Terminal, you'll see a prompt.
+You type commands to the computer after the prompt.</p>
+<p>It'll look something like this:</p>
+<pre><code>Last login: Some Date on console
+Janes-MacBookPro:~ jane$
+</code></pre>
+</li>
+</ol>
+<a class="header" href="print.html#windows" name="windows"><h3>Windows</h3></a>
+<p>On windows the terminal is called a command prompt. You can access it by opening
+the start menu and typing <code>cmd.exe</code> or <code>command prompt</code>. Windows should find it
+for you.</p>
+<p>After starting the command prompt, you can see a black screen saying something
+like this:</p>
+<pre><code>C:\Users\yourname&gt;
+</code></pre>
+<p>Try typing commands like <code>dir</code>.</p>
+<p>Well done!</p>
+<a class="header" href="print.html#linux" name="linux"><h3>Linux</h3></a>
+<ol>
+<li>
+<p>Ensure <code>curl</code> is installed.</p>
+<pre><code>which curl
+</code></pre>
+<p>Installation is successful if you see any output.
+It will look something like this:</p>
+<pre><code>/usr/bin/curl
+</code></pre>
+<p>Curl is used to download files from the Internet.
+We need to make sure it's installed on your computer before attempting to download Rust files.</p>
+<p>If there is no output (the prompt simply appears again), or you get a message saying something like &quot;curl not found&quot; you must install curl.
+Use your system's package manager to install it.</p>
+<p>On a Debian-based system like Ubuntu, this would be:</p>
+<pre><code>apt-get install curl
+</code></pre>
+</li>
+</ol>
+<a class="header" href="print.html#installing-rust" name="installing-rust"><h2>Installing Rust</h2></a>
+<p>The next step after opening the terminal is installing rustup, which installs Rust and Cargo, which is a package management (installing software written in Rust) and build tool (converting code into a usable program).</p>
+<a class="header" href="print.html#macos" name="macos"><h3>macOS</h3></a>
+<ol>
+<li>
+<p>In your web browser, navigate to <a href="https://rustup.rs">rustup.rs</a>.</p>
+</li>
+<li>
+<p>To download and run a program that installs the correct version of rustup for your computer, copy and paste the text on the webpage into your terminal.
+It should look something like this:</p>
+<pre><code>Janes-MacBookPro:~ curl https://sh.rustup.rs -sSf | sh
+</code></pre>
+</li>
+<li>
+<p>Press return.</p>
+<p>The output describes how Rust and Cargo will be installed on your computer.</p>
+</li>
+<li>
+<p>After you've read through the output, press return to accept the default installation settings.
+It may take up to a couple minutes to install.
+Once it's done installing, you'll see an installation is complete message.</p>
+</li>
+<li>
+<p>Follow the instructions to configure the terminal.
+Copy and paste the text.
+It'll look something like this:</p>
+<pre><code>Janes-MacBookPro:~ source $HOME/.cargo/env
+</code></pre>
+<p>There won't be any output or confirmation. You'll just see the prompt again.</p>
+</li>
+<li>
+<p>To confirm that cargo installed correctly, type <code>cargo</code> at the prompt and press return.
+If it installed correctly, you'll see an output with help content.</p>
+</li>
+</ol>
+<a class="header" href="print.html#windows" name="windows"><h3>Windows</h3></a>
+<ol>
+<li>
+<p>Go to the <a href="https://www.rust-lang.org">Rust website</a>.</p>
+</li>
+<li>
+<p>Click on <em>Install</em> to download the Rust installer.</p>
+</li>
+<li>
+<p>Open the file <code>rust-1.11.0-i686-pc-windows-gnu.msi</code> (or similar) you just
+downloaded.s</p>
+</li>
+<li>
+<p>Now the installation dialog starts. Confirm any warnings and stick to the
+default options when prompted.</p>
+</li>
+</ol>
+<p>Now you should have Rust installed on your machine.</p>
+<p>To verify that, open a <em>new</em> command prompt like above. Don't use one that has
+already been open, because it does not know about Rust yet.</p>
+<p>Type in the command <code>rustc --version</code>. The Rust compiler will tell you its
+current version:</p>
+<pre><code>C:\Users\yourname&gt;rustc --version
+rustc 1.11.0 (9b21dcd6a 2016-08-15)
+
+C:\Users\yourname&gt;
+</code></pre>
+<p>Now you are ready to go!</p>
+<p>You can create a new Rust project using <code>cargo</code>, Rust's package manager, like
+this:</p>
+<pre><code>C:\Users\yourname&gt;cargo new my-rust-project --bin
+
+C:\Users\yourname&gt;cd my-rust-project
+
+C:\Users\yourname\my-rust-project&gt;cargo run
+   Compiling my-rust-project v0.1.0 (file:///C:/Users/yourname/my-rust-project)
+     Running `target\debug\my-rust-project.exe`
+Hello, world!
+
+C:\Users\yourname\my-rust-project&gt;
+</code></pre>
+<p>Well done! You just compiled and executed your first Rust program.</p>
+<a class="header" href="print.html#setting-up-a-text-editor" name="setting-up-a-text-editor"><h2>Setting up a text editor</h2></a>
+<p>A text editor (also commonly just called an editor) is a program used to edit text files.
+Examples of common editors used to program are Atom, Sublime Text, Microsoft Visual Studio Code, Vim, and Emacs.</p>
+<p>Word processors, like Microsoft Word, aren't the same as text editors and aren't designed for editing source code.</p>
+<p>If you already installed and use a text editor, skip to the &quot;Installing the Rust package for your editor&quot; section.
+If you don't have a text editor or are not sure if you have one, we recommend installing Atom.
+The next section walks you through the installation.</p>
+<a class="header" href="print.html#installing-atom" name="installing-atom"><h3>Installing Atom</h3></a>
+<a class="header" href="print.html#macosx" name="macosx"><h4>MacOSX</h4></a>
+<ol>
+<li>
+<p>In your web browser, navigate to <a href="https://atom.io">Atom website</a>.</p>
+</li>
+<li>
+<p>Click the Download button to download a zip file.</p>
+</li>
+<li>
+<p>Browse to the zip file in your Downloads directory or click the file the your browser's download bar.</p>
+</li>
+<li>
+<p>Extract the zip file by double clicking the .zip file.</p>
+</li>
+<li>
+<p>Move the Atom.app file to your Applications directory.
+You can drag and drop the file.</p>
+</li>
+<li>
+<p>In the Applications directory, open the Atom app by double clicking.</p>
+<p>If you get a security message about opening an application downloaded from the Internet, it's okay to proceed. Click Open.</p>
+<p>When Atom opens, you'll see a Welcome and Welcome Guide pages as tabs.</p>
+</li>
+</ol>
+<a class="header" href="print.html#windows" name="windows"><h4>Windows</h4></a>
+<p>In your web browser, navigate to the <a href="https://atom.io">Atom website</a>. Hit
+<em>Download Windows Installer</em> to download <code>AtomSetup.exe</code>. Open it to install
+Atom.</p>
+<p>Follow the installation dialog. At the end, Atom should start. You can always
+access it using the start menu.</p>
+<a class="header" href="print.html#installing-the-rust-package-for-your-text-editor" name="installing-the-rust-package-for-your-text-editor"><h3>Installing the Rust package for your text editor</h3></a>
+<p>The final step is installing a Rust language package for a text editor.
+The package makes it easier to code with Rust with features like colored text and auto-formatting.</p>
+<ol>
+<li>
+<p>In Atom, navigate to Preferences, then Install.
+(On Windows, you can find this under File, then Settings; or hit Ctrl+,)</p>
+</li>
+<li>
+<p>Search for &quot;rust&quot;.</p>
+</li>
+<li>
+<p>Select the &quot;language-rust&quot; package by the user &quot;zargony&quot;.
+Click Install.</p>
+<p>Wait for the package to download and install.</p>
+</li>
+<li>
+<p>Still in Atom, click on the Packages tab.
+Under the Community Packages section, verify that &quot;language-rust&quot; is listed.</p>
+</li>
+<li>
+<p>Open a new text file by selecting New File under File.
+You may already have an untitled file already open.</p>
+</li>
+<li>
+<p>In the bottom right, click Plain Text to change the file type.</p>
+</li>
+<li>
+<p>Search for &quot;rust&quot;.
+Click &quot;Rust&quot; in the search results.
+&quot;Rust&quot; should replace &quot;Plain Text&quot; now.</p>
+</li>
+<li>
+<p>To test the language package, type the following:</p>
+<pre><code>fn main() {}
+</code></pre>
+<p>Notice that &quot;fn&quot; and &quot;main&quot; appear in different colors.</p>
+</li>
+</ol>
+<a class="header" href="print.html#conclusion" name="conclusion"><h2>Conclusion</h2></a>
+<p>You've now installed Rust and optimized your text editor for Rust.
+You're ready to start learning Rust!</p>
+<a class="header" href="print.html#rustbridge-installfest-presenter-notes" name="rustbridge-installfest-presenter-notes"><h1>RustBridge InstallFest: Presenter Notes</h1></a>
+<p>Each bullet point here should the text of a different slide.
+Nested bullet points are notes about other things that should appear on that slide.
+Nested bullet points beginning with &quot;PN:&quot; are presenter notes for that slide.
+??? is content that still needs to be filled in.</p>
+<ul>
+<li>RustBridge InstallFest
+<ul>
+<li>Main title card</li>
+</ul>
+</li>
+<li>Goals
+<ul>
+<li>PN: The goal of InstallFest is to get your computer set up with Rust, Cargo, and a text editor you can use to work on Rust code.</li>
+</ul>
+</li>
+<li>Prerequisites
+<ul>
+<li>PN: Explain what is expected of the user before beginning:
+working macOS, Windows, or Linux computer with Internet access.
+Prior programming experience is NOT expected, but may be helpful.</li>
+</ul>
+</li>
+<li>Using the terminal
+<ul>
+<li>PN: Explain what a terminal is and why we are using it.</li>
+</ul>
+</li>
+<li>macOS: Terminal.app
+<ul>
+<li>Screenshot of Terminal.app being selected in the Finder and/or Spotlight.</li>
+<li>PN: Explain how to find and launch Terminal.app.</li>
+</ul>
+</li>
+<li>Windows: ???
+<ul>
+<li>Screenshot of how to find and open whatever terminal app we recommend</li>
+<li>PN: Explain how to find and launch the terminal app</li>
+</ul>
+</li>
+<li>Linux: ???
+<ul>
+<li>Screenshot of how to find and open whatever terminal app we recommend</li>
+<li>PN: Explain how to find and launch the terminal app</li>
+</ul>
+</li>
+<li>Understanding the command line
+<ul>
+<li>PN: Explain what the command line is:
+A prompt is shown, the user enters a command as input, and the computer executes the command, optionally displaying some output in response.</li>
+</ul>
+</li>
+<li>(Screenshot of an average looking command prompt)</li>
+<li><code>$ echo hello</code>
+<ul>
+<li>PN: Have everyone run this command as a way of demonstrating command input and execution.</li>
+</ul>
+</li>
+<li><code>curl</code>
+<ul>
+<li>PN: Explain what curl is and that we will use it to install rustup.</li>
+<li>PN: curl is installed with the system on macOS, but Windows/Linux users may need to install it. (How?)</li>
+</ul>
+</li>
+<li>rustup
+<ul>
+<li>PN: Explain what rustup is:
+The official tool for installing Rust and managing Rust updates.</li>
+</ul>
+</li>
+<li>rustup.rs
+<ul>
+<li>PN: Tell everyone to go to the website and look at the command it shows.</li>
+<li>PN: Explain &quot;WARNING: This is beta software&quot; if it makes people nervous.</li>
+</ul>
+</li>
+<li><code>curl https://sh.rustup.rs -sSf | sh</code>
+<ul>
+<li>PN: Explain what the command is going to do, why <code>curl | sh</code> is potentially dangerous, but why we're doing it anyway in this case.</li>
+<li>PN: Ask everyone to run the command.</li>
+</ul>
+</li>
+<li>(Screenshot of what you see when you run the rustup installer)
+<ul>
+<li>PN: Tell everyone to accept the defaults and let rustup continuing installing.</li>
+</ul>
+</li>
+<li>(Screenshot of successful rustup installation message)</li>
+<li><code>source $home/.cargo/env</code>
+<ul>
+<li>PN: Explain that your terminal needs to be &quot;reloaded&quot; for it to &quot;see&quot; the new Rust installation, but that this only happens once.</li>
+</ul>
+</li>
+<li>Verifying the installation</li>
+<li><code>rustc</code>
+<ul>
+<li>PN: Everyone should see help output, which verifies rustc is installed.</li>
+<li>PN: Explain that <code>rustc</code> is the program that compiles Rust source code, and that is what the &quot;c&quot; at the end of the name is for.</li>
+<li>PN: Explain that generally everyone will not use <code>rustc</code> directly, but that it's good to know it's there.</li>
+</ul>
+</li>
+<li><code>cargo</code>
+<ul>
+<li>PN: Everyone should see help output, which verifies cargo is installed.</li>
+<li>PN: Explain that cargo is a package management and build tool for Rust and your primary tool when making Rust programs.</li>
+<li>PN: Explain package management as the ability to install other Rust software to use in your program.</li>
+<li>PN: Explain build tool as a program to compile your program and dependent programs in an easy way, and that using rustc directly is &quot;lower level&quot; and less friendly.</li>
+</ul>
+</li>
+</ul>
+<a class="header" href="print.html#spam-or-ham" name="spam-or-ham"><h1>Spam Or Ham?</h1></a>
+<p>In this tutorial we'll try to carry out a simple classification task using Rust, starting with setting up a new project, through collecting and parsing data, to fitting the model and evaluation.</p>
+<p>We'll proceed through the following steps:</p>
+<ol>
+<li>Setting up a new Rust project</li>
+<li>Programmatically downloading the data</li>
+<li>Unpacking and parsing the data</li>
+<li>Fitting a model and evaluating it</li>
+</ol>
+<p>(If you're impatient, <a href="https://github.com/rust-community/rustbridge/tree/master/workshops/src/machine_learning/spam_or_ham/src/main.rs">here</a> is the finished article.)</p>
+<a class="header" href="print.html#preliminaries-getting-rust" name="preliminaries-getting-rust"><h2>Preliminaries: getting Rust</h2></a>
+<p>If you haven't installed Rust yet, don't fret. <a href="https://rustup.rs/">Rustup.rs</a> is a very quick and painless way of installing Rust. Executing <code>curl https://sh.rustup.rs -sSf | sh</code> will download and install a Rust distribution and you'll be ready to go.</p>
+<a class="header" href="print.html#setting-up-a-new-project" name="setting-up-a-new-project"><h2>Setting up a new project</h2></a>
+<p>We can set up a new project using Cargo, the Rust package manager. We can do that by executing</p>
+<pre><code>cargo new spam_or_ham --bin
+</code></pre>
+<p>This does a couple of things:</p>
+<ol>
+<li>Creates a new directory, <code>spam_or_ham</code> that contains the structure of a typical Rust project.</li>
+<li>It initializes a new Git repository in that directory.</li>
+<li>It creates a file called <code>Cargo.toml</code> which contains the metadata describing our new package (called a <code>crate</code> in Rust) as well as the specification of it dependencies.</li>
+<li>Finally, it creates a <code>main.rs</code> file in the <code>src/</code> subdirectory, which contains the entry point of our program. Because we passed the <code>--bin</code> flag to Cargo when creating the project, our project builds an executable binary.</li>
+</ol>
+<p>At the beginning, our <code>main.rs</code> looks like this:</p>
+<pre><pre class="playpen"><code class="language-rust">fn main() {
+    println!(&quot;Hello, world!&quot;);
+}
+</code></pre></pre>
+<p>The exclamation mark denotes <a href="https://doc.rust-lang.org/book/macros.html">marcos</a>: in the case of <code>println!</code>, this allows variadic calls.</p>
+<p>We can run it to verify that it works through invoking Cargo:</p>
+<pre><code>&gt; cargo run
+&gt;&gt;&gt;     Compiling spam_or_ham v0.1.0 (file:///home/maciej/Code/rustbridge/workshop/machine_learning/spam_or_ham)
+&gt;&gt;&gt;     Running `target/debug/spam_or_ham`
+&gt;&gt;&gt;     Hello, world!
+</code></pre>
+<p><code>cargo run</code> builds the project (resolving any dependencies) and runs it; <code>cargo build</code> will simply compile it, and <code>cargo test</code> will run the tests (but we don't have any yet).</p>
+<a class="header" href="print.html#getting-the-data" name="getting-the-data"><h2>Getting the data</h2></a>
+<p>For this example, we'll use the <a href="https://archive.ics.uci.edu/ml/datasets/SMS+Spam+Collection#">SMS Spam Dataset</a>. It contains 5574 text messages labelled as either spam or ham. The data looks roughly like this:</p>
+<pre><code>ham Go until jurong point, crazy.. Available only in bugis n great world la e buffet... 
+ham Ok lar... Joking wif u oni...
+spam    Free entry in 2 a wkly comp to win FA Cup final tkts 21st May 2005.
+ham U dun say so early hor... U c already then say...
+</code></pre>
+<a class="header" href="print.html#downloading-the-data" name="downloading-the-data"><h3>Downloading the data</h3></a>
+<p>Let's write a function to download the data.</p>
+<p>To do this, we need to talk about dependencies: the Rust standard library has a fairly narrow focus, and a lot of key tasks are delegated to third-party libraries (called crates). For downloading the dataset we'll use a package called <code>hyper</code>.</p>
+<p>The package repository is <a href="crates.io">crates.io</a>. The crates.io <code>hyper</code> <a href="https://crates.io/crates/hyper">page</a> gives us a couple of pieces of information about the package</p>
+<ol>
+<li>A link to its <a href="http://hyperium.github.io/hyper">documentation</a></li>
+<li>A link to its <a href="https://github.com/hyperium/hyper">repository</a></li>
+<li>Its download statistics. This is a good guide to figuring out which library is the standard way of doing a given thing in Rust.</li>
+<li>Its <code>Cargo.toml</code> line: the line you to include in your <code>Cargo.toml</code> file to include it as a dependency for your project.</li>
+</ol>
+<p>We copy that line into the dependencies section of <code>Cargo.toml</code>. It should look like this:</p>
+<pre><code>[package]
+name = &quot;spam_or_ham&quot;
+version = &quot;0.1.0&quot;
+
+[dependencies]
+hyper = &quot;0.9.10&quot;
+</code></pre>
+<p>That's it! If we run <code>cargo run</code>, we should see output similar to the following:</p>
+<pre><code>&gt; cargo run
+&gt;&gt;&gt; Updating registry `https://github.com/rust-lang/crates.io-index`
+&gt;&gt;&gt; Downloading hyper v0.9.10
+&gt;&gt;&gt; Downloading language-tags v0.2.2
+&gt;&gt;&gt; Downloading mime v0.2.2
+&gt;&gt;&gt; &lt;snip&gt;
+&gt;&gt;&gt; Compiling cookie v0.2.5
+&gt;&gt;&gt; Compiling hyper v0.9.10
+&gt;&gt;&gt; Compiling spam_or_ham v0.1.0
+&gt;&gt;&gt; Running `target/debug/spam_or_ham`
+&gt;&gt;&gt; Hello, world!
+</code></pre>
+<p>(If you're on a Mac, you may need to <a href="http://apple.stackexchange.com/questions/126830/how-to-upgrade-openssl-in-os-x">install OpenSSL</a> via Homebrew.</p>
+<p>This means cargo has downloaded and compiled <code>hyper</code> (and all of its dependencies) before building our project. We are now set to start using it!</p>
+<p>Our download function will look something like this</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+fn download(url: &amp;str) -&gt; Vec&lt;u8&gt; {
+   // snip
+}
+
+#}</code></pre></pre>
+<p>We download a resource by its URL and return an array of bytes (a <code>Vec&lt;u8&gt;&gt;</code>). In order to start writing the body of the function, we need to impor the <code>hyper</code> dependency. We do this by putting <code>extern crate hyper;</code> at the top of <code>main.rs</code>. This imports the <code>hyper</code> module into the scope of our project.</p>
+<p>Looking at the GET example in the <code>hyper</code> <a href="http://hyper.rs/hyper/v0.9.10/hyper/client/index.html#get">documentation</a>, we should be able to write somthing along the lines of</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+let client = Client::new();
+let mut response = client.get(url).send().unwrap();
+
+#}</code></pre></pre>
+<p>The first line instantiates a HTTP client; the second one makes the request. There are two interesting things about it.</p>
+<p>Firstly, the <a href="http://hyper.rs/hyper/v0.9.10/hyper/client/struct.RequestBuilder.html#method.send">return type</a> of <code>send()</code> is <code>Result&lt;Response&gt;</code> --- why is that? Rust uses <code>Result</code> types to handle the results of computations that can fail. In this instance, downloading the data can succeed (in which case we would get an <code>Ok&lt;Response&gt;</code> variant of <code>Result&lt;Response&gt;</code>), or fail (due to network issues, a moved resource and so on). In that case, we'd get an <code>Err</code> variant. That the compiler then forces us to properly handle both cases is part of Rust's focus on safety.</p>
+<p>So how do we handle a <code>Result</code> type? Rust provides an extremely powerful <a href="https://doc.rust-lang.org/book/patterns.html">pattern matching</a> paradigm, but in this simple case we're just going to skip error handling and call <code>unwrap</code> on all of the <code>Result</code>s we encounter. This causes the program to abort whenever there is an error.</p>
+<p>Secondly, we want to bind the resulting response to a mutable variable, and so we use the <code>mut</code> modifier when binding the response variable. While Rust's <a href="https://doc.rust-lang.org/book/mutability.html">mutability</a> system is simple, it is somewhat beyond the scope of this tutorial. All we need to know is that we modify the response when reading from it, so we need to declare it as mutable.</p>
+<p>Once we have our response we want to convert it to a byte array with something like the following:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+let mut data = Vec::new();
+response.read_to_end(&amp;mut data).unwrap()
+
+#}</code></pre></pre>
+<p>For this to work, we also need to import the <code>Read</code> <a href="https://doc.rust-lang.org/book/traits.html">trait</a> into our scope by adding <code>use std::io::Read;</code> at the top of the file. The reasons for this are somewhat arcane so we'll skip them here.</p>
+<p>Once that's completed we simply return the <code>data</code> variable by including it on the last line of the function (the last line of any expression is its return value):</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+fn download(url: &amp;str) -&gt; Vec&lt;u8&gt; {
+
+    let client = Client::new();
+    let mut response = client.get(url).send().unwrap();
+
+    let mut data = Vec::new();
+    response.read_to_end(&amp;mut data).unwrap();
+
+    data
+}
+
+#}</code></pre></pre>
+<p>We can check that it works by calling it in the <code>main</code> function:</p>
+<pre><pre class="playpen"><code class="language-rust">fn main() {
+    let zipped = download(&quot;https://archive.ics.uci.\
+                           edu/ml/machine-learning-databases/00228/smsspamcollection.zip&quot;);
+    println!(&quot;Downloaded {} bytes of data&quot;, zipped.len());
+}
+</code></pre></pre>
+<p>At this stage, we should have something like <a href="step_1">this</a>.</p>
+<a class="header" href="print.html#unzipping-the-data" name="unzipping-the-data"><h3>Unzipping the data</h3></a>
+<p>We have downloaded a zipped archive: the next step is to unzip it. We'll need another dependency to do that, the <a href="https://crates.io/crates/zip">zip</a> crate. As before, we add it to the <code>Cargo.toml</code> file</p>
+<pre><code>[dependencies]
+hyper = &quot;0.9.10&quot;
+zip = &quot;0.1.18&quot;
+</code></pre>
+<p>and then import it in <code>main.rs</code>, together with the <code>ZipArchive</code> struct:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+extern crate zip;
+&lt;snip&gt;
+use zip::read::ZipArchive;
+
+#}</code></pre></pre>
+<p>Our unzip function will take the vector of bytes from the download function, and return a <code>String</code>. It could look like this:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+// We need to add the Cursor import 
+use std::io::{Cursor, Read};
+
+&lt;snip&gt;
+
+fn unzip(zipped: Vec&lt;u8&gt;) -&gt; String {
+    let mut archive = ZipArchive::new(Cursor::new(zipped)).unwrap();
+    let mut file = archive.by_name(&quot;SMSSpamCollection&quot;).unwrap();
+
+    let mut data = String::new();
+    file.read_to_string(&amp;mut data).unwrap();
+
+    data
+}
+
+#}</code></pre></pre>
+<p>We open the archive, select the file we want from it, and read it into a <code>String</code> which we then return (dealing with <code>Result</code> types by unwrapping them.</p>
+<p>We can print some lines as a quick sanity check:</p>
+<pre><pre class="playpen"><code class="language-rust">fn main() {
+    let zipped = download(&quot;https://archive.ics.uci.\
+                           edu/ml/machine-learning-databases/00228/smsspamcollection.zip&quot;);
+    let raw_data = unzip(zipped);
+
+    for line in raw_data.lines().take(3) {
+        println!(&quot;{}&quot;, line);
+    }
+}
+</code></pre></pre>
+<p>This gives us a first look at Rust iterators <code>raw_data.lines()</code> creates an iterator over slices of the string, separates by newlines; we then take 3 elements from it and print them. Rust's functional features manifest themselves in a a large array of powerful <a href="https://doc.rust-lang.org/book/iterators.html#iterator-adaptors">iterator adapters</a> which are not only convenient but also compile to efficient machine code equivalent to traditional C and C++ for loops.</p>
+<p>The source at this stage should look like <a href="https://github.com/rust-community/rustbridge/tree/master/workshops/src/machine_learning/step_2">this</a>.</p>
+<a class="header" href="print.html#building-training-matrices" name="building-training-matrices"><h3>Building training matrices</h3></a>
+<p>We're going to use a package called <a href="https://crates.io/crates/rustlearn">rustlearn</a> for model fitting an evaluation. As before, we add it to <code>Cargo.toml</code> and import it:</p>
+<pre><code>[dependencies]
+hyper = &quot;0.9.10&quot;
+zip = &quot;0.1.18&quot;
+rustlearn = &quot;0.4.0&quot;
+</code></pre>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+extern crate rustlearn;
+
+&lt;snip&gt;
+
+use rustlearn::prelude::*;
+
+#}</code></pre></pre>
+<p>The first step is to transform the data into a feature matrix and a target array. We'll transform every label into either a 1 (ham) or 0 (spam), and use one-hot-encoded bag of words features. For one-hot-encoding we're going to use <a href="https://maciejkula.github.io/rustlearn/doc/rustlearn/feature_extraction/dict_vectorizer/struct.DictVectorizer.html">DictVectorizer</a>, and return a sparse array for features and a dense array for labels:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+use rustlearn::feature_extraction::DictVectorizer;
+
+&lt;snip&gt;
+
+fn parse(data: &amp;str) -&gt; (SparseRowArray, Array) {
+
+    // Initialise the vectorizer
+    let mut vectorizer = DictVectorizer::new();
+    let mut labels = Vec::new();
+
+    // Like Python enumerate(), this will iterate
+    // over pairs of (row_number, line).
+    for (row_num, line) in data.lines().enumerate() {
+        // The label and text message content is separated by a tab.
+        // We split the line in two here.
+        let (label, text) = line.split_at(line.find('\t').unwrap());
+
+        // Convert the labels to binary. We use pattern matching
+        // to ensure that the program is aborted if an unexpected
+        // label is encountered.
+        labels.push(match label {
+            &quot;spam&quot; =&gt; 0.0,
+            &quot;ham&quot; =&gt; 1.0,
+            _ =&gt; panic!(format!(&quot;Invalid label: {}&quot;, label))
+        });
+
+        // The vectorizer will keep a mapping from tokens
+        // to column indices.
+        for token in text.split_whitespace() {
+            vectorizer.partial_fit(row_num, token, 1.0);
+        }
+    }
+
+    (vectorizer.transform(), Array::from(labels))
+}
+
+#}</code></pre></pre>
+<p>Calling the function</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+let (X, y) = parse(&amp;raw_data);
+
+println!(&quot;X: {} rows, {} columns, {} non-zero entries&quot;,
+          X.rows(), X.cols(), X.nnz());
+
+#}</code></pre></pre>
+<p>should print <code>X: 5574 rows, 15733 columns, 81085 non-zero entries. Y: 86.60% positive class</code>.</p>
+<p>The code should look like <a href="https://github.com/rust-community/rustbridge/tree/master/workshops/src/machine_learning/step_3">this</a>.</p>
+<a class="header" href="print.html#fitting-and-evaluating-the-model" name="fitting-and-evaluating-the-model"><h3>Fitting and evaluating the model</h3></a>
+<p>Once we have the data, model fitting is easy. We can create a <a href="https://maciejkula.github.io/rustlearn/doc/rustlearn/linear_models/sgdclassifier/index.html">logistic regression model</a> like so:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+use rustlearn::linear_models::sgdclassifier;
+
+&lt;snip&gt;
+
+let mut model = sgdclassifier::Hyperparameters::new(X.cols())
+            .learning_rate(0.05)
+            .l2_penalty(0.01)
+            .build();
+
+#}</code></pre></pre>
+<p>Adding cross validation and evaluation gives us:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+use rustlearn::cross_validation::CrossValidation;
+use rustlearn::metrics::accuracy_score;
+
+&lt;snip&gt;
+
+fn fit(X: &amp;SparseRowArray, y: &amp;Array) -&gt; (f32, f32) {
+
+    let num_epochs = 10;
+    let num_folds = 10;
+
+    let mut test_accuracy = 0.0;
+    let mut train_accuracy = 0.0;
+
+    // The cross validation interator returns indices of train and test rows
+    for (train_indices, test_indices) in CrossValidation::new(y.rows(), num_folds) {
+
+        // Slice the feature matrices
+        let X_train = X.get_rows(&amp;train_indices);
+        let X_test = X.get_rows(&amp;test_indices);
+
+        // Slice the target vectors
+        let y_train = y.get_rows(&amp;train_indices);
+        let y_test = y.get_rows(&amp;test_indices);
+
+        let mut model = sgdclassifier::Hyperparameters::new(X.cols())
+            .learning_rate(0.05)
+            .l2_penalty(0.01)
+            .build();
+
+        // Repeated calls to `fit` perform epochs of training
+        for _ in 0..num_epochs {
+            model.fit(&amp;X_train, &amp;y_train).unwrap();
+        }
+
+        let fold_test_accuracy = accuracy_score(&amp;y_test, &amp;model.predict(&amp;X_test).unwrap());
+        let fold_train_accuracy = accuracy_score(&amp;y_train, &amp;model.predict(&amp;X_train).unwrap());
+
+        test_accuracy += fold_test_accuracy;
+        train_accuracy += fold_train_accuracy;
+    }
+
+    (test_accuracy / num_folds as f32,
+     train_accuracy / num_folds as f32)
+}
+
+#}</code></pre></pre>
+<p>Calling it</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+let (test_accuracy, train_accuracy) = fit(&amp;X, &amp;y);
+
+println!(&quot;Test accuracy: {:.3}, train accuracy: {:.3}&quot;,
+         test_accuracy, train_accuracy);
+
+#}</code></pre></pre>
+<p>should print <code>Test accuracy: 0.974, train accuracy: 0.994</code>: slight overfitting, but still a pretty decent model.</p>
+<p>We can also try timing the model fitting be using the <code>time</code> crate:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+extern crate time;
+
+&lt;snip&gt;
+
+let start_time = time::precise_time_ns();
+let (test_accuracy, train_accuracy) = fit(&amp;X, &amp;y);
+let duration = time::precise_time_ns() - start_time;
+
+println!(&quot;Training time: {:.3} seconds&quot;,
+         duration as f64 / 1.0e+9);
+
+#}</code></pre></pre>
+<p>On my machine, this prints <code>Training time: 5.519 seconds</code>, which is pretty slow --- and that's because we have so far been compiling in debug mode. To compile in release mode, run <code>cargo run --release</code>. This brings the execution time down to just over 1 second.</p>
+<p>The final source is <a href="https://github.com/rust-community/rustbridge/tree/master/workshops/src/machine_learning/spam_or_ham/src/main.rs">here</a>.</p>
+<a class="header" href="print.html#mondrian-pattern-generator" name="mondrian-pattern-generator"><h1>Mondrian Pattern Generator</h1></a>
+<p><a title="Piet Mondrian [Public domain], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File%3ATableau_I%2C_by_Piet_Mondriaan.jpg"><img width="512" alt="Tableau I, by Piet Mondriaan" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Tableau_I%2C_by_Piet_Mondriaan.jpg/512px-Tableau_I%2C_by_Piet_Mondriaan.jpg"/>
+</a></p>
+<p>Piet Mondrian (7 March 1872 - 1 February 1944) is probably best known for establishing a distinctive visual pattern in our cultural heritage. Its characteristic way of creating images by making subsequent, orthogonal subdivisions has inspired not only fashion designers and confectioners but also <a href="https://github.com/qiyuangong/Mondrian">computer scientists</a>.</p>
+<p><a title="By Eric Koch / Anefo (Nationaal Archief) [CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0)], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File%3AMondriaanmode_door_Yves_St_Laurent_(1966).jpg"><img width="30%" alt="Mondriaanmode door Yves St Laurent (1966)" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Mondriaanmode_door_Yves_St_Laurent_%281966%29.jpg/512px-Mondriaanmode_door_Yves_St_Laurent_%281966%29.jpg"/></a>
+<a title="By Heidi De Vries [CC BY 2.0 (http://creativecommons.org/licenses/by/2.0)], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File%3AMondrian_Cake.jpg"><img width="30%" alt="Mondrian Cake" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Mondrian_Cake.jpg/512px-Mondrian_Cake.jpg"/></a></p>
+<p>[Images from: <a href="https://commons.wikimedia.org/">Wikimedia Commons</a>]</p>
+<a class="header" href="print.html#what-you-will-learn" name="what-you-will-learn"><h2>What you will learn</h2></a>
+<p>The workshop gives priority to <em>doing</em> rather than <em>understanding</em>. Precise instructions will be given without much theoretical background. To do something for the first time is a great experience in itself even if you only have a sketchy picture of what is going on.</p>
+<p>This sounds odd for learning a new technology skill where there is a lot of background required, no doubt! There will be plenty of situations that require you to continue without full understanding. However, if you enjoy your first contact with rust you will have the energy and motivation develop your skills further. You will need that motivation! If you are motivated and have patience to reflect on the explanations and to do further practical exercises you will be better of on the long run.</p>
+<p><strong>Bon courage!</strong></p>
+<a class="header" href="print.html#intro" name="intro"><h2>Intro</h2></a>
+<p>If you want to make a piece of silicon do what you want you have to give it extremely precise instructions. We call this activity <em>programming</em>. In the end, all computers, mobile phones etc. are just wires, silicon and so on.</p>
+<p>The first step is to understand the problem in a precise way. The universe is incredibly complex.</p>
+<ul>
+<li>
+<p>What am I interested in?</p>
+</li>
+<li>
+<p>What am I <em>not</em> interested in?</p>
+</li>
+<li>
+<p>Which information do I have?</p>
+</li>
+<li>
+<p>Which information do I need?</p>
+</li>
+<li>
+<p>How can I derive or <em>create</em> the information I need based on the information I have.</p>
+</li>
+</ul>
+<a class="header" href="print.html#the-mondrian-universe" name="the-mondrian-universe"><h3>The Mondrian Universe</h3></a>
+<p><img src="images/mondrian-associations.jpg" alt="" /></p>
+<p>[Image from: <a href="http://visuwords.com">Visuwords (TM)</a>]</p>
+<a class="header" href="print.html#what-to-focus-on" name="what-to-focus-on"><h3>What to focus on?</h3></a>
+<p><img src="images/mondrian-associations-focus.jpg" alt="" /></p>
+<p><strong>What are we not interested in?</strong> (At least not for our little project here.) His biography. The techniques of painting. And so on.</p>
+<p><strong>What are we interested in?</strong> The paintings of Piet Mondrian. They are oil paintings on canvas. The canvas is made of some fabric (linen) which is a plant... The paint is some colourful substances mixed with oil as a suspension -- We could continue like this for ever.</p>
+<p><strong>What aspect(s) of his paintings are we interested in?</strong> The distinctive visual patterns.</p>
+<p>For us as humans, all these things are often immediately clear but for the machines we want to program they are not.</p>
+<a class="header" href="print.html#mondrian-patterns" name="mondrian-patterns"><h3>Mondrian Patterns</h3></a>
+<p>What makes this type of pattern <em>this</em> type of pattern?</p>
+<ul>
+<li>
+<p>We see the <em>canvas</em> as a rectangular surface that has a colour at each location. Initially it is white or some other more or less uniform colour.</p>
+</li>
+<li>
+<p>The Mondrian Painting is a canvas filled with coloured rectangular areas bounded by black borders.</p>
+</li>
+</ul>
+<p>With this description we certainly make an over-simplification, omitting many aspects of the choices he made regarding composition, geometry, colour... We will see more of the complexity as we proceed.</p>
+<p>Nonetheless, this is (still) not precise enough to define the distinctive pattern we are interested in. It could also mean something like <a href="https://williamaadams.wordpress.com/2013/12/12/multitask-ui-like-its-1995/">random rectangles</a>.</p>
+<p>Also, although we can discuss what Piet Mondrian considered a &quot;valid&quot; mondrian pattern, for this course we also do not want any of these to be produced:</p>
+<p><img width="20%" style="padding:10px" src="images/oddPatterns01.jpg"/>
+<img width="20%" style="padding:10px" src="images/oddPatterns02.jpg"/>
+<img width="20%" style="padding:10px" src="images/oddPatterns03.jpg"/></p>
+<p>Up to now, nothing in our <em>definition</em> makes sure the rectangles</p>
+<ul>
+<li>
+<p>are aligned with the edge of the canvas,</p>
+</li>
+<li>
+<p>cover the whole canvas,</p>
+</li>
+<li>
+<p>do not overlap, producing non-rectangular remainders.</p>
+</li>
+</ul>
+<p>With <em>Mondrian Pattern</em> we will refer to a rectangular area, the <em>canvas</em>, filled <em>completely</em> with differently <em>coloured rectangles</em>. The rectangles are oriented 'upright' so that their edges are aligned with the borders of the canvas.</p>
+<a class="header" href="print.html#processing-mondrian-patterns" name="processing-mondrian-patterns"><h3>Processing Mondrian Patterns</h3></a>
+<p>To fill a given rectangular <em>canvas</em> with a pattern that satisfies the criteria of the definition we can use these steps:</p>
+<ol>
+<li>
+<p>Make vertical/horizontal subdivisions so that rectangular sub-regions emerge.</p>
+</li>
+<li>
+<p>Paint each sub-region with a coloured rectangle and paint a black border around it.</p>
+</li>
+</ol>
+<p>There are other ways of achieving similar or the same type of pattern. Also, we are far from a level of precision that would suit programming a machine to do it. But for us humans, we have gained a lot of precision already.</p>
+<a class="header" href="print.html#practice-the-workshops" name="practice-the-workshops"><h2>Practice: &quot;The Workshops&quot;</h2></a>
+<p>Each step in the instructions is marked by a ▶▶.</p>
+<a class="header" href="print.html#before-you-start" name="before-you-start"><h3>Before you start</h3></a>
+<p>▶▶ If you have not <a href="https://github.com/rust-community/rustbridge/blob/master/workshops/installfest/user-guide.md">set up your machine for coding</a> please do so, now.</p>
+<p>▶▶ Currently (but hopefully this is going to change in the near future), you need <code>gcc</code> installed in order to have graphics output available.</p>
+<p>TODO: Add link to gcc install instructions as soon as they exist.</p>
+<a class="header" href="print.html#alternative-learning-ressources" name="alternative-learning-ressources"><h3>Alternative learning ressources</h3></a>
+<p><strong>If you are a programming newcomer</strong> and if you do not want to (or failed to) set up a computer for coding right now, we suggest to have a look at these alternatives:</p>
+<ul>
+<li>
+<p><a href="http://rustbyexample.com/">rustbyexample.com</a></p>
+</li>
+<li>
+<p><a href="http://exercism.io/languages/rust">exercism.io</a></p>
+</li>
+</ul>
+<a class="header" href="print.html#setup-a-first-project" name="setup-a-first-project"><h3>Setup a first project</h3></a>
+<p>Make a new project named <code>mondpaint</code>:</p>
+<p>▶▶ Type <code>cargo new --bin mondpaint</code> into the console and hit the <code>Enter</code> key.</p>
+<p>▶▶ Type <code>cd mondpaint</code> into the console, and hit the <code>Enter</code> key.</p>
+<a class="header" href="print.html#testing" name="testing"><h4>[Testing]</h4></a>
+<p>Create an executable program and execute it:</p>
+<p>▶▶ Type <code>cargo run</code> into the console and hit the <code>Enter</code> key.</p>
+<p>Your console should now look something like this:
+<img src="images/console_run-hello-world.jpg" alt="" /></p>
+<a class="header" href="print.html#part-i" name="part-i"><h3>Part I</h3></a>
+<p>This part is dedicated to people with no prior programming experience. Detailed instructions guide learners through minimal interventions in an existing piece of rust code. Each step changes the Mondrian pattern in an important way, in turn providing visual feedback to the learner.</p>
+<p><a href="part1.md">continue to Part I</a></p>
+<a class="header" href="print.html#part-ii" name="part-ii"><h3>Part II</h3></a>
+<p>TODO: The second part is yet to be developed!</p>
+<p>It is dedicated to people who have made some more coding experience for themselves, either in rust or in another language.</p>
+<p>The mondrian pattern generator follows the idea of rust as a parallel processing systems programming language. Part II will directly address rust-specific concepts related to multi-threading.</p>
+<p><a href="part2.md">sneek into unfinnished Part II</a></p>
+<hr />
+<p><a href="part1.md">Continue to Part I</a> | <a href="part2.md">sneek into unfinnished Part II</a></p>
+<p><a href="./mondrian-pattern/README.md">Back to the introduction</a> | <a href="./mondrian-pattern/part2.md">Continue to Part II</a></p>
+<hr />
+<a class="header" href="print.html#mondrian-pattern-generator-part-i" name="mondrian-pattern-generator-part-i"><h1>Mondrian Pattern Generator (Part I)</h1></a>
+<a class="header" href="print.html#what-to-learn-in-this-part" name="what-to-learn-in-this-part"><h2>What to learn in this part?</h2></a>
+<ul>
+<li>Invoke Operations (Alias: Call Functions)</li>
+<li>Variables</li>
+<li>When invoking an operation, specify how it should do its job in detail (Alias: Arguments/Parameter variables)</li>
+<li>Define new Operations (Alias: Function definitions)</li>
+<li>How to read rust error messages</li>
+<li>Let Operations invoke other operations in non-trivial combinations</li>
+</ul>
+<a class="header" href="print.html#exercises" name="exercises"><h2>Exercises</h2></a>
+<a class="header" href="print.html#exercise-0-start-with-a-prepared-minimal-mondrian-pattern" name="exercise-0-start-with-a-prepared-minimal-mondrian-pattern"><h3>Exercise 0: Start with a prepared minimal Mondrian pattern</h3></a>
+<p><img src="./mondrian-pattern/images/fig00_exercise-start.jpg" alt="" /></p>
+<p>At this point, you have executed a minimal <code>Hello World</code> rust project already! If not, please go <a href="./mondrian-pattern/README.md">back to the introduction</a>.
+Now, replace that first project with the minimal Mondrian pattern generator:</p>
+<p>▶▶ Open the files <code>main.rs</code> (in the subfolder <code>src</code>) and <code>Cargo.toml</code> in your text editor.</p>
+<p>If you are unsure where to find the files and/or how to open them in a text editor there are <a href="https://github.com/broesamle/RustWorkshop/blob/master/minimals/countinghands.md#step-2-where-is-the-program">very detailed instructions in Step 2 and 3 here</a>.</p>
+<p>▶▶ Clicking the links will show the file content in the browser window.</p>
+<ul>
+<li>
+<p><a href="https://raw.githubusercontent.com/rust-community/rustbridge/master/workshops/src/mondrian-pattern/codebase/mondpaint/src/main.rs">new main.rs</a></p>
+</li>
+<li>
+<p><a href="https://raw.githubusercontent.com/rust-community/rustbridge/master/workshops/src/mondrian-pattern/codebase/mondpaint/Cargo.toml">new Cargo.toml</a></p>
+</li>
+</ul>
+<p>What you see looks quite complex and like a foreign language. True, it is rust, the language you will learn now! At this point, you don't need to understand it. You just have to copy and paste it :-)</p>
+<p><img src="./mondrian-pattern/images/main-rs_in-browser.jpg" alt="" /></p>
+<p>▶▶ Copy and paste it from there into the file in the text editor. (Do it for both files in the same way.)</p>
+<p>▶▶ Save the files in your editor.</p>
+<a class="header" href="print.html#testing" name="testing"><h4>[Testing]</h4></a>
+<p>▶▶ Make sure your machine has an internet connection working.</p>
+<p>▶▶ To execute the program do again <code>cargo run</code>.</p>
+<p>Your rust compiler will work for some time now</p>
+<p>▶▶ Then, see what happens: can you see a very minimal Mondrian pattern (a red rectangle with a black frame) in a window?</p>
+<p>In windows, it happens that the window is hidden behind other open windows. [TODO: Fix that!]</p>
+<p>You should see something similar to this:
+<img src="./mondrian-pattern/images/console+mondrianwindow.jpg" alt="" /></p>
+<p>Congratulations! You have made a project, adapted it so that it matches an example, and executed it successfully.</p>
+<a class="header" href="print.html#explanation" name="explanation"><h4>[Explanation]</h4></a>
+<p>Although the Mondrian pattern in the window is what we're here for, it is worth looking at the console window as well. Don't worry about the warnings for now. Rust tells us that there are things in the program that are never used. We will use them soon!</p>
+<a class="header" href="print.html#exercise-1-make-one-vertical-split" name="exercise-1-make-one-vertical-split"><h3>Exercise 1: Make one vertical split</h3></a>
+<p><img src="./mondrian-pattern/images/fig01_onevertical.jpg" alt="" /></p>
+<p>It is now time to have a closer look at the rust code. It is located in <code>src</code> folder and the file is <code>main.rs</code>.</p>
+<p>▶▶ Open the file <code>main.rs</code> located in folder <code>src</code> in your editor.</p>
+<p>Most of the code you will never touch. Only the highlighted areas are important for you.</p>
+<p><img src="./mondrian-pattern/images/code_highlight-learners-area.jpg" alt="" /></p>
+<p>Furthermore, you only need to make tiny modifications at first:</p>
+<p>▶▶ Look at the upper highlighted area. Change the line <br><code>paint_rectangle(20.0, 20.0, 300.0, 250.0, chn)</code> into <br><code>vsplit_and_paint(20.0, 20.0, 300.0, 250.0, chn)</code>.</p>
+<a class="header" href="print.html#testing" name="testing"><h4>[Testing]</h4></a>
+<p>▶▶ To execute the program do again <code>cargo run</code>.</p>
+<p>Can you see the window open with the two-rectangles-pattern, as given in the sketch?</p>
+<a class="header" href="print.html#snapshot-1" name="snapshot-1"><h4>[Snapshot] 1</h4></a>
+<p>From time to time there will be such &quot;snapshots&quot;: What are the exact changes in the code. The second link gives <em>a snapshot</em> of how the code should look at this point.</p>
+<p><a href="https://raw.githubusercontent.com/rust-community/rustbridge/mondrian_exercise-snapshots/workshops/src/mondrian-pattern/codebase/mondpaint/src/snapshnots/main_0001-One-vertical-split-1-2-1-2.rs">main.rs snapshot</a></p>
+<a class="header" href="print.html#explanation" name="explanation"><h4>Explanation</h4></a>
+<p>The line you have changed is the line that <em>invokes</em> the Mondrian painting activity. Technically speaking this line tells rust to <em>invoke an operation</em>, named <code>paint_rectangle</code>. Before, you have changed that line so as to execute a different operation, <code>vsplit_and_paint</code>.</p>
+<a class="header" href="print.html#exercise-2-split-position" name="exercise-2-split-position"><h3>Exercise 2: Split position</h3></a>
+<p><img src="./mondrian-pattern/images/fig02_onevertical-1third-2thirds.jpg" alt="" /></p>
+<p>Line 64 calculates the position where to split the canvas into two areas:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+let splitpos = width / 2.0;
+
+#}</code></pre></pre>
+<p>▶▶ Replace the <code>2.0</code> with a <code>3.0</code>.</p>
+<a class="header" href="print.html#testing---as-usual--" name="testing---as-usual--"><h4>[Testing] --as usual--</h4></a>
+<a class="header" href="print.html#snapshot-2" name="snapshot-2"><h4>[Snapshot] 2</h4></a>
+<p><a href="https://raw.githubusercontent.com/rust-community/rustbridge/master/src/workshops/mondrian-pattern/codebase/mondpaint/src/snapshnots/main_0002-One-vertical-split-1-3-2-3.rs">main.rs snapshot</a></p>
+<a class="header" href="print.html#explanation" name="explanation"><h4>Explanation</h4></a>
+<p>The first highlighted area, the one you have modified in <em>Exercise 1</em> executes the operation <code>vsplit_and_paint</code>. The second highlighted area <em>defines</em> the operations <code>vsplit_and_paint</code> and <code>paint_rectangle</code>.
+An operation is defined as a sequence of (other) operations to be executed on invocation.</p>
+<p>Defining an operation can be compared to writing a recipe, invoking it means to actually prepare the dish <em>one time</em>. This can be repeated any number of times even though there is only one definition/recipe.</p>
+<p>What you have done in this exercise is to modify the operations that are executed, whenever <code>vsplit_and_paint</code> is executed. In this case you changed the ratio between the left and the right side of the split to <em>one third:two thirds</em>.</p>
+<a class="header" href="print.html#exercise-3a-specify-the-colour-for-paint_rectangle" name="exercise-3a-specify-the-colour-for-paint_rectangle"><h3>Exercise 3a: Specify the colour for <code>paint_rectangle</code></h3></a>
+<p><img src="./mondrian-pattern/images/fig03_colour-as-parameter.jpg" alt="" /></p>
+<p>▶▶ Find the lines where <code>paint_rectangle</code> is defined:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+fn paint_rectangle(x :f64, y :f64, width :f64, height :f64, chn: SendChannel)
+{
+    println!(&quot;paint_rectangle: {:}, {:}, {:}, {:}&quot;, x, y, width, height);
+    chn.send( ([x, y, width, height], RED) ).unwrap();
+}
+
+#}</code></pre></pre>
+<p>The stuff in the <code>( . . . )</code> is called <em>parameters</em>, separated by <code>,</code>. Parameters are used to specify the details, how an operation should be executed in detail. This exercise wants to <em>specify the colour for paint_rectangle</em>. Here we go!</p>
+<p>▶▶ Add an extra parameter <code>c</code> to the definition of <code>paint_rectangle</code> like this:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+fn paint_rectangle(x :f64, y :f64, width :f64, height :f64, c: types::Color, chn: SendChannel)
+
+#}</code></pre></pre>
+<a class="header" href="print.html#testing" name="testing"><h4>Testing</h4></a>
+<p>▶▶ Save the file.</p>
+<p>▶▶ <code>cargo run</code></p>
+<p><strong>Bam! Your first rust build-error!</strong></p>
+<p><img src="./mondrian-pattern/images/console_paintrect-parameter-error.jpg" alt="" /></p>
+<a class="header" href="print.html#explanation" name="explanation"><h4>Explanation</h4></a>
+<p>They look scary in the beginning!</p>
+<p><img src="./mondrian-pattern/images/build-error_explained.jpg" alt="" /></p>
+<p>We added one little thing in the definition of an operation and we get this amount of error!</p>
+<p>This is what rust is complaining about: <code>this function takes 6 parameters but 5 parameters were supplied</code>. Makes sense. We changed the operation and now it requires more information to be executed: The colour of the rectangle. The error occurs because this information is required by the operation but it is not provided.</p>
+<p>Where should it be given? ...at each point in the code where the execution of <code>paint_rectangle</code> is invoked: Lines 67 and 72; exactly the lines where the two (identical) errors are reported. Makes sense.</p>
+<a class="header" href="print.html#exercise-3b-different-colours-on-each-side" name="exercise-3b-different-colours-on-each-side"><h3>Exercise 3b: Different colours on each side</h3></a>
+<p><img src="./mondrian-pattern/images/fig04_two-different-colours.jpg" alt="" /></p>
+<p>The issue encountered in Exercise 3 is that colour information is required on the one hand but not provided. When fixing this, we will (as a side effect) have a Mondrian pattern with different colours on each side!</p>
+<p>Where do the error messages direct you?</p>
+<pre><code>src/main.rs:67:9: 67:57 error: this function takes 6 parameters but 5 parameters were supplied [E0061]
+. . .
+src/main.rs:72:9: 72:73 error: this function takes 6 parameters but 5 parameters were supplied [E0061]
+</code></pre>
+<p>Lines 67 and 73:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+paint_rectangle(x, y, splitpos, height, chnleft)
+. . .
+paint_rectangle(x+splitpos, y, width-splitpos, height, chnright)
+
+#}</code></pre></pre>
+<p>Both lines invoke <code>paint_rectangle</code> with slightly different parameters.</p>
+<p>▶▶ In each line, behind the parameter <code>height</code>, the colour has to be provided, i.e. like this:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+paint_rectangle(x, y, splitpos, height, RED, chnleft)
+. . .
+paint_rectangle(x+splitpos, y, width-splitpos, height, BLUE, chnright)
+
+#}</code></pre></pre>
+<a class="header" href="print.html#testing" name="testing"><h4>[Testing]</h4></a>
+<p>Testing this via <code>cargo run</code> should make rust happy again and it runs the example. Yeah! But both sides are red hmmm.</p>
+<p>And the warnings have changed:</p>
+<pre><code>src/main.rs:17:1: 17:48 warning: constant item is never used: `GREEN`, #[warn(dead_code)] on by default
+src/main.rs:17 const GREEN:   [f32; 4] = [0.0, 1.0, 0.0, 1.0];
+               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/main.rs:19:1: 19:48 warning: constant item is never used: `YELLOW`, #[warn(dead_code)] on by default
+src/main.rs:19 const YELLOW:  [f32; 4] = [1.0, 1.0, 0.0, 1.0];
+               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/main.rs:78:61: 78:62 warning: unused variable: `c`, #[warn(unused_variables)] on by default
+src/main.rs:78 fn paint_rectangle(x :f64, y :f64, width :f64, height :f64, c: types::Color, chn: SendChannel)
+
+</code></pre>
+<a class="header" href="print.html#explanation" name="explanation"><h4>Explanation</h4></a>
+<p>Yes, there is still two colours unused, that's fine. But there is an <code>unused variable</code>, <code>c</code> in line 78.</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+fn paint_rectangle(x :f64, y :f64, width :f64, height :f64, c: types::Color, chn: SendChannel)
+
+#}</code></pre></pre>
+<p>This is the line where you added the new parameter for colour. Rust calls this a <em>variable</em> because parameters are special sorts of variables.
+What is a variable? A variable is a container that can carry some value during program execution. To make things easier for you, you can give names to these containers, here <code>c</code> for colour. We decided to give <code>paint_rectangle</code> some information about the colour to be used and we do that via the parameter variable c.</p>
+<p>Rust was happy because all required parameters are now given again. It was happy enough to make and run the program but it was also a bit suspicious because there is c, which is never used (remember the warning).</p>
+<p>The last thing we have to adapt the definition of <code>paint_rectangle</code> so as to use colour information. We just need to get the information from <code>c</code> into the painting of the rectangle. The actual painting of the rectangle is invoked here:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+chn.send( ([x, y, width, height], RED) ).unwrap();
+
+#}</code></pre></pre>
+<p>▶▶ <strong>Final Thing to do:</strong> Replace <code>RED</code> with <code>c</code> and give it should all be working as planned!</p>
+<a class="header" href="print.html#snapshot-3" name="snapshot-3"><h4>[Snapshot] 3</h4></a>
+<p><a href="https://raw.githubusercontent.com/rust-community/rustbridge/master/workshops/src/mondrian-pattern/codebase/mondpaint/src/snapshnots/main_0003-Add-parameter-c-Color-to-paint_rectangle.rs">main.rs snapshot</a></p>
+<a class="header" href="print.html#exercise-4-random-split-position" name="exercise-4-random-split-position"><h3>Exercise 4: Random split position</h3></a>
+<p><img src="./mondrian-pattern/images/fig05_random-splitpostition.jpg" alt="" /></p>
+<p>This Exercise will give the Mondrian painter a bit of 'artistic' (!?!) freedom. It can randomly choose the position of where to split the canvas. You will modify the operation <code>vsplit_and_paint</code> to use a random number for the split position.</p>
+<p>A couple of things are already prepared in the example code.
+There is an operation for generating random numbers available: For instance, <code>rng.gen_range(0.0, 20.0)</code> will produce a random number between <code>0.0</code> and <code>20.0</code>.</p>
+<p>Currently it is deactivated in the example; it is placed in a comment <em>comment</em>:</p>
+<pre><code>// the remainder of a line after a double forward slash will be ignored
+
+/*
+Furthermore, everything between 'slash star' and
+'star slash' is also ignored, even over multiple lines.
+*/
+</code></pre>
+<p>▶▶ Uncomment lines 7 and 61 by removing the dashes:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+use rand::Rng;
+. . .
+let mut rng = rand::thread_rng();   //init a random number generator`.
+
+#}</code></pre></pre>
+<p>▶▶ Run the example in order to know whether rust is still happy with the changes. (It should run as before except for two more warnings, which is not a problem right now.)</p>
+<p>From <em>Exercise 2</em> you already know where the split position is calculated.</p>
+<p>▶▶ Find the relevant line in the code again and replace it with</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+let splitpos = rng.gen_range(0.0, width);
+
+#}</code></pre></pre>
+<a class="header" href="print.html#testing" name="testing"><h4>[Testing]</h4></a>
+<p>You will have to run the example a couple of times in order to see the different split positions across several runs.</p>
+<a class="header" href="print.html#explanation" name="explanation"><h4>Explanation</h4></a>
+<p><code>vsplit_and_paint</code> receives a number of parameters which define the position and dimensions of where to paint the Mondrian pattern: x, y coordinates of the upper left corner and width and height of the canvas (and the colour and some technical stuff).</p>
+<p>It decides on a position where to split the canvas vertically and calculates two smaller areas, left and right of that split so as to fully cover the canvas. Technically speaking, the split position is the width of the left side. The width of the right side is the width of the whole canvas minus the width of the left side. Similar calculations are done for the x position of the right hand part.</p>
+<p>The next step is to delegate the two parts to some other operation(s) that will take care of each side. This happens by invoking <code>paint_rectangle</code> with according coordinates.</p>
+<p><strong>If you are confused, making a sketch of the subdivision will help you to understand what is going on in detail!</strong></p>
+<a class="header" href="print.html#snapshot-4" name="snapshot-4"><h4>[Snapshot] 4</h4></a>
+<p><a href="https://raw.githubusercontent.com/rust-community/rustbridge/master/workshops/src/mondrian-pattern/codebase/mondpaint/src/snapshnots/main_0004-Randomise-the-split-position.rs">main.rs snapshot</a></p>
+<a class="header" href="print.html#exercise-5-horizontal-split" name="exercise-5-horizontal-split"><h3>Exercise 5: Horizontal split</h3></a>
+<p><img src="./mondrian-pattern/images/fig06_horizontal-split.jpg" alt="" /></p>
+<p>You will <em>define an operation</em> that works in the same way as <code>vsplit_and_paint</code> except that it does Horizontal splits.</p>
+<p>▶▶ If you have not made a sketch of the vertical canvas split before, now you will need it.</p>
+<p>▶▶ You will also need one for a horizontal split.</p>
+<p>▶▶ Make a copy of the operation definition of <code>vsplit_and_paint</code> and rename it to <code>hsplit_and_paint</code>.</p>
+<p>▶▶ Identify the code lines where the height and the y-coordinates are calculated.</p>
+<ul>
+<li>
+<p>this will involve all lines that touch <code>splitpos</code>, <code>width</code> and <code>x</code></p>
+</li>
+<li>
+<p><code>height</code> and <code>y</code> have to be calculated depending on the split position</p>
+</li>
+<li>
+<p>Remember the order of the parameters for <code>paint_rectangle</code>: <code>x, y, width, height, ...</code>. You have to give the new coordinates in the exact same order!</p>
+</li>
+<li>
+<p>Take some time, it is not trivial!</p>
+</li>
+</ul>
+<a class="header" href="print.html#testing" name="testing"><h4>[Testing]</h4></a>
+<p>The new operation has to be invoked at some point:</p>
+<p>▶▶ For testing it, find the spot where <code>vsplit_and_paint</code> is invoked and replace it with <code>hsplit_and_paint</code>.</p>
+<p>▶▶ Run the example.</p>
+<p>If you get error messages, most likely, you have done smaller errors. Finding and fixing errors is one of the key skills in programming.</p>
+<p>▶▶ If you feel adventurous you should try to find them yourself! Otherwise, you might need some smaller advice to continue by yourself.</p>
+<p>Copying the snapshot is the last option. If you do so, please take some time to figure out, what is going on!</p>
+<p>▶▶ Feel free to use more interesting colours :-)</p>
+<a class="header" href="print.html#snapshot-5" name="snapshot-5"><h4>[Snapshot] 5</h4></a>
+<p><a href="https://raw.githubusercontent.com/rust-community/rustbridge/master/workshops/src/mondrian-pattern/codebase/mondpaint/src/snapshnots/main_0005-Horizontal-split.rs">main.rs snapshot</a></p>
+<a class="header" href="print.html#exercise-6-7-combine-split-and-delegate-operations" name="exercise-6-7-combine-split-and-delegate-operations"><h3>Exercise 6, 7: Combine split and delegate operations</h3></a>
+<p><code>paint_rectangle(x, y, splitpos . . .</code> and <code>paint_rectangle(x+splitpo, y, . . .</code>.</p>
+<p>It is now time to play with the new operations!</p>
+<p>▶▶ If you fell adventurous, try to figure out for yourself how to achieve one of the new patterns.</p>
+<p><strong>In more detail:</strong> Currently, <code>hsplit_and_paint</code> triggers <code>paint_rectangle</code> for both sides of the split. For the first pattern</p>
+<p>▶▶ Modify <code>vsplit_and_paint</code> so that it triggers <code>paint_rectangle</code> on the left side of the split and <code>hsplit_and_paint</code> on the right side.</p>
+<p>▶▶ Don't forget to adapt the initially invoked operation in line 53.</p>
+<p><img src="./mondrian-pattern/images/fig07_vertical+horizontal-split.jpg" alt="" /></p>
+<p>▶▶ Modify <code>hsplit_and_paint</code> so that it triggers <code>paint_rectangle</code> on the left side of the split and <code>hsplit_and_paint</code> on the right side.</p>
+<p>▶▶ Don't forget to adapt the initially invoked operation in line 53.</p>
+<p><img src="./mondrian-pattern/images/fig08_vertical+2horizontal-splits.jpg" alt="" /></p>
+<a class="header" href="print.html#snapshot-6" name="snapshot-6"><h4>[Snapshot] 6</h4></a>
+<p><a href="https://raw.githubusercontent.com/rust-community/rustbridge/master/workshops/src/mondrian-pattern/codebase/mondpaint/src/snapshnots/main_0006-One-vertical-and-one-horizontal-split.rs">main.rs snapshot</a></p>
+<a class="header" href="print.html#snapshot-7" name="snapshot-7"><h4>[Snapshot] 7</h4></a>
+<p><a href="https://raw.githubusercontent.com/rust-community/rustbridge/master/workshops/src/mondrian-pattern/codebase/mondpaint/src/snapshnots/main_0007-One-horiz.-two-vert.-splits-above-and-below.rs">main.rs snapshot</a></p>
+<a class="header" href="print.html#exercise-8-an-infinite-pattern-generation-process" name="exercise-8-an-infinite-pattern-generation-process"><h3>Exercise 8: An infinite pattern generation process</h3></a>
+<p><img src="./mondrian-pattern/images/fig09_nontricial-nested.jpg" alt="" /></p>
+<p><strong>Warning!</strong> Some changes here may crash the program or make your machine unresponsive. That's okay and it's a natural part of learning programming. You can just close the program and/or restart your machine and continue.
+Save your data before you run.</p>
+<p>There is one way of achieving this pattern by defining more specific operations. However, things will be much more interesting if you</p>
+<p>▶▶ Try to modify and recombined the existing operations, only.</p>
+<p>▶▶ Make a diagram of the pattern you want to achieve. Sketch out step-by-step all the operations that will be invoked and in what order. For example, for the first pattern in Exercise 7 this will be:</p>
+<ul>
+<li><code>vsplit_and_paint</code> invokes for
+<ul>
+<li>left side: <code>paint_rectangle</code></li>
+<li>right side: <code>hsplit_and_paint</code> invokes for
+<ul>
+<li>top side: <code>paint_rectangle</code></li>
+<li>bottom side: <code>paint_rectangle</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>The <em>split</em> operations invoke to others, which actually run in parallel! The pattern painting process is artificially delayed so that you can see that in detail.</p>
+<a class="header" href="print.html#snapshot-8" name="snapshot-8"><h4>[Snapshot] 8</h4></a>
+<p><a href="https://raw.githubusercontent.com/rust-community/rustbridge/master/workshops/src/mondrian-pattern/codebase/mondpaint/src/snapshnots/main_0008-Fail-in-a-funny-way-infinite-recursion.rs">main.rs snapshot</a></p>
+<a class="header" href="print.html#exercise-9-avoiding-the-infinite-pattern-generation-process" name="exercise-9-avoiding-the-infinite-pattern-generation-process"><h3>Exercise 9: Avoiding the infinite pattern generation process.</h3></a>
+<p><strong>TODO!!</strong></p>
+<a class="header" href="print.html#snapshot-9" name="snapshot-9"><h4>[Snapshot] 9</h4></a>
+<p><a href="https://github.com/rust-community/rustbridge/commit/6a51b31a396e7a9200ac21a0cc5ab574915a3b2f">view changes</a>
+|
+<a href="https://raw.githubusercontent.com/rust-community/rustbridge/master/workshops/src/mondrian-pattern/codebase/mondpaint/src/snapshnots/main_0009-Controlled-recursion.rs">main.rs snapshot</a></p>
+<hr />
+<p><a href="./mondrian-pattern/README.md">Back to the introduction</a> | <a href="./mondrian-pattern/part2.md">Continue to Part II</a></p>
+<p><a href="part1.md">back to the Part I</a></p>
+<hr />
+<a class="header" href="print.html#mondrian-pattern-generator-part-ii" name="mondrian-pattern-generator-part-ii"><h1>Mondrian Pattern Generator (Part II)</h1></a>
+<p>Rust was developed to ensure certain safety principles of organising a multithreaded application. The final code example of Part I is already multi-threaded. The mondrian pattern makes a good case for studying parallel processing. The canvas should be painted with a valid mondrian pattern. Multiple, (non-overlapping) parts of the canvas can be painted in parallel without breaking the &quot;mondrian principles&quot;.</p>
+<a class="header" href="print.html#why-neighbours-should-be-aware-of-each-other" name="why-neighbours-should-be-aware-of-each-other"><h3>Why neighbours should be aware of each other:</h3></a>
+<ul>
+<li>avoid unlucky encounters of subdivisions</li>
+<li>make colours conbine nicely on both sides of subdivisions</li>
+</ul>
+<p><img src="./mondrian-pattern/mondrian-rules_avoid-unlucky-encounters.png" alt="unlucky encounters" /></p>
+<hr />
+<p><a href="./mondrian-pattern/part1.md">Back to Part I</a></p>
+<a class="header" href="print.html#contributing-and-teaching" name="contributing-and-teaching"><h1>Contributing and Teaching</h1></a>
+<p>This document is <em>not</em> dedicated learners new to rust. Developers and teachers using and contributing to the workshop material will find relevant background here.
+It outlines how the material is organised and how this serves the overall concept underlying the workshop.</p>
+<a class="header" href="print.html#implementation-outline" name="implementation-outline"><h2>Implementation Outline</h2></a>
+<ol>
+<li>root process</li>
+</ol>
+<ul>
+<li>sets up a canvas</li>
+<li>based on given parameters/settings</li>
+<li>subdivides canvas</li>
+<li>initiates subprocesses</li>
+</ul>
+<ol start="2">
+<li>each subprocess</li>
+</ol>
+<ul>
+<li>handles a part of the canvas</li>
+<li>makes further subdevisions</li>
+<li>may check on neighbours and negotiate with them <a href="mondrian-rules_avoid-unlucky-encounters.png">subdivisions and colours</a> etc</li>
+</ul>
+<ol start="3">
+<li>negotiation with neighbours to avoid unlucky encounters</li>
+</ol>
+<ul>
+<li>requires inter-process communication</li>
+</ul>
+<p><img src="mondrian-rules_avoid-unlucky-encounters.png" alt="unlucky encounters" /></p>
+<a class="header" href="print.html#roadmap-and-architecture" name="roadmap-and-architecture"><h3>Roadmap and Architecture</h3></a>
+<p><img src="architecture-sketch1.jpg" alt="architecture sketch 1" /></p>
+<p>Ideally, learners will only have to work on the highlighted parts.
+The Minimals should not be part of the workshop itself but serve as backend for those who want to do follow-up research on what is going on &quot;behind the scenes&quot;.</p>
+<p>Numbers indicate the priorities of components:</p>
+<p>(1) a server thread for doing actual basic painting in a window</p>
+<p>(2) a <code>main</code> that would create initial threads (1) and (3) as well as a canvas (6) for coordinating child tasks</p>
+<p>(3) The mondrian patternizer parent</p>
+<p>(4) Have (3) send painting messages to (1)</p>
+<p>(5) Have (3) create children which also send messages to (1)</p>
+<p>(6) Have a coordinating data structure for organising the canvas across painters (3 and 5)</p>
+<a class="header" href="print.html#ownership-of-canvas-regions" name="ownership-of-canvas-regions"><h3>Ownership of Canvas Regions</h3></a>
+<ul>
+<li>
+<p>The root thread will <code>borrow</code> parts of the canvas to other threads which will then paint it.</p>
+<ul>
+<li>
+<p>For an easy example we do not have to borrow but can simply hand over a reference to a part of the canvas, which will then be painted by the subordinate threads.</p>
+</li>
+<li>
+<p>If we want to post-process the results we may need borrowing, indeed.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>The superordinate thread will connect neighbouring regions by establishing <code>channel</code>s so that the subthreads can negotiate colours and split positions</p>
+</li>
+<li>
+<p>Overlaps, which do not happen to be exactly mondrianish, make a case for shared resources and <code>locking</code> (so that we do not overpaint in an uncontrolled manner)</p>
+</li>
+<li>
+<p><a href="https://blog.rust-lang.org/2015/04/10/Fearless-Concurrency.html">cf. Fearless Concurrency</a></p>
+</li>
+<li>
+<p><a href="https://coderwall.com/p/w1yuza/take-two-or-more-mutable-slices-from-a-vector-in-rust">cf. multiple mutable slices of one vector</a></p>
+</li>
+</ul>
+<a class="header" href="print.html#datastructure" name="datastructure"><h3>Datastructure</h3></a>
+<ul>
+<li>Patches or areas should be something like two-dimensional <code>slices</code></li>
+<li>They may be of a more abstract kind in order to later get painted or rendered</li>
+<li>On the other hand, having truely parallel rendering would be nice!</li>
+<li><a href="http://rustbyexample.com/primitives/array.html">cf. Slices</a></li>
+</ul>
+<a class="header" href="print.html#text-adventure" name="text-adventure"><h1>Text Adventure</h1></a>
+<p><a href="https://github.com/rust-community/rustbridge/tree/master/workshops/src/textadventure">Code</a></p>
+<p>For this workshop, let’s add various features to a simple text adventure game written in Rust.</p>
+<p>Here's what we have to work with:</p>
+<p><strong>Game Board</strong> - A 5 by 5 grid containing a total of 25 rooms.</p>
+<p><strong>Rooms</strong> - A room may have up to 4 <strong>Walls</strong>. Each wall may be:</p>
+<ul>
+<li><strong>Open</strong> which will allow unrestricted passage through.</li>
+<li><strong>Solid</strong> which will prevent passage.</li>
+<li><strong>Magical</strong> which will allow passage only with a secret word.</li>
+<li>The walls can be configured to form a maze.</li>
+<li>A room can be light or dark depending on whether or not it contains a torch.</li>
+</ul>
+<p><strong>Characters</strong> - We will have 3 kinds of characters.</p>
+<ul>
+<li>You the adventurous <strong>Explorer</strong>, wandering from room to room.</li>
+<li><strong>Leprechauns</strong> the good wee people with a mischievous sense of humour. They can give you gold or <strong>Magic Words</strong> but you never know if they are telling the truth. They can teleport to any room.</li>
+<li><strong>Gnomes</strong> who guard the treasures of the earth and just might take your stuff if you’re not careful. They can go one space in any direction - they know the magic word to walk through any kind of wall.</li>
+</ul>
+<p><strong>Things</strong> - Things can be picked up and exchanged by characters.</p>
+<ul>
+<li><strong>Food</strong> gives you <strong>Energy</strong> to keep going.</li>
+<li><strong>Gold</strong> pays the way.</li>
+<li><strong>Fake Gold</strong> is given to you by mischievous leprechauns - also good for giving to gnomes.</li>
+<li><strong>Teleporter</strong> moves you at random to some other room.</li>
+<li><strong>Torch</strong> allows you to see in a dark room - tells you what’s in a dark room.</li>
+</ul>
+<p><strong>Moves</strong></p>
+<ul>
+<li><strong>North</strong> or <strong>South</strong> allows you to move up or down by one space.</li>
+<li><strong>East</strong> or <strong>West</strong> allows you to move right or left by one space.</li>
+<li><strong>Teleport</strong> allows you to teleport to some other room if you have a teleporter.</li>
+<li>Each move consumes 1 food unit and teleporting consumes 5.</li>
+</ul>
+<p>Much of the game has already been implemented for you but is not very playable.  Your job is to implement the remaining TODOs so that the game plays according to the rules listed above.  All the Rust code for the game is in the src directory.  The code already compiles and runs although there are numerous compiler warnings.  These warnings should disappear as you build out the rest of the game.  Look at the game loop in main.rs to get an idea of how the game is structured then begin adding your missing code to the players, board and inventory modules.</p>
+<p>As you add more of your code to your game use Cargo to check it and ensure that it still compiles. Run the game from the command line to try out new features as you implement them. For how to get started with Rust and its Cargo tool see <a href="http://rust-lang.github.io/book/second-edition/ch02-00-guessing-game-tutorial.html">Chapter 2</a> of <a href="http://rust-lang.github.io/book/second-edition"><em>The Rust Programming Language</em></a> book.  Other good resources for learning Rust syntax and semantics are <a href="http://rustbyexample.com"><em>Rust by Example</em></a> and <a href="https://github.com/carols10cents/rustlings"><em>Rustlings</em></a> project.</p>
+<p>Here is the order I recommend implementing the remaining features:</p>
+<ul>
+<li>
+<p>First implement the is_opening function in board.rs.</p>
+</li>
+<li>
+<p>Next implement the move_exp_north, move_exp_east, move_exp_south and move_exp_west explorer navigation functions in players.rs.  See move_gnome for the mechanics of how these work.  Keep in mind that unlike move_gnome an explorer's navigation functions are invoked interactively by the user and an explorer can only walk through openings or magical walls.  I wouldn't worry about magical walls or secret words yet.  Just treat any magical walls as solid for now.  Don't forget that moving one space or walking into a wall consume 1 unit of an explorer's energy per turn.</p>
+</li>
+<li>
+<p>Now implement the teleport_lep and teleport_exp functions in players.rs.  See move_gnome for how to move an NPC at random.  Unlike gnomes which always move only one space every turn teleporting can put a player anywhere on the board.  The teleport_exp function returns a bool because an explorer can only teleport if she has a teleporter.  See the build_players function to get an idea of what an explorer's things are.  Don't forget that teleporting consumes 5 units of an explorer's energy.  Leprechauns are tireless so they don't lose any energy.</p>
+</li>
+<li>
+<p>Next implement the exp_has_torch function in inventory.rs and the room_has_torch function in board.rs.  Now the explorer can see the contents of rooms since she is already carrying a torch.  Similarly, if an explorer has no torch but enters a room containing one she can pick up that torchh because the room is already lit by it.</p>
+</li>
+<li>
+<p>Now implement the exp_pick_up_food, exp_pick_up_coins, exp_pick_up_teleporter and exp_pick_up_torch functions in board.rs.  These functions remove things from a room's contents and add it to the explorer's things.  An explorer does not put down the things she picks up but she can use coins to pay gnomes for passage or have all her things stolen if she cannot or refuses to pay.</p>
+</li>
+<li>
+<p>Next implement the exp_eat_food function in board.rs.  This functions removes all food items from an explorer's things and adds their energy values to the explorer's energy.  An explorer eats any food as soon as she picks it up instead of carrying it around.  Food is destroyed by eating it and is not replenished.  Otherwise the game would never end.</p>
+</li>
+<li>
+<p>Now implement the shake_down function in inventory.rs.  The inventory module defines the encounters or exchanges between players.  These exchanges happen when players are occupants of the same room.  A gnome will demand gold coins from an explorer for safe passage through a room.  If the explorer cannot or chooses not to pay the gnome will take all of the explorer's things.  Hence the name of the function.  An explorer can pay a gnome with fake coins but that only works once.  That same gnome will always rob the explorer of everything on the next encounter.  This function should be highly interactive and decomposed into smaller functions.  See exp_scavenge in board.rs for ideas.</p>
+</li>
+<li>
+<p>Next implement the trick_or_treat function in inventory.rs.  A leprechaun will give an explorer coins or secret words when encountering them.  Concentrate on just coins for now.  A leprechaun starts out with a finite number of gold and fake coins of various denominations.  Those coins are shuffled at creation time so a leprechaun should be able to hand them out one-at-a-time in whatever order they're in.</p>
+</li>
+<li>
+<p>Now implement the gnome_scavenge function in board.rs.  This function makes the game more challenging by enabling gnomes to compete with the explorer for items scattered across the board.  A gnome now picks up all the same things that an explorer picks up in exp_scavenge but it does so automatically rather than interactively because it is an NPC.  Like exp_scavenge, gnome_scavenge can be decomposed into several smaller functions if needbe.  The names and signatures of these smaller functions have not been defined for you.  If you really want to get fancy you can have gnomes stockpile gold and other non-perishable items in certain rooms so that an explorer can pick them up again.</p>
+</li>
+<li>
+<p>Next implement the all_magic_words and all_fake_words functions and finish the trick_or_treat function in inventory.rs.  The first 2 functions supply the leprechaun with magic and fake secret words to give to the explorer.  The list of all magic words can be generated by iterating through all the walls in the game board and filtering out all the walls that aren't magical.  The secret words can then be extracted from the remaining magical walls.  The list of all fake words can be whatever you want as long as it excludes the real magic words from the board.  Make sure it is apparent what secret word is being given to an explorer when trick_or_treat executes.</p>
+</li>
+<li>
+<p>Lastly implement the means for an explorer to walk through magical walls.  There are 3 magical walls placed strategically throughout the board for you to test this feature out on.  While an explorer has no knowledge of what walls are solid or magical you can spot which walls are magical by looking closely at the ASCII rendition of the board. Modify the 4-way explorer navigation functions in players.rs so that if an explorer walks into a wall the user is queried for a secret word that she must type out in its entirety.  Implement the has_word function to search a collection of things for said word.  If said word is found among the explorer's things then call the open_sesame function in board.rs with that word.  In addition to a secret word string, open_sesame also takes an explorer's source and target positions on the board.  If the wall an explorer is attempting to traverse is magical and the secret word matches then open_sesame returns true and the explorer is allowed to pass through the wall.</p>
+</li>
+</ul>
+<p>The original rules for this game came from a homework assignment for an introductory C++ class taught by <a href="http://www.ee.washington.edu/people/jim-peckol">Jim Peckol</a> at the University of Washington.  That class emphasized UML and object-oriented design.  For this Rust workshop, I chose to implement the game in a more functional style using enums and pattern matching for dispatching.  Rust is a multi-paradigm language so the same results could have been achieved using traits and polymorphism.  See Liz Baillie's <a href="https://github.com/tildeio/learning-rust"><em>text-based adventure game</em></a> for an example of such an alternate approach.</p>
+<a class="header" href="print.html#project" name="project"><h1>Project</h1></a>
+<p><a href="https://github.com/rust-community/rustbridge/tree/master/workshops/src/url_shortener">Code</a></p>
+<p>This project is a URL shortener (think Bitly) designed and build in such a
+way that it serves as a well documented example of how to design and
+build a Rust project.</p>
+<p>The URL shortener will:</p>
+<ul>
+<li>Take requests for shortened URLs (e.g. shrt.com/abcd)
+and will redirect the user to a longer, ugly URL.
+<ul>
+<li>Count and persist the number of redirects.</li>
+</ul>
+</li>
+<li>Provide a simple web interface to add URLs to the database.
+<ul>
+<li>Validate that submitted URLs are valid URLs.</li>
+</ul>
+</li>
+</ul>
+<p>We'll need:</p>
+<ul>
+<li>Web server &amp; client : We'll use Nickel because Iron requires Rust Nightly
+and we'd like to be on Stable...</li>
+<li>Database : SQLite because it's simple to install and we don't really need
+proper relational features.</li>
+<li>Light web interface :</li>
+</ul>
+<p>URL shortening will be done using the following algorithm:</p>
+<ul>
+<li>Each URL will be assigned an auto-incrementing ID in the database.</li>
+<li>When a request is received, the short-ID is converted to the database
+ID by transforming it using rustc_serialize::Base64.  This is not
+as efficient as a custom ser-des, but it easy.</li>
+</ul>
+<a class="header" href="print.html#todo" name="todo"><h1>TODO</h1></a>
+<ul>
+<li>Use better SQL library, e.g. <a href="http://diesel.rs/guides/getting-started/">diesel</a>.</li>
+</ul>
+<a class="header" href="print.html#data-design-notes" name="data-design-notes"><h1>Data Design Notes</h1></a>
+<p>We'll record:</p>
+<ul>
+<li>Link : every long URL that is to be shortened.</li>
+<li>LinkUse : every case of a shortened URL being used.</li>
+</ul>
+<a class="header" href="print.html#web-interface" name="web-interface"><h1>Web Interface</h1></a>
+<p>The server will respond to:</p>
+<ul>
+<li>/admin/* : admin templates and functionality.</li>
+<li>All others with Base64 decoding.</li>
+</ul>
+<a class="header" href="print.html#" name=""><h1></h1></a>
+<a class="header" href="print.html#web-scraper-workshop" name="web-scraper-workshop"><h1>Web Scraper Workshop</h1></a>
+<p>This workshop guides participants through creating a webscraper to get data out of an Amazon wishlist using the <a href="https://crates.io/crates/hyper">hyper</a> crate and the <a href="https://crates.io/crates/select">select</a> crate.</p>
+<a class="header" href="print.html#setup-instructions" name="setup-instructions"><h2>Setup Instructions</h2></a>
+<p>In case internet isn't reliable, serve <code>doc/wishlist.html</code> from a local
+computer and anywhere that you see
+<code>https://brson.github.io/demo/wishlist.html</code>, use your local URL instead.</p>
+<p>In the <code>doc</code> directory, there's a script you can use to walk through the steps
+in <code>demo.md</code>, as well as slides using <a href="https://remarkjs.com">Remark</a> in <code>slides/project.html</code>. Feel
+free to edit the content of the slides by changing the markdown in the textarea
+in <code>project.html</code>. There are speaker notes; to use them, open index.html in a
+browser and type 'c' to create a &quot;cloned&quot; view of the slideshow in another
+window. Then in one of the windows, type 'p' to switch to presenter view. The
+two windows will now change slides together.</p>
+<a class="header" href="print.html#test-on-windows" name="test-on-windows"><h3>Test on Windows!</h3></a>
+<p>Definitely run through the project on a Windows machine or VM before running
+the workshop. In Oct 2016, we had issues with linking to openssl on Windows
+machines in order for hyper to be able to make https requests, but check to see
+if <a href="https://github.com/hyperium/hyper/issues/573">hyper has switched to some other solution</a>. The solution we came up
+with eventually was to <a href="https://github.com/hyperium/hyper/issues/785#issuecomment-217927498">disable openssl on windows</a> by putting this in
+<code>Cargo.toml</code>:</p>
+<pre><code class="language-toml">[dependencies.hyper]
+version = &quot;0.9&quot;
+default-features = false
+</code></pre>
+<a class="header" href="print.html#rust-html-parsing-workshop" name="rust-html-parsing-workshop"><h1>Rust HTML Parsing Workshop</h1></a>
+<p>Suppose you have an Amazon.com wishlist of products and you want to find and
+print a list the prices of each item using a command line program.</p>
+<a class="header" href="print.html#lets-get-started" name="lets-get-started"><h2>Let's get started!</h2></a>
+<p>In this workshop we'll learn to use an external HTTP client library (<code>hyper</code>)
+and an HTML DOM parser (<code>select</code>). We will take that data and process it using
+<code>Iterators</code> into a product name and price which we will print to the screen.</p>
+<a class="header" href="print.html#step-000-setup-your-local-project" name="step-000-setup-your-local-project"><h2>Step 000: Setup your local project</h2></a>
+<p>Open a command line terminal. This will be your primary way of building your
+Rust code. Open a directory where you want to save your project and run.</p>
+<pre><code class="language-sh">cargo new --bin scraper
+cd scraper
+</code></pre>
+<p>This command uses <code>cargo</code>, is the Rust Package Manager, to create a new project
+structure that will build and run out of the box. Cargo simplifies the build and
+run steps of projects. The basic initial structure of a new cargo project has 3
+files.</p>
+<pre><code>scraper
+├── Cargo.lock
+├── Cargo.toml
+└── src
+    └── main.rs
+
+1 directory, 3 files
+</code></pre>
+<p>To build your project run the following.</p>
+<pre><code class="language-sh">$ cargo build
+   Compiling scraper v0.1.0 (file:///Users/foo/code/demo/scraper)
+    Finished debug [unoptimized + debuginfo] target(s) in 0.98 secs
+</code></pre>
+<p>You can also execute the build as follows.</p>
+<pre><code class="language-sh">$ cargo run
+    Finished debug [unoptimized + debuginfo] target(s) in 0.0 secs
+     Running `target/debug/scraper`
+Hello, world!
+</code></pre>
+<a class="header" href="print.html#step-005-using-the-hyper-http-client" name="step-005-using-the-hyper-http-client"><h2>Step 005: Using the hyper HTTP client</h2></a>
+<p>The wishlist is an HTML page delivered over HTTP. What is HTML? What
+is HTTP?</p>
+<p>To download over HTTP we use the <em>hyper</em> <em>crate</em>. What is a crate?</p>
+<p>Here's how to add the hyper dependency to Cargo.toml:</p>
+<pre><code class="language-toml">[package]
+name = &quot;scraper&quot;
+version = &quot;0.1.0&quot;
+authors = [&quot;Your Name &lt;you@example.com&gt;&quot;]
+
+[dependencies]
+hyper = &quot;0.9.10&quot;
+</code></pre>
+<p>In <code>main.rs</code>, import hyper by writing <code>extern crate hyper;</code> at the top.</p>
+<p>To make an HTTP request we need a hyper <em>http client</em>. Bring the hyper <code>Client</code>
+into scope by adding <code>use hyper::Client;</code> just after <code>extern crate hyper;</code>.</p>
+<p>In your main function, create a new instance of a hyper client:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+let client = Client::new();
+
+#}</code></pre></pre>
+<p><code>let</code> <em>declares</em> a variable named client, which is set to the value created
+by <code>Client::new()</code>.</p>
+<p><code>Client::new()</code> is a function on the <code>Client</code> <em>type</em> that creates a
+new <code>Client</code>. Every value in Rust has a type. We can talk about types
+more later.</p>
+<p>Next we are going to make an HTTP request to Amazon's server.</p>
+<p>To do that we're going to write this series of lines:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+let response =
+    client.get(&quot;https://brson.github.io/demo/wishlist.html&quot;)
+    .send()
+    .expect(&quot;Request failed&quot;);
+
+#}</code></pre></pre>
+<p>There's a lot going on here.</p>
+<p>What we're looking at is a <em>chain</em> of method calls. <code>client.get(...)</code>
+is calling <code>get</code> on the client we just created. That's what the 'dot'
+operator means - a method call. What are &quot;methods&quot;?</p>
+<p><code>send</code> and <code>expect</code> are also method calls. The details aren't important
+right now, but feel free to read the documentation for those.</p>
+<a class="header" href="print.html#step-010-reading-the-response-body" name="step-010-reading-the-response-body"><h2>Step 010: Reading the response body</h2></a>
+<p>To read the response body, first we need to make <code>response</code> mutable by changing
+<code>let response</code> to <code>let mut response</code>. Next, you'll create a new mutable
+<code>String</code> variable. Add the following lines to the end of your main function.</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+let mut body = String::new();
+response.read_to_string(&amp;mut body).expect(&quot;Read failed&quot;);
+println!(&quot;{:?}&quot;, body);
+
+#}</code></pre></pre>
+<p>That's how you use Hyper to read the HTTP response body into your program and
+print it.</p>
+<pre><code class="language-sh">$ cargo build
+   Compiling scraper v0.1.0 (file:///Users/foo/code/demo/step010/scraper)
+error: no method named `read_to_string` found for type `hyper::client::Response` in the current scope
+  --&gt; src/main.rs:14:14
+   |
+14 |     response.read_to_string(&amp;mut body).expect(&quot;Read failed&quot;);
+   |              ^^^^^^^^^^^^^^
+   |
+   = help: items from traits can only be used if the trait is in scope; the following trait is implemented but not in scope, perhaps add a `use` for it:
+   = help: candidate #1: `use std::io::Read`
+
+error: aborting due to previous error
+
+error: Could not compile `scraper`.
+
+To learn more, run the command again with --verbose.
+</code></pre>
+<p>The rust compiler tells us that it can't find the given method. It also tries to
+suggest a fix by adding <code>use std::io::Read</code> to our code. Try that fix and see if
+it works. Add the following line of code to the block of using statements at the
+top. This will import the necessary implementation for reading the response as a
+string.</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+use std::io::Read;
+
+#}</code></pre></pre>
+<p>Now you can build and run your program successfully. It will download the page
+and print it to the screen.</p>
+<a class="header" href="print.html#step-015-parsing-the-html" name="step-015-parsing-the-html"><h2>Step 015: Parsing the HTML</h2></a>
+<p>We'll be using the <code>select</code> library to find the data we care about on the
+wishlist. Add the following dependency to your <code>[dependencies]</code> section of your
+<code>Cargo.toml</code> file.</p>
+<pre><code>select = &quot;0.3.0&quot;
+</code></pre>
+<p>Then you can use the <code>Document</code> parser in your rust function. Add the following
+two statements to your <code>main.rs</code>.</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+use select::document::Document;
+use select::predicate::{Class};
+
+#}</code></pre></pre>
+<p>The <code>select</code> library is used to find HTML objects in a variety of ways.
+We can see that the products are all contained in an HTML div with a class
+<code>a-row</code>. We can get a list of all <code>a-row</code> HTML elements using the following
+code snippet.</p>
+<pre><code>let document = Document::from(body.as_str());
+let rows = document.find(Class(&quot;a-row&quot;));
+</code></pre>
+<p>Iterating to print the contents of each row:</p>
+<pre><code>for row in rows.iter() {
+    println!(&quot; * Row {}&quot;, row.text());
+}
+</code></pre>
+<a class="header" href="print.html#step-999-finding-the-product-name-and-price" name="step-999-finding-the-product-name-and-price"><h2>Step 999: Finding the Product Name and Price</h2></a>
+<p>The actual elements containing the product name and price are somewhere in the
+rows we printed last time. Running your program in the current state will also
+print out several rows that don't contain any products so these will also have
+to be filtered out.</p>
+<p>First we can see that product names are all contained in <code>&lt;h5&gt;</code> elements, and
+the prices are within elements with the class <code>a-color-price</code>. We can find the
+names and prices with the following snippet:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+let maybe_name_node = row.find(Name(&quot;h5&quot;)).first();
+let maybe_price_node = row.find(Class(&quot;a-color-price&quot;)).first();
+
+#}</code></pre></pre>
+<p>The names of these variables start with <code>maybe</code> because this row might not have
+names and prices. We can write an <code>if let</code> with a pattern that will match and
+run a block of code only if a row has both a name and a price:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+if let (Some(name_node), Some(price_node)) = (maybe_name_node, maybe_price_node) {
+
+#}</code></pre></pre>
+<p>If we do have both, we want to trim off leading and trailing whitespace from the text of the nodes and then print them out:</p>
+<pre><pre class="playpen"><code class="language-rust"># #![allow(unused_variables)]
+# 
+#fn main() {
+let name = name_node.text().trim();
+let price = price_node.text().trim();
+println!(&quot; * Book \&quot;{}\&quot;, with price {}&quot;, name, price);
+
+#}</code></pre></pre>
+<a class="header" href="print.html#bonus-tasks-to-try-next" name="bonus-tasks-to-try-next"><h2>Bonus tasks to try next</h2></a>
+<ul>
+<li>Parse and sum the prices</li>
+<li>Extract more information</li>
+<li>Scrape data from a different page</li>
+<li>Scrape data from multiple pages in parallel and aggregate the results</li>
+</ul>
+
+                </div>
+
+                <!-- Mobile navigation buttons -->
+                
+
+                
+
+            </div>
+
+            
+
+            
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if ($(".fa").css("font-family") !== "FontAwesome") {
+                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            }
+        </script>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+    </body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Presenter notes - Rustbridge workshop kit</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <base href="../">
+
+        <link rel="stylesheet" href="book.css">
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+
+        <!-- MathJax -->
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Fetch JQuery from CDN but have a local fallback -->
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script>
+            if (typeof jQuery == 'undefined') {
+                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
+            }
+        </script>
+    </head>
+    <body class="light">
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = localStorage.getItem('theme');
+            if (theme == null) { theme = 'light'; }
+            $('body').removeClass().addClass(theme);
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = localStorage.getItem('sidebar');
+            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
+            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+        </script>
+
+        <div id="sidebar" class="sidebar">
+            <ul class="chapter"><li class="affix"><a href="intro.html">Introduction</a></li><li><a href="./beginners/README.html"><strong>1.</strong> Beginners</a></li><li><ul class="section"><li><a href="./beginners/tutorial-text.html"><strong>1.1.</strong> Tutorial</a></li></ul></li><li><a href="./installfest/README.html"><strong>2.</strong> Installfest</a></li><li><ul class="section"><li><a href="./installfest/user-guide.html"><strong>2.1.</strong> User guide</a></li><li><a href="installfest/presentation-outline.html" class="active"><strong>2.2.</strong> Presenter notes</a></li></ul></li><li><a href="./machine_learning/readme.html"><strong>3.</strong> Spam Or Ham?</a></li><li><a href="./mondrian-pattern/README.html"><strong>4.</strong> Mondrian Pattern Generator</a></li><li><ul class="section"><li><a href="./mondrian-pattern/part1.html"><strong>4.1.</strong> Part 1</a></li><li><a href="./mondrian-pattern/part2.html"><strong>4.2.</strong> Part 2 (WIP)</a></li><li><a href="./mondrian-pattern/CONTRIBUTING.html"><strong>4.3.</strong> Speaker notes</a></li></ul></li><li><a href="./textadventure/textadventure.html"><strong>5.</strong> Text Adventure</a></li><li><a href="./url_shortener/README.html"><strong>6.</strong> URL Shortener</a></li><li><a href="./web-scraper/README.html"><strong>7.</strong> Web Scraper</a></li><li><ul class="section"><li><a href="./web-scraper/doc/demo.html"><strong>7.1.</strong> Tutorial</a></li></ul></li></ul>
+        </div>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar" class="menu-bar">
+                    <div class="left-buttons">
+                        <i id="sidebar-toggle" class="fa fa-bars"></i>
+                        <i id="theme-toggle" class="fa fa-paint-brush"></i>
+                    </div>
+
+                    <h1 class="menu-title">Rustbridge workshop kit</h1>
+
+                    <div class="right-buttons">
+                        <i id="print-button" class="fa fa-print" title="Print this book"></i>
+                    </div>
+                </div>
+
+                <div id="content" class="content">
+                    <a class="header" href="installfest/presentation-outline.html#rustbridge-installfest-presenter-notes" name="rustbridge-installfest-presenter-notes"><h1>RustBridge InstallFest: Presenter Notes</h1></a>
+<p>Each bullet point here should the text of a different slide.
+Nested bullet points are notes about other things that should appear on that slide.
+Nested bullet points beginning with &quot;PN:&quot; are presenter notes for that slide.
+??? is content that still needs to be filled in.</p>
+<ul>
+<li>RustBridge InstallFest
+<ul>
+<li>Main title card</li>
+</ul>
+</li>
+<li>Goals
+<ul>
+<li>PN: The goal of InstallFest is to get your computer set up with Rust, Cargo, and a text editor you can use to work on Rust code.</li>
+</ul>
+</li>
+<li>Prerequisites
+<ul>
+<li>PN: Explain what is expected of the user before beginning:
+working macOS, Windows, or Linux computer with Internet access.
+Prior programming experience is NOT expected, but may be helpful.</li>
+</ul>
+</li>
+<li>Using the terminal
+<ul>
+<li>PN: Explain what a terminal is and why we are using it.</li>
+</ul>
+</li>
+<li>macOS: Terminal.app
+<ul>
+<li>Screenshot of Terminal.app being selected in the Finder and/or Spotlight.</li>
+<li>PN: Explain how to find and launch Terminal.app.</li>
+</ul>
+</li>
+<li>Windows: ???
+<ul>
+<li>Screenshot of how to find and open whatever terminal app we recommend</li>
+<li>PN: Explain how to find and launch the terminal app</li>
+</ul>
+</li>
+<li>Linux: ???
+<ul>
+<li>Screenshot of how to find and open whatever terminal app we recommend</li>
+<li>PN: Explain how to find and launch the terminal app</li>
+</ul>
+</li>
+<li>Understanding the command line
+<ul>
+<li>PN: Explain what the command line is:
+A prompt is shown, the user enters a command as input, and the computer executes the command, optionally displaying some output in response.</li>
+</ul>
+</li>
+<li>(Screenshot of an average looking command prompt)</li>
+<li><code>$ echo hello</code>
+<ul>
+<li>PN: Have everyone run this command as a way of demonstrating command input and execution.</li>
+</ul>
+</li>
+<li><code>curl</code>
+<ul>
+<li>PN: Explain what curl is and that we will use it to install rustup.</li>
+<li>PN: curl is installed with the system on macOS, but Windows/Linux users may need to install it. (How?)</li>
+</ul>
+</li>
+<li>rustup
+<ul>
+<li>PN: Explain what rustup is:
+The official tool for installing Rust and managing Rust updates.</li>
+</ul>
+</li>
+<li>rustup.rs
+<ul>
+<li>PN: Tell everyone to go to the website and look at the command it shows.</li>
+<li>PN: Explain &quot;WARNING: This is beta software&quot; if it makes people nervous.</li>
+</ul>
+</li>
+<li><code>curl https://sh.rustup.rs -sSf | sh</code>
+<ul>
+<li>PN: Explain what the command is going to do, why <code>curl | sh</code> is potentially dangerous, but why we're doing it anyway in this case.</li>
+<li>PN: Ask everyone to run the command.</li>
+</ul>
+</li>
+<li>(Screenshot of what you see when you run the rustup installer)
+<ul>
+<li>PN: Tell everyone to accept the defaults and let rustup continuing installing.</li>
+</ul>
+</li>
+<li>(Screenshot of successful rustup installation message)</li>
+<li><code>source $home/.cargo/env</code>
+<ul>
+<li>PN: Explain that your terminal needs to be &quot;reloaded&quot; for it to &quot;see&quot; the new Rust installation, but that this only happens once.</li>
+</ul>
+</li>
+<li>Verifying the installation</li>
+<li><code>rustc</code>
+<ul>
+<li>PN: Everyone should see help output, which verifies rustc is installed.</li>
+<li>PN: Explain that <code>rustc</code> is the program that compiles Rust source code, and that is what the &quot;c&quot; at the end of the name is for.</li>
+<li>PN: Explain that generally everyone will not use <code>rustc</code> directly, but that it's good to know it's there.</li>
+</ul>
+</li>
+<li><code>cargo</code>
+<ul>
+<li>PN: Everyone should see help output, which verifies cargo is installed.</li>
+<li>PN: Explain that cargo is a package management and build tool for Rust and your primary tool when making Rust programs.</li>
+<li>PN: Explain package management as the ability to install other Rust software to use in your program.</li>
+<li>PN: Explain build tool as a program to compile your program and dependent programs in an easy way, and that using rustc directly is &quot;lower level&quot; and less friendly.</li>
+</ul>
+</li>
+</ul>
+
+                </div>
+
+                <!-- Mobile navigation buttons -->
+                
+                    <a href="./installfest/user-guide.html" class="mobile-nav-chapters previous">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="./machine_learning/readme.html" class="mobile-nav-chapters next">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+
+            </div>
+
+            
+                <a href="./installfest/user-guide.html" class="nav-chapters previous" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+            
+
+            
+                <a href="./machine_learning/readme.html" class="nav-chapters next" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if ($(".fa").css("font-family") !== "FontAwesome") {
+                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            }
+        </script>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+    </body>
+</html>

@@ -1,0 +1,332 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>User guide - Rustbridge workshop kit</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <base href="../">
+
+        <link rel="stylesheet" href="book.css">
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+
+        <!-- MathJax -->
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Fetch JQuery from CDN but have a local fallback -->
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script>
+            if (typeof jQuery == 'undefined') {
+                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
+            }
+        </script>
+    </head>
+    <body class="light">
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = localStorage.getItem('theme');
+            if (theme == null) { theme = 'light'; }
+            $('body').removeClass().addClass(theme);
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = localStorage.getItem('sidebar');
+            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
+            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+        </script>
+
+        <div id="sidebar" class="sidebar">
+            <ul class="chapter"><li class="affix"><a href="intro.html">Introduction</a></li><li><a href="./beginners/README.html"><strong>1.</strong> Beginners</a></li><li><ul class="section"><li><a href="./beginners/tutorial-text.html"><strong>1.1.</strong> Tutorial</a></li></ul></li><li><a href="./installfest/README.html"><strong>2.</strong> Installfest</a></li><li><ul class="section"><li><a href="./installfest/user-guide.html" class="active"><strong>2.1.</strong> User guide</a></li><li><a href="installfest/presentation-outline.html"><strong>2.2.</strong> Presenter notes</a></li></ul></li><li><a href="./machine_learning/readme.html"><strong>3.</strong> Spam Or Ham?</a></li><li><a href="./mondrian-pattern/README.html"><strong>4.</strong> Mondrian Pattern Generator</a></li><li><ul class="section"><li><a href="./mondrian-pattern/part1.html"><strong>4.1.</strong> Part 1</a></li><li><a href="./mondrian-pattern/part2.html"><strong>4.2.</strong> Part 2 (WIP)</a></li><li><a href="./mondrian-pattern/CONTRIBUTING.html"><strong>4.3.</strong> Speaker notes</a></li></ul></li><li><a href="./textadventure/textadventure.html"><strong>5.</strong> Text Adventure</a></li><li><a href="./url_shortener/README.html"><strong>6.</strong> URL Shortener</a></li><li><a href="./web-scraper/README.html"><strong>7.</strong> Web Scraper</a></li><li><ul class="section"><li><a href="./web-scraper/doc/demo.html"><strong>7.1.</strong> Tutorial</a></li></ul></li></ul>
+        </div>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar" class="menu-bar">
+                    <div class="left-buttons">
+                        <i id="sidebar-toggle" class="fa fa-bars"></i>
+                        <i id="theme-toggle" class="fa fa-paint-brush"></i>
+                    </div>
+
+                    <h1 class="menu-title">Rustbridge workshop kit</h1>
+
+                    <div class="right-buttons">
+                        <i id="print-button" class="fa fa-print" title="Print this book"></i>
+                    </div>
+                </div>
+
+                <div id="content" class="content">
+                    <a class="header" href="./installfest/user-guide.html#rustbridge-installfest-user-guide" name="rustbridge-installfest-user-guide"><h1>RustBridge InstallFest: User Guide</h1></a>
+<a class="header" href="./installfest/user-guide.html#introduction" name="introduction"><h2>Introduction</h2></a>
+<p>Welcome!
+This tutorial walks you through the process of installing Rust on your computer and setting up a text editor to start programming with Rust.
+You don't need to have any programming experience to use this tutorial.
+However, an understanding of basic operations of your computer, such as downloading an app, is assumed.
+The entire process should take you less than 30 minutes.</p>
+<p>Before you begin, make sure you have a computer with:</p>
+<ul>
+<li>Access to the Internet</li>
+<li>An operating system that supports Rust, including macOS, Linux, or Windows.</li>
+</ul>
+<p>Let's get started!</p>
+<a class="header" href="./installfest/user-guide.html#using-the-terminal" name="using-the-terminal"><h2>Using the Terminal</h2></a>
+<p>A terminal is a text-based way of interacting with your computer without a graphical interface.
+We're using a terminal because it's the standard method of installing and working with programming tools.
+Your computer already has a terminal tool installed by default.
+Review the instructions for the operating system of your choice.</p>
+<a class="header" href="./installfest/user-guide.html#macos" name="macos"><h3>macOS</h3></a>
+<ol>
+<li>
+<p>Open Terminal by either selecting the Spotlight menu (magnifying glass in the upper right) or by pressing the command and space keys together, then typing &quot;Terminal&quot;.)</p>
+<p>When you first open Terminal, you'll see a prompt.
+You type commands to the computer after the prompt.</p>
+<p>It'll look something like this:</p>
+<pre><code>Last login: Some Date on console
+Janes-MacBookPro:~ jane$
+</code></pre>
+</li>
+</ol>
+<a class="header" href="./installfest/user-guide.html#windows" name="windows"><h3>Windows</h3></a>
+<p>On windows the terminal is called a command prompt. You can access it by opening
+the start menu and typing <code>cmd.exe</code> or <code>command prompt</code>. Windows should find it
+for you.</p>
+<p>After starting the command prompt, you can see a black screen saying something
+like this:</p>
+<pre><code>C:\Users\yourname&gt;
+</code></pre>
+<p>Try typing commands like <code>dir</code>.</p>
+<p>Well done!</p>
+<a class="header" href="./installfest/user-guide.html#linux" name="linux"><h3>Linux</h3></a>
+<ol>
+<li>
+<p>Ensure <code>curl</code> is installed.</p>
+<pre><code>which curl
+</code></pre>
+<p>Installation is successful if you see any output.
+It will look something like this:</p>
+<pre><code>/usr/bin/curl
+</code></pre>
+<p>Curl is used to download files from the Internet.
+We need to make sure it's installed on your computer before attempting to download Rust files.</p>
+<p>If there is no output (the prompt simply appears again), or you get a message saying something like &quot;curl not found&quot; you must install curl.
+Use your system's package manager to install it.</p>
+<p>On a Debian-based system like Ubuntu, this would be:</p>
+<pre><code>apt-get install curl
+</code></pre>
+</li>
+</ol>
+<a class="header" href="./installfest/user-guide.html#installing-rust" name="installing-rust"><h2>Installing Rust</h2></a>
+<p>The next step after opening the terminal is installing rustup, which installs Rust and Cargo, which is a package management (installing software written in Rust) and build tool (converting code into a usable program).</p>
+<a class="header" href="./installfest/user-guide.html#macos" name="macos"><h3>macOS</h3></a>
+<ol>
+<li>
+<p>In your web browser, navigate to <a href="https://rustup.rs">rustup.rs</a>.</p>
+</li>
+<li>
+<p>To download and run a program that installs the correct version of rustup for your computer, copy and paste the text on the webpage into your terminal.
+It should look something like this:</p>
+<pre><code>Janes-MacBookPro:~ curl https://sh.rustup.rs -sSf | sh
+</code></pre>
+</li>
+<li>
+<p>Press return.</p>
+<p>The output describes how Rust and Cargo will be installed on your computer.</p>
+</li>
+<li>
+<p>After you've read through the output, press return to accept the default installation settings.
+It may take up to a couple minutes to install.
+Once it's done installing, you'll see an installation is complete message.</p>
+</li>
+<li>
+<p>Follow the instructions to configure the terminal.
+Copy and paste the text.
+It'll look something like this:</p>
+<pre><code>Janes-MacBookPro:~ source $HOME/.cargo/env
+</code></pre>
+<p>There won't be any output or confirmation. You'll just see the prompt again.</p>
+</li>
+<li>
+<p>To confirm that cargo installed correctly, type <code>cargo</code> at the prompt and press return.
+If it installed correctly, you'll see an output with help content.</p>
+</li>
+</ol>
+<a class="header" href="./installfest/user-guide.html#windows" name="windows"><h3>Windows</h3></a>
+<ol>
+<li>
+<p>Go to the <a href="https://www.rust-lang.org">Rust website</a>.</p>
+</li>
+<li>
+<p>Click on <em>Install</em> to download the Rust installer.</p>
+</li>
+<li>
+<p>Open the file <code>rust-1.11.0-i686-pc-windows-gnu.msi</code> (or similar) you just
+downloaded.s</p>
+</li>
+<li>
+<p>Now the installation dialog starts. Confirm any warnings and stick to the
+default options when prompted.</p>
+</li>
+</ol>
+<p>Now you should have Rust installed on your machine.</p>
+<p>To verify that, open a <em>new</em> command prompt like above. Don't use one that has
+already been open, because it does not know about Rust yet.</p>
+<p>Type in the command <code>rustc --version</code>. The Rust compiler will tell you its
+current version:</p>
+<pre><code>C:\Users\yourname&gt;rustc --version
+rustc 1.11.0 (9b21dcd6a 2016-08-15)
+
+C:\Users\yourname&gt;
+</code></pre>
+<p>Now you are ready to go!</p>
+<p>You can create a new Rust project using <code>cargo</code>, Rust's package manager, like
+this:</p>
+<pre><code>C:\Users\yourname&gt;cargo new my-rust-project --bin
+
+C:\Users\yourname&gt;cd my-rust-project
+
+C:\Users\yourname\my-rust-project&gt;cargo run
+   Compiling my-rust-project v0.1.0 (file:///C:/Users/yourname/my-rust-project)
+     Running `target\debug\my-rust-project.exe`
+Hello, world!
+
+C:\Users\yourname\my-rust-project&gt;
+</code></pre>
+<p>Well done! You just compiled and executed your first Rust program.</p>
+<a class="header" href="./installfest/user-guide.html#setting-up-a-text-editor" name="setting-up-a-text-editor"><h2>Setting up a text editor</h2></a>
+<p>A text editor (also commonly just called an editor) is a program used to edit text files.
+Examples of common editors used to program are Atom, Sublime Text, Microsoft Visual Studio Code, Vim, and Emacs.</p>
+<p>Word processors, like Microsoft Word, aren't the same as text editors and aren't designed for editing source code.</p>
+<p>If you already installed and use a text editor, skip to the &quot;Installing the Rust package for your editor&quot; section.
+If you don't have a text editor or are not sure if you have one, we recommend installing Atom.
+The next section walks you through the installation.</p>
+<a class="header" href="./installfest/user-guide.html#installing-atom" name="installing-atom"><h3>Installing Atom</h3></a>
+<a class="header" href="./installfest/user-guide.html#macosx" name="macosx"><h4>MacOSX</h4></a>
+<ol>
+<li>
+<p>In your web browser, navigate to <a href="https://atom.io">Atom website</a>.</p>
+</li>
+<li>
+<p>Click the Download button to download a zip file.</p>
+</li>
+<li>
+<p>Browse to the zip file in your Downloads directory or click the file the your browser's download bar.</p>
+</li>
+<li>
+<p>Extract the zip file by double clicking the .zip file.</p>
+</li>
+<li>
+<p>Move the Atom.app file to your Applications directory.
+You can drag and drop the file.</p>
+</li>
+<li>
+<p>In the Applications directory, open the Atom app by double clicking.</p>
+<p>If you get a security message about opening an application downloaded from the Internet, it's okay to proceed. Click Open.</p>
+<p>When Atom opens, you'll see a Welcome and Welcome Guide pages as tabs.</p>
+</li>
+</ol>
+<a class="header" href="./installfest/user-guide.html#windows" name="windows"><h4>Windows</h4></a>
+<p>In your web browser, navigate to the <a href="https://atom.io">Atom website</a>. Hit
+<em>Download Windows Installer</em> to download <code>AtomSetup.exe</code>. Open it to install
+Atom.</p>
+<p>Follow the installation dialog. At the end, Atom should start. You can always
+access it using the start menu.</p>
+<a class="header" href="./installfest/user-guide.html#installing-the-rust-package-for-your-text-editor" name="installing-the-rust-package-for-your-text-editor"><h3>Installing the Rust package for your text editor</h3></a>
+<p>The final step is installing a Rust language package for a text editor.
+The package makes it easier to code with Rust with features like colored text and auto-formatting.</p>
+<ol>
+<li>
+<p>In Atom, navigate to Preferences, then Install.
+(On Windows, you can find this under File, then Settings; or hit Ctrl+,)</p>
+</li>
+<li>
+<p>Search for &quot;rust&quot;.</p>
+</li>
+<li>
+<p>Select the &quot;language-rust&quot; package by the user &quot;zargony&quot;.
+Click Install.</p>
+<p>Wait for the package to download and install.</p>
+</li>
+<li>
+<p>Still in Atom, click on the Packages tab.
+Under the Community Packages section, verify that &quot;language-rust&quot; is listed.</p>
+</li>
+<li>
+<p>Open a new text file by selecting New File under File.
+You may already have an untitled file already open.</p>
+</li>
+<li>
+<p>In the bottom right, click Plain Text to change the file type.</p>
+</li>
+<li>
+<p>Search for &quot;rust&quot;.
+Click &quot;Rust&quot; in the search results.
+&quot;Rust&quot; should replace &quot;Plain Text&quot; now.</p>
+</li>
+<li>
+<p>To test the language package, type the following:</p>
+<pre><code>fn main() {}
+</code></pre>
+<p>Notice that &quot;fn&quot; and &quot;main&quot; appear in different colors.</p>
+</li>
+</ol>
+<a class="header" href="./installfest/user-guide.html#conclusion" name="conclusion"><h2>Conclusion</h2></a>
+<p>You've now installed Rust and optimized your text editor for Rust.
+You're ready to start learning Rust!</p>
+
+                </div>
+
+                <!-- Mobile navigation buttons -->
+                
+                    <a href="./installfest/README.html" class="mobile-nav-chapters previous">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="installfest/presentation-outline.html" class="mobile-nav-chapters next">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+
+            </div>
+
+            
+                <a href="./installfest/README.html" class="nav-chapters previous" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+            
+
+            
+                <a href="installfest/presentation-outline.html" class="nav-chapters next" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if ($(".fa").css("font-family") !== "FontAwesome") {
+                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            }
+        </script>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+    </body>
+</html>
