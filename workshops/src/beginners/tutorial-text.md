@@ -52,14 +52,13 @@ other jobs of Cargo.toml is to indicate which external crates your project is
 using, so cargo can download them from a repository when it compiles your
 program.
 
-`image = "*"` means that your project requires the `image` crate, and
-TODO: rewrite the code to use a specific versoin of image and explain why we care
+`image = "*"` means that your project requires the `image` crate. Change to `image = "0.12.3"` to use the current version.
 
 At the top of your `src/main.rs` file, type
 
 `extern crate image;`
 
-This line of code indicates that you want to include the image crate in this file, 
+This line of code indicates that you want to include the image crate in this file,
 you can access code provided by the image crate by prefixing it with `image::`.
 
 The next time you run `cargo run`, you should see cargo take some time to download
@@ -194,7 +193,7 @@ Errors and unwrapping
 
 
 `let _ = image::ImageRgb8(imgbuf).save(fout, image::PNG);` Finally, now that we've prepared the `fout` file handler, we use
-the image crate's `.save()` functionality to save it to a file. Our program is complete. 
+the image crate's `.save()` functionality to save it to a file. Our program is complete.
 
 Run the program with `cargo run`, and, if all went well, you should see a file in teh current directory called "image.png". If you
 open it up in an image viewing program, you should see a completely red square.
@@ -203,4 +202,3 @@ It's sorta like "hello world" for images. Now, let's make some more interesting 
 
 Goal 2
 ======
-
