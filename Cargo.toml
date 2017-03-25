@@ -7,12 +7,16 @@ build = "build.rs"
 [dependencies]
 
 [build-dependencies]
-skeptic = "0.7.1"
+skeptic = "0.8.1"
 walkdir = "1.0.7"
 
 [dev-dependencies]
-skeptic = "0.7.1"
+skeptic = "0.8.1"
 image = "0.12.3"
+hyper = "0.9.10"
+zip = "0.1.18"
+rustlearn = "0.4.0"
+time = "0.1.35"
 
 [workspace]
 members = [

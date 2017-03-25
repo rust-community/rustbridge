@@ -100,7 +100,7 @@ This means cargo has downloaded and compiled `hyper` (and all of its dependencie
 
 Our download function will look something like this
 
-```rust
+```rust,ignore
 fn download(url: &str) -> Vec<u8> {
    // snip
 }
@@ -109,7 +109,8 @@ fn download(url: &str) -> Vec<u8> {
 We download a resource by its URL and return an array of bytes (a `Vec<u8>>`). In order to start writing the body of the function, we need to impor the `hyper` dependency. We do this by putting `extern crate hyper;` at the top of `main.rs`. This imports the `hyper` module into the scope of our project.
 
 Looking at the GET example in the `hyper` [documentation](http://hyper.rs/hyper/v0.9.10/hyper/client/index.html#get), we should be able to write somthing along the lines of
-```rust
+
+```rust,ignore
 let client = Client::new();
 let mut response = client.get(url).send().unwrap();
 ```
@@ -125,9 +126,9 @@ Secondly, we want to bind the resulting response to a mutable variable, and so w
 
 Once we have our response we want to convert it to a byte array with something like the following:
 
-```rust
+```rust,skt-1
 let mut data = Vec::new();
-response.read_to_end(&mut data).unwrap()
+response.read_to_end(&mut data).unwrap();
 ```
 
 For this to work, we also need to import the `Read` [trait](https://doc.rust-lang.org/book/traits.html) into our scope by adding `use std::io::Read;` at the top of the file. The reasons for this are somewhat arcane so we'll skip them here.
