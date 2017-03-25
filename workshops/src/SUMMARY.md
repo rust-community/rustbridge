@@ -1,12 +1,12 @@
 # Summary
 [Introduction](intro.md)
 
-- [Beginners](./beginners/README.md)
-    - [Tutorial](./beginners/tutorial-text.md)
-
 - [Installfest](./installfest/README.md)
     - [User guide](./installfest/user-guide.md)
     - [Presenter notes](installfest/presentation-outline.md)
+
+- [Beginners](./beginners/README.md)
+    - [Tutorial](./beginners/tutorial-text.md)
 
 - [Spam Or Ham?](./machine_learning/readme.md)
 - [Mondrian Pattern Generator](./mondrian-pattern/README.md)
