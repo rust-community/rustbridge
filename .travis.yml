@@ -1,0 +1,7 @@
+language: rust
+
+before_script:
+- cargo install mdbook
+
+script:
+  - cd workshops && mdbook build

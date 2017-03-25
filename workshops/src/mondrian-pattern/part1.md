@@ -1,4 +1,4 @@
-[back to the introduction](README.md) | [continue to Part II](part2.md)
+[Back to the introduction](./mondrian-pattern/README.md) | [Continue to Part II](./mondrian-pattern/part2.md)
 
 -----------
 
@@ -24,9 +24,9 @@ Exercises
 
 ### Exercise 0: Start with a prepared minimal Mondrian pattern
 
-![](images/fig00_exercise-start.jpg)
+![](./mondrian-pattern/images/fig00_exercise-start.jpg)
 
-At this point, you have executed a minimal `Hello World` rust project already! If not, please go [back to the introduction](README.md).
+At this point, you have executed a minimal `Hello World` rust project already! If not, please go [back to the introduction](./mondrian-pattern/README.md).
 Now, replace that first project with the minimal Mondrian pattern generator:
 
 &#9654;&#9654; Open the files `main.rs` (in the subfolder `src`) and `Cargo.toml` in your text editor.
@@ -35,13 +35,13 @@ If you are unsure where to find the files and/or how to open them in a text edit
 
 &#9654;&#9654; Clicking the links will show the file content in the browser window.
 
-+ [new main.rs](https://raw.githubusercontent.com/rust-community/rustbridge/master/workshops/mondrian-pattern/codebase/mondpaint/src/main.rs)
++ [new main.rs](https://raw.githubusercontent.com/rust-community/rustbridge/master/workshops/src/mondrian-pattern/codebase/mondpaint/src/main.rs)
 
-+ [new Cargo.toml](https://raw.githubusercontent.com/rust-community/rustbridge/master/workshops/mondrian-pattern/codebase/mondpaint/Cargo.toml)
++ [new Cargo.toml](https://raw.githubusercontent.com/rust-community/rustbridge/master/workshops/src/mondrian-pattern/codebase/mondpaint/Cargo.toml)
 
 What you see looks quite complex and like a foreign language. True, it is rust, the language you will learn now! At this point, you don't need to understand it. You just have to copy and paste it :-)
 
-![](images/main-rs_in-browser.jpg)
+![](./mondrian-pattern/images/main-rs_in-browser.jpg)
 
 &#9654;&#9654; Copy and paste it from there into the file in the text editor. (Do it for both files in the same way.)
 
@@ -60,7 +60,7 @@ Your rust compiler will work for some time now
 In windows, it happens that the window is hidden behind other open windows. [TODO: Fix that!]
 
 You should see something similar to this:
-![](images/console+mondrianwindow.jpg)
+![](./mondrian-pattern/images/console+mondrianwindow.jpg)
 
 Congratulations! You have made a project, adapted it so that it matches an example, and executed it successfully.
 
@@ -71,7 +71,7 @@ Although the Mondrian pattern in the window is what we're here for, it is worth 
 
 ### Exercise 1: Make one vertical split
 
-![](images/fig01_onevertical.jpg)
+![](./mondrian-pattern/images/fig01_onevertical.jpg)
 
 It is now time to have a closer look at the rust code. It is located in `src` folder and the file is `main.rs`.
 
@@ -79,7 +79,7 @@ It is now time to have a closer look at the rust code. It is located in `src` fo
 
 Most of the code you will never touch. Only the highlighted areas are important for you.
 
-![](images/code_highlight-learners-area.jpg)
+![](./mondrian-pattern/images/code_highlight-learners-area.jpg)
 
 Furthermore, you only need to make tiny modifications at first:
 
@@ -95,7 +95,7 @@ Can you see the window open with the two-rectangles-pattern, as given in the ske
 #### [Snapshot] 1
 From time to time there will be such "snapshots": What are the exact changes in the code. The second link gives _a snapshot_ of how the code should look at this point.
 
-[main.rs snapshot](https://raw.githubusercontent.com/rust-community/rustbridge/mondrian_exercise-snapshots/workshops/mondrian-pattern/codebase/mondpaint/src/snapshnots/main_0001-One-vertical-split-1-2-1-2.rs)
+[main.rs snapshot](https://raw.githubusercontent.com/rust-community/rustbridge/mondrian_exercise-snapshots/workshops/src/mondrian-pattern/codebase/mondpaint/src/snapshnots/main_0001-One-vertical-split-1-2-1-2.rs)
 
 
 #### Explanation
@@ -104,7 +104,7 @@ The line you have changed is the line that _invokes_ the Mondrian painting activ
 
 ### Exercise 2: Split position
 
-![](images/fig02_onevertical-1third-2thirds.jpg)
+![](./mondrian-pattern/images/fig02_onevertical-1third-2thirds.jpg)
 
 Line 64 calculates the position where to split the canvas into two areas:
 
@@ -117,7 +117,7 @@ let splitpos = width / 2.0;
 #### [Testing] --as usual--
 
 #### [Snapshot] 2
-[main.rs snapshot](https://raw.githubusercontent.com/rust-community/rustbridge/master/workshops/mondrian-pattern/codebase/mondpaint/src/snapshnots/main_0002-One-vertical-split-1-3-2-3.rs)
+[main.rs snapshot](https://raw.githubusercontent.com/rust-community/rustbridge/master/src/workshops/mondrian-pattern/codebase/mondpaint/src/snapshnots/main_0002-One-vertical-split-1-3-2-3.rs)
 
 
 #### Explanation
@@ -132,7 +132,7 @@ What you have done in this exercise is to modify the operations that are execute
 
 ### Exercise 3a: Specify the colour for `paint_rectangle`
 
-![](images/fig03_colour-as-parameter.jpg)
+![](./mondrian-pattern/images/fig03_colour-as-parameter.jpg)
 
 &#9654;&#9654; Find the lines where `paint_rectangle` is defined:
 
@@ -160,14 +160,14 @@ fn paint_rectangle(x :f64, y :f64, width :f64, height :f64, c: types::Color, chn
 
 **Bam! Your first rust build-error!**
 
-![](images/console_paintrect-parameter-error.jpg)
+![](./mondrian-pattern/images/console_paintrect-parameter-error.jpg)
 
 
 #### Explanation
 
 They look scary in the beginning!
 
-![](images/build-error_explained.jpg)
+![](./mondrian-pattern/images/build-error_explained.jpg)
 
 We added one little thing in the definition of an operation and we get this amount of error!
 
@@ -178,7 +178,7 @@ Where should it be given? ...at each point in the code where the execution of `p
 
 ### Exercise 3b: Different colours on each side
 
-![](images/fig04_two-different-colours.jpg)
+![](./mondrian-pattern/images/fig04_two-different-colours.jpg)
 
 The issue encountered in Exercise 3 is that colour information is required on the one hand but not provided. When fixing this, we will (as a side effect) have a Mondrian pattern with different colours on each side!
 
@@ -244,12 +244,12 @@ chn.send( ([x, y, width, height], RED) ).unwrap();
 &#9654;&#9654; **Final Thing to do:** Replace `RED` with `c` and give it should all be working as planned!
 
 #### [Snapshot] 3
-[main.rs snapshot](https://raw.githubusercontent.com/rust-community/rustbridge/master/workshops/mondrian-pattern/codebase/mondpaint/src/snapshnots/main_0003-Add-parameter-c-Color-to-paint_rectangle.rs)
+[main.rs snapshot](https://raw.githubusercontent.com/rust-community/rustbridge/master/workshops/src/mondrian-pattern/codebase/mondpaint/src/snapshnots/main_0003-Add-parameter-c-Color-to-paint_rectangle.rs)
 
 
 ### Exercise 4: Random split position
 
-![](images/fig05_random-splitpostition.jpg)
+![](./mondrian-pattern/images/fig05_random-splitpostition.jpg)
 
 This Exercise will give the Mondrian painter a bit of 'artistic' (!?!) freedom. It can randomly choose the position of where to split the canvas. You will modify the operation `vsplit_and_paint` to use a random number for the split position.
 
@@ -298,12 +298,12 @@ The next step is to delegate the two parts to some other operation(s) that will 
 
 
 #### [Snapshot] 4
-[main.rs snapshot](https://raw.githubusercontent.com/rust-community/rustbridge/master/workshops/mondrian-pattern/codebase/mondpaint/src/snapshnots/main_0004-Randomise-the-split-position.rs)
+[main.rs snapshot](https://raw.githubusercontent.com/rust-community/rustbridge/master/workshops/src/mondrian-pattern/codebase/mondpaint/src/snapshnots/main_0004-Randomise-the-split-position.rs)
 
 
 ### Exercise 5: Horizontal split
 
-![](images/fig06_horizontal-split.jpg)
+![](./mondrian-pattern/images/fig06_horizontal-split.jpg)
 
 You will _define an operation_ that works in the same way as `vsplit_and_paint` except that it does Horizontal splits.
 
@@ -340,7 +340,7 @@ Copying the snapshot is the last option. If you do so, please take some time to 
 &#9654;&#9654; Feel free to use more interesting colours :-)
 
 #### [Snapshot] 5
-[main.rs snapshot](https://raw.githubusercontent.com/rust-community/rustbridge/master/workshops/mondrian-pattern/codebase/mondpaint/src/snapshnots/main_0005-Horizontal-split.rs)
+[main.rs snapshot](https://raw.githubusercontent.com/rust-community/rustbridge/master/workshops/src/mondrian-pattern/codebase/mondpaint/src/snapshnots/main_0005-Horizontal-split.rs)
 
 
 ### Exercise 6, 7: Combine split and delegate operations
@@ -357,25 +357,25 @@ It is now time to play with the new operations!
 
 &#9654;&#9654; Don't forget to adapt the initially invoked operation in line 53.
 
-![](images/fig07_vertical+horizontal-split.jpg)
+![](./mondrian-pattern/images/fig07_vertical+horizontal-split.jpg)
 
 &#9654;&#9654; Modify `hsplit_and_paint` so that it triggers `paint_rectangle` on the left side of the split and `hsplit_and_paint` on the right side.
 
 &#9654;&#9654; Don't forget to adapt the initially invoked operation in line 53.
 
-![](images/fig08_vertical+2horizontal-splits.jpg)
+![](./mondrian-pattern/images/fig08_vertical+2horizontal-splits.jpg)
 
 #### [Snapshot] 6
-[main.rs snapshot](https://raw.githubusercontent.com/rust-community/rustbridge/master/workshops/mondrian-pattern/codebase/mondpaint/src/snapshnots/main_0006-One-vertical-and-one-horizontal-split.rs)
+[main.rs snapshot](https://raw.githubusercontent.com/rust-community/rustbridge/master/workshops/src/mondrian-pattern/codebase/mondpaint/src/snapshnots/main_0006-One-vertical-and-one-horizontal-split.rs)
 
 #### [Snapshot] 7
-[main.rs snapshot](https://raw.githubusercontent.com/rust-community/rustbridge/master/workshops/mondrian-pattern/codebase/mondpaint/src/snapshnots/main_0007-One-horiz.-two-vert.-splits-above-and-below.rs)
+[main.rs snapshot](https://raw.githubusercontent.com/rust-community/rustbridge/master/workshops/src/mondrian-pattern/codebase/mondpaint/src/snapshnots/main_0007-One-horiz.-two-vert.-splits-above-and-below.rs)
 
 
 
 ### Exercise 8: An infinite pattern generation process
 
-![](images/fig09_nontricial-nested.jpg)
+![](./mondrian-pattern/images/fig09_nontricial-nested.jpg)
 
 **Warning!** Some changes here may crash the program or make your machine unresponsive. That's okay and it's a natural part of learning programming. You can just close the program and/or restart your machine and continue.
 Save your data before you run.
@@ -395,7 +395,7 @@ There is one way of achieving this pattern by defining more specific operations.
 The _split_ operations invoke to others, which actually run in parallel! The pattern painting process is artificially delayed so that you can see that in detail.
 
 #### [Snapshot] 8
-[main.rs snapshot](https://raw.githubusercontent.com/rust-community/rustbridge/master/workshops/mondrian-pattern/codebase/mondpaint/src/snapshnots/main_0008-Fail-in-a-funny-way-infinite-recursion.rs)
+[main.rs snapshot](https://raw.githubusercontent.com/rust-community/rustbridge/master/workshops/src/mondrian-pattern/codebase/mondpaint/src/snapshnots/main_0008-Fail-in-a-funny-way-infinite-recursion.rs)
 
 
 ### Exercise 9: Avoiding the infinite pattern generation process.
@@ -405,9 +405,9 @@ The _split_ operations invoke to others, which actually run in parallel! The pat
 #### [Snapshot] 9
 [view changes](https://github.com/rust-community/rustbridge/commit/6a51b31a396e7a9200ac21a0cc5ab574915a3b2f)
 |
-[main.rs snapshot](https://raw.githubusercontent.com/rust-community/rustbridge/master/workshops/mondrian-pattern/codebase/mondpaint/src/snapshnots/main_0009-Controlled-recursion.rs)
+[main.rs snapshot](https://raw.githubusercontent.com/rust-community/rustbridge/master/workshops/src/mondrian-pattern/codebase/mondpaint/src/snapshnots/main_0009-Controlled-recursion.rs)
 
 
 -----------
 
-[back to the introduction](README.md) | [continue to Part II](part2.md)
+[Back to the introduction](./mondrian-pattern/README.md) | [Continue to Part II](./mondrian-pattern/part2.md)

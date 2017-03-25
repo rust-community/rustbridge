@@ -1,6 +1,8 @@
 
 # Project
 
+[Code](https://github.com/rust-community/rustbridge/tree/master/workshops/src/url_shortener)
+
 This project is a URL shortener (think Bitly) designed and build in such a
 way that it serves as a well documented example of how to design and
 build a Rust project.

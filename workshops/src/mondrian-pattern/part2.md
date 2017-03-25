@@ -15,9 +15,9 @@ Rust was developed to ensure certain safety principles of organising a multithre
 + make colours conbine nicely on both sides of subdivisions
 
 
-![unlucky encounters](mondrian-rules_avoid-unlucky-encounters.png)
+![unlucky encounters](./mondrian-pattern/mondrian-rules_avoid-unlucky-encounters.png)
 
 
 -----------
 
-[back to the Part I](part1.md)
+[Back to Part I](./mondrian-pattern/part1.md)
