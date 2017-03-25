@@ -32,7 +32,8 @@ Go ahead and run
 
 to create a new blank Rust project, and run `cargo run` in the directory
 to make sure that it builds a hello world program.
-
+Note: Do not forget the --bin. If you forget it, this error will appear when you try to cargo run:
+`error: a bin target must be available for `cargo run` `
 
 Using external crates
 ------------------------------
@@ -195,10 +196,60 @@ Errors and unwrapping
 `let _ = image::ImageRgb8(imgbuf).save(fout, image::PNG);` Finally, now that we've prepared the `fout` file handler, we use
 the image crate's `.save()` functionality to save it to a file. Our program is complete.
 
-Run the program with `cargo run`, and, if all went well, you should see a file in teh current directory called "image.png". If you
+Run the program with `cargo run`, and, if all went well, you should see a file in the current directory called "image.png". If you
 open it up in an image viewing program, you should see a completely red square.
 
-It's sorta like "hello world" for images. Now, let's make some more interesting stuf!
+It's sorta like "hello world" for images. Now, let's make some more interesting stuff!
 
-Goal 2
-======
+Goal 2 - a colorful square with multiple colored tiles
+======================================================
+
+Set Up
+-------
+
+Similar to Goal 1, let's start the project with
+`cargo new --bin multi-color-generator` to create a new blank Rust project, and  `cargo run` in the directory to make sure that it builds a hello world program.
+
+In your Cargo.toml file, right below the `[dependencies]` line, type `image = "0.12.3"`.
+
+At the top of your `src/main.rs` file, type
+
+`extern crate image;`
+use std::fs::File;
+use std::path::Path;
+
+Using the image crate
+---------------------
+
+fn main() {
+    let image_size = 400;
+    let tiles_per_row = 4;
+    let tile_size = image_size / tiles_per_row;
+
+    let mut imgbuf = image::ImageBuffer::new(image_size, image_size);
+
+    let red = [255, 0, 0];
+    let blue = [0, 255, 0];
+    let green = [0, 0, 255];
+    let black = [0, 0, 0];
+
+    let colors = [
+        [red, blue, green, black],
+        [blue, green, black, red],
+        [green, black, red, blue],
+        [black, red, blue, green],
+    ];
+
+    for (x, y, pixel) in imgbuf.enumerate_pixels_mut() {
+        let xx = x / tile_size;
+        let yy = y / tile_size;
+
+        let rgb = colors[xx as usize][yy as usize];
+
+        *pixel = image::Rgb(rgb);
+    }
+
+    let ref mut fout = File::create(&Path::new("image.png")).unwrap();
+
+    let _ = image::ImageRgb8(imgbuf).save(fout, image::PNG);
+}
