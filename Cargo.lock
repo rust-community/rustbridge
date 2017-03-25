@@ -1,0 +1,108 @@
+[root]
+name = "rustbridge"
+version = "0.1.0"
+dependencies = [
+ "skeptic 0.7.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "walkdir 1.0.7 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "bitflags"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "getopts"
+version = "0.2.14"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "kernel32-sys"
+version = "0.2.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "winapi 0.2.8 (registry+https://github.com/rust-lang/crates.io-index)",
+ "winapi-build 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "libc"
+version = "0.2.21"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "pulldown-cmark"
+version = "0.0.8"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "bitflags 0.5.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "getopts 0.2.14 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "rand"
+version = "0.3.15"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "libc 0.2.21 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "same-file"
+version = "0.1.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "kernel32-sys 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "winapi 0.2.8 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "skeptic"
+version = "0.7.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "pulldown-cmark 0.0.8 (registry+https://github.com/rust-lang/crates.io-index)",
+ "tempdir 0.3.5 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "tempdir"
+version = "0.3.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "rand 0.3.15 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "walkdir"
+version = "1.0.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "kernel32-sys 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "same-file 0.1.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "winapi 0.2.8 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "winapi"
+version = "0.2.8"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "winapi-build"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[metadata]
+"checksum bitflags 0.5.0 (registry+https://github.com/rust-lang/crates.io-index)" = "4f67931368edf3a9a51d29886d245f1c3db2f1ef0dcc9e35ff70341b78c10d23"
+"checksum getopts 0.2.14 (registry+https://github.com/rust-lang/crates.io-index)" = "d9047cfbd08a437050b363d35ef160452c5fe8ea5187ae0a624708c91581d685"
+"checksum kernel32-sys 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)" = "7507624b29483431c0ba2d82aece8ca6cdba9382bff4ddd0f7490560c056098d"
+"checksum libc 0.2.21 (registry+https://github.com/rust-lang/crates.io-index)" = "88ee81885f9f04bff991e306fea7c1c60a5f0f9e409e99f6b40e3311a3363135"
+"checksum pulldown-cmark 0.0.8 (registry+https://github.com/rust-lang/crates.io-index)" = "1058d7bb927ca067656537eec4e02c2b4b70eaaa129664c5b90c111e20326f41"
+"checksum rand 0.3.15 (registry+https://github.com/rust-lang/crates.io-index)" = "022e0636ec2519ddae48154b028864bdce4eaf7d35226ab8e65c611be97b189d"
+"checksum same-file 0.1.3 (registry+https://github.com/rust-lang/crates.io-index)" = "d931a44fdaa43b8637009e7632a02adc4f2b2e0733c08caa4cf00e8da4a117a7"
+"checksum skeptic 0.7.1 (registry+https://github.com/rust-lang/crates.io-index)" = "18e054ee4f4ade553f1e43f0071acb04127dc14786be3f3ddc3241250142b16b"
+"checksum tempdir 0.3.5 (registry+https://github.com/rust-lang/crates.io-index)" = "87974a6f5c1dfb344d733055601650059a3363de2a6104819293baff662132d6"
+"checksum walkdir 1.0.7 (registry+https://github.com/rust-lang/crates.io-index)" = "bb08f9e670fab86099470b97cd2b252d6527f0b3cc1401acdb595ffc9dd288ff"
+"checksum winapi 0.2.8 (registry+https://github.com/rust-lang/crates.io-index)" = "167dc9d6949a9b857f3451275e911c3f44255842c1f7a76f33c55103a909087a"
+"checksum winapi-build 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)" = "2d315eee3b34aca4797b2da6b13ed88266e6d612562a0c46390af8299fc699bc"

@@ -1,0 +1,15 @@
+[package]
+name = "rustbridge"
+version = "0.1.0"
+authors = ["Brian Anderson <banderson@mozilla.com>"]
+
+build = "build.rs"
+
+[dependencies]
+
+[build-dependencies]
+skeptic = "0.7.1"
+walkdir = "1.0.7"
+
+[dev-dependencies]
+skeptic = "0.7.1"
