@@ -1,5 +1,7 @@
 # Text Adventure
 
+[Code](https://github.com/rust-community/rustbridge/tree/master/workshops/src/textadventure)
+
 For this workshop, let’s add various features to a simple text adventure game written in Rust.
 
 Here's what we have to work with:

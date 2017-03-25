@@ -9,7 +9,7 @@ We'll proceed through the following steps:
 3. Unpacking and parsing the data
 4. Fitting a model and evaluating it
 
-(If you're impatient, [here](spam_or_ham/src/main.rs) is the finished article.)
+(If you're impatient, [here](https://github.com/rust-community/rustbridge/tree/master/workshops/src/machine_learning/spam_or_ham/src/main.rs) is the finished article.)
 
 ## Preliminaries: getting Rust
 If you haven't installed Rust yet, don't fret. [Rustup.rs](https://rustup.rs/) is a very quick and painless way of installing Rust. Executing `curl https://sh.rustup.rs -sSf | sh` will download and install a Rust distribution and you'll be ready to go.
@@ -212,7 +212,7 @@ fn main() {
 
 This gives us a first look at Rust iterators `raw_data.lines()` creates an iterator over slices of the string, separates by newlines; we then take 3 elements from it and print them. Rust's functional features manifest themselves in a a large array of powerful [iterator adapters](https://doc.rust-lang.org/book/iterators.html#iterator-adaptors) which are not only convenient but also compile to efficient machine code equivalent to traditional C and C++ for loops.
 
-The source at this stage should look like [this](step_2).
+The source at this stage should look like [this](https://github.com/rust-community/rustbridge/tree/master/workshops/src/machine_learning/step_2).
 
 ### Building training matrices
 We're going to use a package called [rustlearn](https://crates.io/crates/rustlearn) for model fitting an evaluation. As before, we add it to `Cargo.toml` and import it:
@@ -282,7 +282,7 @@ println!("X: {} rows, {} columns, {} non-zero entries",
 
 should print `X: 5574 rows, 15733 columns, 81085 non-zero entries. Y: 86.60% positive class`.
 
-The code should look like [this](step_3).
+The code should look like [this](https://github.com/rust-community/rustbridge/tree/master/workshops/src/machine_learning/step_3).
 
 
 ### Fitting and evaluating the model
@@ -377,4 +377,4 @@ println!("Training time: {:.3} seconds",
 
 On my machine, this prints `Training time: 5.519 seconds`, which is pretty slow --- and that's because we have so far been compiling in debug mode. To compile in release mode, run `cargo run --release`. This brings the execution time down to just over 1 second.
 
-The final source is [here](spam_or_ham/src/main.rs).
+The final source is [here](https://github.com/rust-community/rustbridge/tree/master/workshops/src/machine_learning/spam_or_ham/src/main.rs).
