@@ -23,6 +23,7 @@ Go ahead and run
 
 to create a new blank Rust project, and run `cargo run` in the directory
 to make sure that it builds a hello world program.
+
 Note: Do not forget the --bin. If you forget it, this error will appear when you try to cargo run:
 `error: a bin target must be available for `cargo run` `
 
@@ -194,5 +195,26 @@ open it up in an image viewing program, you should see a completely red square.
 
 It's sorta like "hello world" for images. Now, let's make some more interesting stuff!
 
-Goal 2 - a colorful square with multiple colored tiles
+[Goal 2](https://github.com/rust-community/rustbridge/blob/master/workshops/src/beginners/02_simple_image/image.png) - a colorful square with multiple colored tiles
 ======================================================
+We will make a 4 x 4 square of size 400 using red, blue, green, and black tiles.
+
+Getting Started
+-----------------
+
+By now, you should know how to set up a Rust Program that utilizes the Image Crate. Let's see if you remember how to do the following steps. If you get stuck, scroll up to see how it was done for Goal 1.
+
+1. In your terminal, run the cargo command that will create a new Rust project.
+2. Run the cargo command in the director you just created that will build a hello world program
+3. In the Cargo.toml file, include the image crate as a dependency.
+4. At the top of your src/main.rs file, include the image crate, File standard library, and Path standard library.
+5. Inside the fn main() function, assign 400 to a variable representing the image size.
+6. Use the ImageBuffer struct within the image crate to make a new, default image of 400 x 400.
+7. Assign a slice to a variable representing red.
+
+What's New for Goal 2?
+---------------------
+1. Assign 4 to a variable representing tiles per row.
+2. Assign a formula based on the image size and tiles per row variables to a new variable representing tile size.
+3. Assign a slice to variables representing blue, green, and black.
+4.
