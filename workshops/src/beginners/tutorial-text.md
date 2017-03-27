@@ -205,16 +205,19 @@ Getting Started
 By now, you should know how to set up a Rust Program that utilizes the Image Crate. Let's see if you remember how to do the following steps. If you get stuck, scroll up to see how it was done for Goal 1.
 
 1. In your terminal, run the cargo command that will create a new Rust project.
-2. Run the cargo command in the director you just created that will build a hello world program
-3. In the Cargo.toml file, include the image crate as a dependency.
-4. At the top of your src/main.rs file, include the image crate, File standard library, and Path standard library.
-5. Inside the fn main() function, assign 400 to a variable representing the image size.
+2. Run the cargo command in the directory you just created that will build a hello world program
+3. In the `Cargo.toml` file, include the image crate as a dependency.
+4. At the top of your `src/main.rs` file, include the image crate, File standard library, and Path standard library.
+5. Inside the `fn main()`` function, assign 400 to a variable representing the image size.
 6. Use the ImageBuffer struct within the image crate to make a new, default image of 400 x 400.
 7. Assign a slice to a variable representing red.
+8. Use the File and Path standard libraries to prepare the `fout` file handler
+9. Use image crate's `.save()` functionality to save it to a file. 
 
 What's New for Goal 2?
 ---------------------
 1. Assign 4 to a variable representing tiles per row.
 2. Assign a formula based on the image size and tiles per row variables to a new variable representing tile size.
 3. Assign a slice to variables representing blue, green, and black.
-4.
+4. TODO: explain the step for the colors array
+5. TODO: explain the steps for how Goal 2's for loop is different.
