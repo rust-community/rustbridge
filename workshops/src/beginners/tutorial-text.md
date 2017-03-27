@@ -208,11 +208,11 @@ By now, you should know how to set up a Rust Program that utilizes the Image Cra
 2. Run the cargo command in the directory you just created that will build a hello world program
 3. In the `Cargo.toml` file, include the image crate as a dependency.
 4. At the top of your `src/main.rs` file, include the image crate, File standard library, and Path standard library.
-5. Inside the `fn main()`` function, assign 400 to a variable representing the image size.
+5. Inside the `fn main()` function, assign 400 to a variable representing the image size.
 6. Use the ImageBuffer struct within the image crate to make a new, default image of 400 x 400.
 7. Assign a slice to a variable representing red.
 8. Use the File and Path standard libraries to prepare the `fout` file handler
-9. Use image crate's `.save()` functionality to save it to a file. 
+9. Use image crate's `.save()` functionality to save it to a file.
 
 What's New for Goal 2?
 ---------------------
