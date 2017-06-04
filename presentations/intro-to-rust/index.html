@@ -724,7 +724,7 @@ println!("Answer is {}", answer);
 ---
 class: middle, left
 
-## `try!` macro to propagate errors up
+## `?` to propagate errors up
 
 * Can only be used in methods/functions that return `Result`!!!!
 
@@ -732,7 +732,7 @@ class: middle, left
 fn add_five_to_string(s: String) ->
     Result<i32, std::num::ParseIntError> {
 
-    let ans = try!(s.parse::<i32>()) + 5;
+    let ans = s.parse::<i32>()? + 5;
     Ok(ans)
 }
 ```
