@@ -9,15 +9,6 @@ arrainged in a random pattern. This is a fairly straightforward programming
 exercise that you could do in many different programming languages, and we're going
 to teach you how to use Rust to do it.
 
-What you already know
----------------------
-
-For this tutorial, we are assuming that you've already written and successfully
-compiled some Rust programs before, and that you understand how to use cargo to
-create a bare Rust project. If you haven't, try taking a look at tutorials
-like {link to tutorial} first before attempting this one.
-
-
 Goal 1 - a plain red square
 ===========================
 
@@ -33,6 +24,10 @@ Go ahead and run
 to create a new blank Rust project, and run `cargo run` in the directory
 to make sure that it builds a hello world program.
 
+Note: Do not forget the --bin. If you forget it, this error will appear when you try to cargo run:
+`error: a bin target must be available for `cargo run` `
+
+Click [here](http://rust-lang.github.io/book/second-edition/ch01-02-hello-world.html) to read more about setting up a Rust program and Cargo.
 
 Using external crates
 ------------------------------
@@ -195,10 +190,34 @@ Errors and unwrapping
 `let _ = image::ImageRgb8(imgbuf).save(fout, image::PNG);` Finally, now that we've prepared the `fout` file handler, we use
 the image crate's `.save()` functionality to save it to a file. Our program is complete.
 
-Run the program with `cargo run`, and, if all went well, you should see a file in teh current directory called "image.png". If you
+Run the program with `cargo run`, and, if all went well, you should see a file in the current directory called "image.png". If you
 open it up in an image viewing program, you should see a completely red square.
 
-It's sorta like "hello world" for images. Now, let's make some more interesting stuf!
+It's sorta like "hello world" for images. Now, let's make some more interesting stuff!
 
-Goal 2
-======
+[Goal 2](https://github.com/rust-community/rustbridge/blob/master/workshops/src/beginners/02_simple_image/image.png) - a colorful square with multiple colored tiles
+======================================================
+We will make a 4 x 4 square of size 400 using red, blue, green, and black tiles.
+
+Getting Started
+-----------------
+
+By now, you should know how to set up a Rust Program that utilizes the Image Crate. Let's see if you remember how to do the following steps. If you get stuck, scroll up to see how it was done for Goal 1.
+
+1. In your terminal, run the cargo command that will create a new Rust project.
+2. Run the cargo command in the directory you just created that will build a hello world program
+3. In the `Cargo.toml` file, include the image crate as a dependency.
+4. At the top of your `src/main.rs` file, include the image crate, File standard library, and Path standard library.
+5. Inside the `fn main()` function, assign 400 to a variable representing the image size.
+6. Use the ImageBuffer struct within the image crate to make a new, default image of 400 x 400.
+7. Assign a slice to a variable representing red.
+8. Use the File and Path standard libraries to prepare the `fout` file handler
+9. Use image crate's `.save()` functionality to save it to a file.
+
+What's New for Goal 2?
+---------------------
+1. Assign 4 to a variable representing tiles per row.
+2. Assign a formula based on the image size and tiles per row variables to a new variable representing tile size.
+3. Assign a slice to variables representing blue, green, and black.
+4. TODO: explain the step for the colors array
+5. TODO: explain the steps for how Goal 2's for loop is different.
