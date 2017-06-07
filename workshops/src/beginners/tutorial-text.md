@@ -176,7 +176,7 @@ The iterator contains a list of fixed size items called a tuple. Each element in
 different type, for example an i32 and str. In the case of the `enumerate_pixels_mut()`, this
 tuple has the coordinates of of the pixel in the first 2 items, and a mutable reference to the pixel
 at those coordinates. This reference allows us to change the pixel directly.  The `(_, _, pixel)` allows
-the tuple to broken into local variables; the `_` means that item in the tuple will be ignored. 
+the tuple to be broken into local variables; the `_` means that item in the tuple will be ignored. 
 
 `let ref mut fout = File::create(&Path::new("image.png")).unwrap();`
 Now that we've gone through every pixel in our image and set it to red, we're ready to save it to a file.
