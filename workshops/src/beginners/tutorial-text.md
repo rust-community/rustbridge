@@ -92,21 +92,28 @@ image happen!  Let's look at the entire contents of the `main()` function -
 remember, when you run a Rust program, execution starts at the beginning of the
 `main()` function, and the program quits when it gets to the end of `main()`.
 
-    fn main() {
-        let image_size = 400;
+```rust
+extern crate image;
 
-        let mut imgbuf = image::ImageBuffer::new(image_size, image_size);
+use std::fs::File;
+use std::path::Path;
 
-        let red = [255, 0, 0];
+fn main() {
+    let image_size = 400;
 
-        for (_, _, pixel) in imgbuf.enumerate_pixels_mut() {
-            *pixel = image::Rgb(red);
-        }
+    let mut imgbuf = image::ImageBuffer::new(image_size, image_size);
 
-        let ref mut fout = File::create(&Path::new("image.png")).unwrap();
+    let red = [255, 0, 0];
 
-        let _ = image::ImageRgb8(imgbuf).save(fout, image::PNG);
+    for (_, _, pixel) in imgbuf.enumerate_pixels_mut() {
+        *pixel = image::Rgb(red);
     }
+
+    let ref mut fout = File::create(&Path::new("image.png")).unwrap();
+
+    let _ = image::ImageRgb8(imgbuf).save(fout, image::PNG);
+}
+```
 
 `let image_size = 400;` we decided (arbitrarily) that 400x400 pixels is a good
 size for an image, so let's assign that number to a variable with a name that

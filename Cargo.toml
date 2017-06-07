@@ -1,0 +1,40 @@
+[package]
+name = "rustbridge"
+version = "0.1.0"
+authors = ["Brian Anderson <banderson@mozilla.com>"]
+build = "build.rs"
+
+[dependencies]
+
+[build-dependencies]
+skeptic = "0.8.1"
+walkdir = "1.0.7"
+
+[dev-dependencies]
+skeptic = "0.8.1"
+image = "0.12.3"
+hyper = "0.9.10"
+zip = "0.1.18"
+rustlearn = "0.4.0"
+time = "0.1.35"
+
+[workspace]
+members = [
+    "workshops/src/beginners/01_single_color_image/",
+    "workshops/src/beginners/02_simple_image/",
+    "workshops/src/beginners/03_random_image/",
+    "workshops/src/machine_learning/spam_or_ham/",
+    "workshops/src/machine_learning/step_1/",
+    "workshops/src/machine_learning/step_2/",
+    "workshops/src/machine_learning/step_3/",
+    "workshops/src/mondrian-pattern/codebase/mondpaint/",
+    "workshops/src/textadventure/",
+    "workshops/src/url_shortener/",
+    "workshops/src/web-scraper/step000/scraper/",
+    "workshops/src/web-scraper/step005/scraper/",
+    "workshops/src/web-scraper/step010/scraper/",
+    "workshops/src/web-scraper/step015/scraper/",
+    "workshops/src/web-scraper/step015-alternate/scraper/",
+    "workshops/src/web-scraper/step999/scraper/",
+    "workshops/src/web-scraper/step999-alternate/scraper/",
+]
