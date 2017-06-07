@@ -169,17 +169,14 @@ You're probably familiar with the concept of a for loop - *for* every item in a 
 of items, { *do something* with each item in turn }. `imgbuf.enumerate_pixels_mut()` returns a
 value called an *Iterator*, and, put simply, an Iterator is something that you can loop over
 in a for loop. In this case, `.enumerate_pixels_mut()` is a method we can call on an ImageBuffer
-(remember, we created this ImageBuffer a few lines up).
+(remember, we created this ImageBuffer a few lines up). The for loop above will take a series of items
+from an iterator and place the, one at a time, into the variable to the left `in`.
 
-
-(NOTE: right here, we *could* put in a long discussion about how to read a type
-signature. this would be kind of a long and complicated digression, but it *is*
-relevant to understanding what `.enumerate_pixels_mut()` does, and this is the
-place in the source code where someone using the image library needs to know
-that)
-
-(TODO: finish this section)
-
+The iterator contains a list of fixed size items called a tuple. Each element in a tuple can have a
+different type, for example an i32 and str. In the case of the `enumerate_pixels_mut()`, this
+tuple has the coordinates of of the pixel in the first 2 items, and a mutable reference to the pixel
+at those coordinates. This reference allows us to change the pixel directly.  The `(_, _, pixel)` allows
+the tuple to broken into local variables; the `_` means that item in the tuple will be ignored. 
 
 `let ref mut fout = File::create(&Path::new("image.png")).unwrap();`
 Now that we've gone through every pixel in our image and set it to red, we're ready to save it to a file.
