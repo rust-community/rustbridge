@@ -32,9 +32,9 @@ What to learn?
 Learning Materials 
 --------------------
 For different levels of prior experience
-* [InstallFest: Get your machine ready for coding](https://github.com/rust-community/rustbridge/blob/master/workshops/installfest/user-guide.md)
-* [Mondrian Pattern Generator:](https://github.com/rust-community/rustbridge/tree/master/workshops/mondrian-pattern) abstract painting and parallel computing
-* [Text adventure:](https://github.com/rust-community/rustbridge/tree/master/workshops/textadventure) make a text-based adventure game
+* [InstallFest: Get your machine ready for coding](https://github.com/rust-community/rustbridge/blob/master/workshops/src/installfest/user-guide.md)
+* [Mondrian Pattern Generator:](https://github.com/rust-community/rustbridge/tree/master/workshops/src/mondrian-pattern) abstract painting and parallel computing
+* [Text adventure:](https://github.com/rust-community/rustbridge/tree/master/workshops/src/textadventure) make a text-based adventure game
 
 
 Contribute
