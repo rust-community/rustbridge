@@ -12,6 +12,7 @@
 class: middle, center
 
 ![ferris](img/ferris.gif)
+
 # A Very Brief Intro to Rust
 
 ???
@@ -21,13 +22,13 @@ class: middle, center
 ---
 class: middle, center
 
-## 2ND RUSTBRIDGE IN THE WORLD!
+## 3RD RUSTBRIDGE IN THE WORLD!
 
-<iframe src="globe.html" style="width: 100%; height: 100% ; border: none" />
+<iframe src="globe.html" style="width: 90%; height: 90% ; border: none" />
 
 ???
 
-* Welcome to the 2nd Rustbridge IN THE WORLD
+* Welcome to the 3rd Rustbridge IN THE WORLD
 
 ---
 class: middle, center
@@ -36,7 +37,7 @@ class: middle, center
 
 ???
 
-* This curriculum is an experiment. It's disorganized and untested.
+* This curriculum is an experiment. It's mildly disorganized and semi-tested.
 * Please take notes about what you liked, didn't like, wished we spent more or less time on, etc -- there will be a survey!
 
 ---
@@ -44,18 +45,60 @@ class: middle, left
 
 ## Overview
 
-* Rust, Cargo, Setup
+* What and why Rust?
+* Rustup, Cargo, Setup
 * Syntax + Concepts mostly the same as other languages
 * Syntax + Concepts particular to Rust
 * Further learning
 
+???
+
+* So anyway, lets get started. Here is our agenda.
+
+---
+class: middle, center
+
+![firefox](img/firefox-512-noshadow.png)
+
+???
+
+* Rust came out of Mozilla Research
+* 300 Million users
+* Written in C++
+* Mozilla decided that C++ was fundamentally unsafe.
+
 ---
 class: middle, left
 
-## What is Rust?
+## Read after free
 
-Rust is a systems programming language that runs blazingly fast, prevents
-segfaults, and guarantees thread safety.
+```c
+Audio* audio = new Audio("sound.wav");
+
+...
+
+delete audio;
+
+...
+
+play(audio);
+```
+
+???
+
+* Classic bug is called use-after-free.
+* Addressed by garbage collection
+* Problem with GC is performance
+
+---
+class: middle, center
+
+<img src=img/rust-logo-blk.svg width=512>
+
+---
+class: middle, center
+
+## Rust is a systems programming language that runs blazingly **fast**, **prevents segfaults**, and guarantees **thread safety**
 
 ???
 
@@ -63,6 +106,36 @@ segfaults, and guarantees thread safety.
 * Fast = as fast as C
 * segfaults = crashing because of mismanaged memory
 * Memory safety also covers buffer over/underflows
+
+---
+class: middle, left
+
+## What is Systems Programming?
+
+* Programming without a Garbage Collector
+* Operating Systems, Databases, Games
+* Close to the Metal
+* Pay-as-you-go, lightweight runtime, or no runtime
+
+???
+
+* Systems programming can mean many things to many people.
+* One of the primary
+* One way of thinking about it is programm
+
+---
+class: middle, left
+
+## That doesn't to mean
+
+* You need to be an expert programmer
+* Pointers, malloc, and free
+* Targeting Unix-only or Windows-only
+* Old school tools like hand-crafted Makefiles
+
+???
+
+* Writing your entire language in a systems language
 
 ---
 class: middle, left
@@ -89,6 +162,31 @@ class: middle, left
 - experimental stuff starts nightly only
 
 ---
+class: middle, center
+
+## Setting up Rust with Rustup and Cargo
+
+---
+class: middle, left
+
+## What is Rustup?
+
+Rustup is the official Rust toolchain installer, and makes it easy to keep Rust up to date.
+It supports all Rust platforms, including Windows.
+
+1. `curl https://sh.rustup.rs -sSf | sh`
+2. `rustup install stable`
+
+If that did not work, try:
+
+1. `source ~/.cargo/env`
+2. `rustup install stable`
+
+Or you can use one of the builtin installers:
+
+https://www.rust-lang.org/en-US/other-installers.html
+
+---
 class: middle, left
 
 ## What is Cargo?
@@ -97,6 +195,7 @@ class: middle, left
 * Build tool
 * Test runner
 * Documentation generator
+* Package publisher
 
 ???
 
@@ -203,7 +302,7 @@ or
 `rustup doc --std`
 
 ---
-class: middle, left
+class: middle, center
 
 ## Syntax + Concepts mostly the same as other languages
 
@@ -213,6 +312,7 @@ class: middle, left
 ## Comments
 
 * Double slash at the beginning of a line (`//`)
+* Block quotes with `/*` and `*/`
 * Try commenting out one of your lines printing!
 * There are other kinds of comments but this is the most common
 
@@ -227,7 +327,7 @@ let age = 30;
 println!("Hi, {}! You are {} years old.", name, age);
 ```
 
-* Try making more variables and printing them all out in one `println!`
+Try making more variables and printing them all out in one `println!`
 
 ???
 
@@ -235,7 +335,7 @@ println!("Hi, {}! You are {} years old.", name, age);
 * Crab pincers in println, then values that should fit in there
 
 ---
-class: middle, left
+class: left
 
 ## Experiment
 
@@ -251,6 +351,18 @@ println!("I have {} apples", apples);
 
 * Have someone read the error message
 * Whenever anyone gets an error message, we'll read it out loud and talk about it so everyone can learn!
+
+--
+
+```
+error[E0384]: re-assignment of immutable variable `apples`
+ --> src/main.rs:3:5
+  |
+2 |     let apples = 100;
+  |         ------ first assignment to `apples`
+3 |     apples += 50;
+  |     ^^^^^^^^^^^^ re-assignment of immutable variable
+```
 
 ---
 class: middle, left
@@ -339,6 +451,7 @@ fn main() {
     }
 }
 ```
+
 ???
 
 * Shorthand for numeric type annotation
@@ -379,7 +492,7 @@ class: middle, left
 
 ## Arrays
 
-Kinda like arrays in other languages, but worse.
+Kinda like arrays in other languages.
 
 ```rust
 let mut color = [255, 0, 255];
@@ -485,7 +598,7 @@ class: middle, left
 
 ## Iterators
 
-```
+```rust
 for i in (0..10).filter(|x| x % 2 == 0) {
     println!("i = {}", i);
 }
@@ -561,7 +674,7 @@ match game {
 * Destructure to get values out
 
 ---
-class: middle, left
+class: middle, center
 
 ## Syntax + Concepts particular to Rust
 
@@ -577,7 +690,7 @@ Option is an enum provided by the standard library:
 ```rust
 enum Option<T> {
     Some(T),
-    None
+    None,
 }
 ```
 
@@ -613,7 +726,7 @@ class: middle, left
 ```rust
 let a = Some("Carol");
 
-let name = a.expect("No name present");
+let name = a.expect("A value is present");
 println!("Name is {} bytes long", name.len());
 ```
 
@@ -724,15 +837,15 @@ println!("Answer is {}", answer);
 ---
 class: middle, left
 
-## `try!` macro to propagate errors up
+## `?` to propagate errors up
 
-* Can only be used in methods/functions that return `Result`!!!!
+Can only be used in methods/functions that return `Result`!!!!
 
 ```rust
 fn add_five_to_string(s: String) ->
     Result<i32, std::num::ParseIntError> {
 
-    let ans = try!(s.parse::<i32>()) + 5;
+    let ans = s.parse::<i32>()? + 5;
     Ok(ans)
 }
 ```
@@ -798,6 +911,21 @@ fn fizz(num: u32) -> String {
 
 * "Fizz" here isn't a String, it's a &str
 * Have to make Fizz a String to fix this
+
+---
+class: middle, left
+
+## A common problem
+
+```rust
+fn fizz(num: u32) -> String {
+    if num % 3 == 0 {
+        "Fizz".to_string()  // <-- convert "Fizz" into a string
+    } else {
+        num.to_string()
+    }
+}
+```
 
 ---
 class: middle, left
@@ -1008,7 +1136,10 @@ class: middle, left
     <script src="remark.js" type="text/javascript">
     </script>
     <script type="text/javascript">
-      var slideshow = remark.create();
+      var slideshow = remark.create({
+        highlightStyle: 'default',
+        highlightLines: true,
+      });
     </script>
   </body>
 </html>
