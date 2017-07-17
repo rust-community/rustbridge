@@ -352,6 +352,18 @@ println!("I have {} apples", apples);
 * Have someone read the error message
 * Whenever anyone gets an error message, we'll read it out loud and talk about it so everyone can learn!
 
+--
+
+```
+error[E0384]: re-assignment of immutable variable `apples`
+ --> src/main.rs:3:5
+  |
+2 |     let apples = 100;
+  |         ------ first assignment to `apples`
+3 |     apples += 50;
+  |     ^^^^^^^^^^^^ re-assignment of immutable variable
+```
+
 ---
 class: middle, left
 
