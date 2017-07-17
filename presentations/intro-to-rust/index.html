@@ -44,18 +44,60 @@ class: middle, left
 
 ## Overview
 
-* Rust, Cargo, Setup
+* What and why Rust?
+* Rustup, Cargo, Setup
 * Syntax + Concepts mostly the same as other languages
 * Syntax + Concepts particular to Rust
 * Further learning
 
+???
+
+* So anyway, lets get started. Here is our agenda.
+
+---
+class: middle, center
+
+![firefox](img/firefox-512-noshadow.png)
+
+???
+
+* Rust came out of Mozilla Research
+* 300 Million users
+* Written in C++
+* Mozilla decided that C++ was fundamentally unsafe.
+
 ---
 class: middle, left
 
-## What is Rust?
+## Read after free
 
-Rust is a systems programming language that runs blazingly fast, prevents
-segfaults, and guarantees thread safety.
+```c
+Audio* audio = new Audio("sound.wav");
+
+...
+
+delete audio;
+
+...
+
+play(audio);
+```
+
+???
+
+* Classic bug is called use-after-free.
+* Addressed by garbage collection
+* Problem with GC is performance
+
+---
+class: middle, center
+
+<img src=img/rust-logo-blk.svg width=512>
+
+---
+class: middle, center
+
+## Rust is a systems programming language that runs blazingly **fast**, **prevents segfaults**, and guarantees **thread safety**
 
 ???
 
@@ -63,6 +105,36 @@ segfaults, and guarantees thread safety.
 * Fast = as fast as C
 * segfaults = crashing because of mismanaged memory
 * Memory safety also covers buffer over/underflows
+
+---
+class: middle, left
+
+## What is Systems Programming?
+
+* Programming without a Garbage Collector
+* Operating Systems, Databases, Games
+* Close to the Metal
+* Pay-as-you-go, lightweight runtime, or no runtime
+
+???
+
+* Systems programming can mean many things to many people.
+* One of the primary
+* One way of thinking about it is programm
+
+---
+class: middle, left
+
+## That doesn't to mean
+
+* You need to be an expert programmer
+* Pointers, malloc, and free
+* Targeting Unix-only or Windows-only
+* Old school tools like hand-crafted Makefiles
+
+???
+
+* Writing your entire language in a systems language
 
 ---
 class: middle, left
@@ -89,6 +161,31 @@ class: middle, left
 - experimental stuff starts nightly only
 
 ---
+class: middle, center
+
+## Setting up Rust with Rustup and Cargo
+
+---
+class: middle, left
+
+## What is Rustup?
+
+Rustup is the official Rust toolchain installer, and makes it easy to keep Rust up to date.
+It supports all Rust platforms, including Windows.
+
+1. `curl https://sh.rustup.rs -sSf | sh`
+2. `rustup install stable`
+
+If that did not work, try:
+
+1. `source ~/.cargo/env`
+2. `rustup install stable`
+
+Or you can use one of the builtin installers:
+
+https://www.rust-lang.org/en-US/other-installers.html
+
+---
 class: middle, left
 
 ## What is Cargo?
@@ -97,6 +194,7 @@ class: middle, left
 * Build tool
 * Test runner
 * Documentation generator
+* Package publisher
 
 ???
 
