@@ -302,7 +302,7 @@ or
 `rustup doc --std`
 
 ---
-class: middle, left
+class: middle, center
 
 ## Syntax + Concepts mostly the same as other languages
 
@@ -326,7 +326,7 @@ let age = 30;
 println!("Hi, {}! You are {} years old.", name, age);
 ```
 
-* Try making more variables and printing them all out in one `println!`
+Try making more variables and printing them all out in one `println!`
 
 ???
 
@@ -334,7 +334,7 @@ println!("Hi, {}! You are {} years old.", name, age);
 * Crab pincers in println, then values that should fit in there
 
 ---
-class: middle, left
+class: left
 
 ## Experiment
 
@@ -661,7 +661,7 @@ match game {
 * Destructure to get values out
 
 ---
-class: middle, left
+class: middle, center
 
 ## Syntax + Concepts particular to Rust
 
@@ -677,7 +677,7 @@ Option is an enum provided by the standard library:
 ```rust
 enum Option<T> {
     Some(T),
-    None
+    None,
 }
 ```
 
@@ -713,7 +713,7 @@ class: middle, left
 ```rust
 let a = Some("Carol");
 
-let name = a.expect("No name present");
+let name = a.expect("A value is present");
 println!("Name is {} bytes long", name.len());
 ```
 
@@ -826,7 +826,7 @@ class: middle, left
 
 ## `?` to propagate errors up
 
-* Can only be used in methods/functions that return `Result`!!!!
+Can only be used in methods/functions that return `Result`!!!!
 
 ```rust
 fn add_five_to_string(s: String) ->
