@@ -915,6 +915,21 @@ fn fizz(num: u32) -> String {
 ---
 class: middle, left
 
+## A common problem
+
+```rust
+fn fizz(num: u32) -> String {
+    if num % 3 == 0 {
+        "Fizz".to_string()  // <-- convert "Fizz" into a string
+    } else {
+        num.to_string()
+    }
+}
+```
+
+---
+class: middle, left
+
 ## Slices
 
 * A view into some data
