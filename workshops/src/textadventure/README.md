@@ -37,7 +37,7 @@ Much of the game has already been implemented for you but is not very playable. 
 
 As you add more of your code to your game use Cargo to check it and ensure that it still compiles. Run the game from the command line to try out new features as you implement them. For how to get started with Rust and its Cargo tool see [Chapter 2](http://rust-lang.github.io/book/second-edition/ch02-00-guessing-game-tutorial.html) of [*The Rust Programming Language*](http://rust-lang.github.io/book/second-edition) book.  Other good resources for learning Rust syntax and semantics are [*Rust by Example*](http://rustbyexample.com) and the [*Rustlings*](https://github.com/carols10cents/rustlings) project.
 
-Here is the order I recommend implementing the remaining features:
+If you forked this repo on GitHub you can check the following tasks off as you complete them by editing this **README** as you make your commmits.  This **README.md** markdown file is in the **textadventure** directory above the **src** directory.  Here is the order I recommend implementing the remaining features:
 
 - [ ] First implement the `is_opening` function in **board.rs**.
 
