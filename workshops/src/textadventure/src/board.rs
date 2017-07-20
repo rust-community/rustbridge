@@ -10,18 +10,18 @@ use std::io;
 // 5 by 5 room game board
 pub type Board = [[Room; 5]; 5];
 
-enum Wall {
-    Solid,
-    Opening,
-    Magical { word: String }
-}
-
-struct Room {
+pub struct Room {
     north: Wall,
     east: Wall,
     south: Wall,
     west: Wall,
     contents: Vec<Thing>
+}
+
+enum Wall {
+    Solid,
+    Opening,
+    Magical { word: String }
 }
 
 // A hard-coded maze definition.  A maze generator would be a lot cooler.
