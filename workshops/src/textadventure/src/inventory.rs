@@ -36,6 +36,12 @@ pub fn display_exp_things(exp: &ExplorerData) {
     println!()
 }
 
+// FIXME Add stub and mention in README
+// TODO
+pub fn exp_has_teleporter(exp: &ExplorerData) -> bool {
+    false
+}
+
 // TODO
 pub fn exp_has_torch(exp: &ExplorerData) -> bool {
     false

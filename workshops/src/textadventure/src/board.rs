@@ -27,24 +27,25 @@ enum Wall {
 // A hard-coded maze definition.  A maze generator would be a lot cooler.
 // Since the game board is modeled as a 2D array for simplicity walls are
 // double-sided so their types need to match up across adjacent rooms.
+// FIXME ensure walls match across adjacent rooms
 pub fn build_board() -> Board {
     use self::Wall::*;
     use inventory::Thing::*;
 
     [[Room {north: Solid, east: Solid, south: Opening, west: Solid,
             contents: vec![]},
-      Room {north: Solid, east: Opening, south: Opening, west: Opening,
+      Room {north: Solid, east: Opening, south: Opening, west: Solid,
             contents: vec![]},
       Room {north: Solid, east: Opening, south: Solid, west: Opening,
             contents: vec![GoldCoin { denom: 5 }, GoldCoin { denom: 10 }]},
       Room {north: Solid, east: Opening, south: Solid, west: Opening,
             contents: vec![]},
-      Room {north: Solid, east: Solid, south: Opening, west: Solid,
+      Room {north: Solid, east: Solid, south: Opening, west: Opening,
             contents: vec![Food { name: String::from("chicken"), energy: 8 }]}
      ],
      [Room {north: Opening, east: Opening, south: Magical { word: String::from("aberto") }, west: Solid,
             contents: vec![]},
-      Room {north: Magical { word: String::from("aberto") }, east: Solid, south: Solid, west: Opening,
+      Room {north: Opening, east: Solid, south: Solid, west: Opening,
             contents: vec![Torch, Food { name: String::from("ham"), energy: 9 }]},
       Room {north: Solid, east: Opening, south: Opening, west: Solid,
             contents: vec![]},
@@ -53,7 +54,7 @@ pub fn build_board() -> Board {
       Room {north: Opening, east: Solid, south: Opening, west: Opening,
             contents: vec![GoldCoin { denom: 10 }, GoldCoin { denom: 25 }]}
      ],
-     [Room {north: Solid, east: Opening, south: Opening, west: Solid,
+     [Room {north: Magical { word: String::from("aberto") }, east: Opening, south: Opening, west: Solid,
             contents: vec![]},
       Room {north: Solid, east: Solid, south: Opening, west: Opening,
             contents: vec![GoldCoin { denom: 10 }, GoldCoin { denom: 10 }]},
@@ -187,9 +188,22 @@ pub fn scavenge(player: Player, board: &mut Board) -> Player {
     _player
 }
 
-// TODO
 pub fn is_opening(room: &Position, wall: &players::Direction, board: &Board) -> bool {
-    false
+    let _room = pos_to_room(room, board);
+
+    let is_opening = |wall: &Wall| {
+       match *wall {
+           Wall::Opening => true,
+           _ => false
+       } 
+    };
+
+    match *wall {
+        players::Direction::North => is_opening(&_room.north),
+        players::Direction::East => is_opening(&_room.east),
+        players::Direction::South => is_opening(&_room.south),
+        players::Direction::West => is_opening(&_room.west)
+    }
 }
 
 // TODO

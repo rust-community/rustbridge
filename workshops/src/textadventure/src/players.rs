@@ -183,12 +183,13 @@ fn move_exp(data: ExplorerData, board: &Board) -> ExplorerData {
     _data
 }
 
+// FIXME invert North and South
 fn dir_to_dx_dy(direction: &Direction) -> (i32, i32) {
     use self::Direction::*;
 
     match *direction {
-        North => (0, 1),
-        South => (0, -1),
+        North => (0, -1),
+        South => (0, 1),
         East => (1, 0),
         West => (-1, 0)
     }
@@ -225,29 +226,55 @@ fn move_lep(data: LeprechaunData, board: &Board) -> LeprechaunData {
     _data
 }   
 
-// TODO
 fn teleport_lep(data: &mut LeprechaunData, board: &Board) {
+    let (dx, dy) : (i32, i32);
+
+    dx = rand::thread_rng().gen_range(0, board[0].len() as i32);
+    dy = rand::thread_rng().gen_range(0, board.len() as i32);
+    data.pos = Position::new(dx, dy, board)
 }
 
-// TODO
 fn teleport_exp(data: &mut ExplorerData, board: &Board) -> bool {
-    false
+    if inventory::exp_has_teleporter(data) {
+        let (dx, dy) : (i32, i32);
+
+        dx = rand::thread_rng().gen_range(0, board[0].len() as i32);
+        dy = rand::thread_rng().gen_range(0, board.len() as i32);
+        data.pos = Position::new(dx, dy, board);
+        data.energy -= 5;
+
+        true
+    } else {
+        false
+    }
 }
 
-// TODO
+fn move_exp_direction(data: &mut ExplorerData, board: &Board, direction: Direction) {
+    let (dx, dy) = dir_to_dx_dy(&direction);
+    let is_in_bounds = board::move_in_bounds(&data.pos, &dx, &dy, board);
+    let is_opening = board::is_opening(&data.pos, &direction, board);
+
+    if is_in_bounds && is_opening {
+        data.pos = board::move_pos(data.pos, dx, dy, board)
+    }
+
+    data.energy -= 1
+}
+
 fn move_exp_north(data: &mut ExplorerData, board: &Board) {
+    move_exp_direction(data, board, Direction::North)
 }
 
-// TODO
 fn move_exp_south(data: &mut ExplorerData, board: &Board) {
+    move_exp_direction(data, board, Direction::South)
 }
 
-// TODO
 fn move_exp_east(data: &mut ExplorerData, board: &Board) {
+    move_exp_direction(data, board, Direction::East)
 }
 
-// TODO
 fn move_exp_west(data: &mut ExplorerData, board: &Board) {
+    move_exp_direction(data, board, Direction::West)
 }
 
 // TODO
