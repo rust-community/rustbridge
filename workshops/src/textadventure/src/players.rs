@@ -132,6 +132,27 @@ pub fn get_lep_pos(data: &LeprechaunData) -> Position {
     data.pos
 }
 
+pub fn exp_eat_food(exp: &mut ExplorerData) {
+    exp.things.iter()
+              .position(|thing| {
+                  match *thing {
+                      Thing::Food {..} => true,
+                      _ => false
+                  }
+              })
+              .map(|index| {
+                  let food = exp.things.remove(index);
+
+                  match food {
+                      Thing::Food { name, energy } => {
+                          println!("Explorer ate {:?} increasing energy by {:?}", name, energy);
+                          exp.energy += energy
+                      },
+                      _ => ()
+                  }
+              });
+}
+
 fn is_explorer(player: &Player) -> bool {
     match *player {
         Player::Explorer(_) => true,
