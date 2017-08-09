@@ -38,12 +38,12 @@ pub fn display_exp_things(exp: &ExplorerData) {
 
 // TODO
 pub fn exp_has_teleporter(exp: &ExplorerData) -> bool {
-    return false
+    false
 }
 
 // TODO
 pub fn exp_has_torch(exp: &ExplorerData) -> bool {
-    return false
+    false
 }
 
 // TODO
