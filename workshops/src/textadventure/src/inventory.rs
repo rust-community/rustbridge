@@ -36,37 +36,14 @@ pub fn display_exp_things(exp: &ExplorerData) {
     println!()
 }
 
-// FIXME Add stub and mention in README
+// TODO
 pub fn exp_has_teleporter(exp: &ExplorerData) -> bool {
-    let teleporter =
-        exp.things.iter()
-                  .find(|&thing| {
-                      match *thing {
-                          Thing::Teleporter => true,
-                          _ => false
-                      }
-                  });
-
-    match teleporter {
-        Some(_) => true,
-        None => false
-    }
+    return false
 }
 
+// TODO
 pub fn exp_has_torch(exp: &ExplorerData) -> bool {
-    let torch =
-        exp.things.iter()
-                  .find(|&thing| {
-                      match *thing {
-                          Thing::Torch => true,
-                          _ => false
-                      }
-                  });
-
-    match torch {
-        Some(_) => true,
-        None => false
-    }
+    return false
 }
 
 // TODO

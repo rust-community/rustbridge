@@ -35,7 +35,6 @@ enum Wall {
 // A hard-coded maze definition.  A maze generator would be a lot cooler.
 // Since the game board is modeled as a 2D array for simplicity walls are
 // double-sided so their types need to match up across adjacent rooms.
-// FIXME ensure walls match across adjacent rooms
 pub fn build_board() -> Board {
     use self::Wall::*;
     use inventory::Thing::*;
@@ -196,22 +195,9 @@ pub fn scavenge(player: Player, board: &mut Board) -> Player {
     _player
 }
 
+// TODO
 pub fn is_opening(pos: &Position, direction: &players::Direction, board: &Board) -> bool {
-    let room = pos_to_room(pos, board);
-
-    let is_opening = |wall: &Wall| {
-       match *wall {
-           Wall::Opening => true,
-           _ => false
-       } 
-    };
-
-    match *direction {
-        players::Direction::North => is_opening(&room.north),
-        players::Direction::East => is_opening(&room.east),
-        players::Direction::South => is_opening(&room.south),
-        players::Direction::West => is_opening(&room.west)
-    }
+    false
 }
 
 // TODO
@@ -318,93 +304,27 @@ fn gnome_scavenge(data: GnomeData, board: &mut Board) -> GnomeData {
     gnome
 }
 
+// TODO
 fn room_has_torch(pos: &Position, board: &Board) -> bool {
-    let room = pos_to_room(pos, board);
-
-    let torch =
-        room.contents.iter()
-                     .find(|&thing| {
-                         match *thing {
-                             Thing::Torch => true,
-                             _ => false
-                         }
-                     });
-
-    match torch {
-        Some(_) => true,
-        None => false
-    }
+    false
 }
 
+// TODO
 fn exp_pick_up_food(exp: &mut ExplorerData, board: &mut Board) {
-    let pos = players::get_exp_pos(exp);
-    let room = pos_to_room(&pos, board);
-
-    room.contents.iter()
-                 .position(|thing| {
-                     match *thing {
-                         Thing::Food {..} => true,
-                         _ => false
-                     }
-                 })
-                 .map(|index| {
-                     let (food, room) = pick_up_thing(board, &pos, index);
-                     exp.things.push(food);
-                     board[pos.y as usize][pos.x as usize] = room
-                 });
+    println!("Feature not implemented.")
 }
 
+// TODO
 fn exp_pick_up_coins(exp: &mut ExplorerData, board: &mut Board) {
-    let pos = players::get_exp_pos(exp);
-    let room = pos_to_room(&pos, board);
-
-    room.contents.iter()
-                 .position(|thing| {
-                     match *thing {
-                         Thing::FakeCoin {..} => true,
-                         Thing::GoldCoin {..} => true,
-                         _ => false
-                     }
-                 })
-                 .map(|index| {
-                     let (coin, room) = pick_up_thing(board, &pos, index);
-                     exp.things.push(coin);
-                     board[pos.y as usize][pos.x as usize] = room
-                 });
+    println!("Feature not implemented.")
 }
 
+// TODO
 fn exp_pick_up_teleporter(exp: &mut ExplorerData, board: &mut Board) {
-    let pos = players::get_exp_pos(exp);
-    let room = pos_to_room(&pos, board);
-
-    room.contents.iter()
-                 .position(|thing| {
-                     match *thing {
-                         Thing::Teleporter {..} => true,
-                         _ => false
-                     }
-                 })
-                 .map(|index| {
-                     let (teleporter, room) = pick_up_thing(board, &pos, index);
-                     exp.things.push(teleporter);
-                     board[pos.y as usize][pos.x as usize] = room
-                 });
+    println!("Feature not implemented.")
 }
 
+// TODO
 fn exp_pick_up_torch(exp: &mut ExplorerData, board: &mut Board) {
-    let pos = players::get_exp_pos(exp);
-    let room = pos_to_room(&pos, board);
-
-    room.contents.iter()
-                 .position(|thing| {
-                     match *thing {
-                         Thing::Torch {..} => true,
-                         _ => false
-                     }
-                 })
-                 .map(|index| {
-                     let (torch, room) = pick_up_thing(board, &pos, index);
-                     exp.things.push(torch);
-                     board[pos.y as usize][pos.x as usize] = room
-                 });
+    println!("Feature not implemented.")
 }

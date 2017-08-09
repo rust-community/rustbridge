@@ -132,25 +132,9 @@ pub fn get_lep_pos(data: &LeprechaunData) -> Position {
     data.pos
 }
 
+// TODO
 pub fn exp_eat_food(exp: &mut ExplorerData) {
-    exp.things.iter()
-              .position(|thing| {
-                  match *thing {
-                      Thing::Food {..} => true,
-                      _ => false
-                  }
-              })
-              .map(|index| {
-                  let food = exp.things.remove(index);
-
-                  match food {
-                      Thing::Food { name, energy } => {
-                          println!("Explorer ate {:?} increasing energy by {:?}", name, energy);
-                          exp.energy += energy
-                      },
-                      _ => ()
-                  }
-              });
+    println!("Feature not implemented.")
 }
 
 fn is_explorer(player: &Player) -> bool {
@@ -186,10 +170,10 @@ fn move_exp(data: ExplorerData, board: &Board) -> ExplorerData {
         match input.trim().to_uppercase().chars().nth(0) {
             Some(command) => {
                 match command {
-                    'N' => { move_exp_north(&mut _data, board); break },
-                    'S' => { move_exp_south(&mut _data, board); break },
-                    'E' => { move_exp_east(&mut _data, board); break },
-                    'W' => { move_exp_west(&mut _data, board); break },
+                    'N' => { move_exp_direction(&mut _data, board, Direction::North); break },
+                    'S' => { move_exp_direction(&mut _data, board, Direction::South); break },
+                    'E' => { move_exp_direction(&mut _data, board, Direction::East); break },
+                    'W' => { move_exp_direction(&mut _data, board, Direction::West); break },
                     'T' => if teleport_exp(&mut _data, board) { break }
                            else { println!("Cannot teleport") },
                     _ => println!("Invalid command")
@@ -204,7 +188,6 @@ fn move_exp(data: ExplorerData, board: &Board) -> ExplorerData {
     _data
 }
 
-// FIXME invert North and South
 fn dir_to_dx_dy(direction: &Direction) -> (i32, i32) {
     use self::Direction::*;
 
@@ -247,55 +230,17 @@ fn move_lep(data: LeprechaunData, board: &Board) -> LeprechaunData {
     _data
 }   
 
+// TODO
 fn teleport_lep(data: &mut LeprechaunData, board: &Board) {
-    let (dx, dy) : (i32, i32);
-
-    dx = rand::thread_rng().gen_range(0, board[0].len() as i32);
-    dy = rand::thread_rng().gen_range(0, board.len() as i32);
-    data.pos = Position::new(dx, dy, board)
 }
 
+// TODO
 fn teleport_exp(data: &mut ExplorerData, board: &Board) -> bool {
-    if inventory::exp_has_teleporter(data) {
-        let (dx, dy) : (i32, i32);
-
-        dx = rand::thread_rng().gen_range(0, board[0].len() as i32);
-        dy = rand::thread_rng().gen_range(0, board.len() as i32);
-        data.pos = Position::new(dx, dy, board);
-        data.energy -= 5;
-
-        true
-    } else {
-        false
-    }
+    false
 }
 
+// TODO
 fn move_exp_direction(data: &mut ExplorerData, board: &Board, direction: Direction) {
-    let (dx, dy) = dir_to_dx_dy(&direction);
-    let is_in_bounds = board::move_in_bounds(&data.pos, &dx, &dy, board);
-    let is_opening = board::is_opening(&data.pos, &direction, board);
-
-    if is_in_bounds && is_opening {
-        data.pos = board::move_pos(data.pos, dx, dy, board)
-    }
-
-    data.energy -= 1
-}
-
-fn move_exp_north(data: &mut ExplorerData, board: &Board) {
-    move_exp_direction(data, board, Direction::North)
-}
-
-fn move_exp_south(data: &mut ExplorerData, board: &Board) {
-    move_exp_direction(data, board, Direction::South)
-}
-
-fn move_exp_east(data: &mut ExplorerData, board: &Board) {
-    move_exp_direction(data, board, Direction::East)
-}
-
-fn move_exp_west(data: &mut ExplorerData, board: &Board) {
-    move_exp_direction(data, board, Direction::West)
 }
 
 // TODO
