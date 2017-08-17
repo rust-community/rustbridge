@@ -789,7 +789,7 @@ println!("Answer is {}", answer);
 ---
 class: middle, left
 
-## `try!` macro to propagate errors up
+## `?` operator to propagate errors up
 
 * Can only be used in methods/functions that return `Result`!!!!
 
@@ -797,7 +797,7 @@ class: middle, left
 fn add_five_to_string(s: String) ->
     Result<i32, std::num::ParseIntError> {
 
-    let ans = try!(s.parse::<i32>()) + 5;
+    let ans = s.parse::<i32>()? + 5;
     Ok(ans)
 }
 ```
@@ -805,7 +805,7 @@ fn add_five_to_string(s: String) ->
 ???
 
 * Typical to have lots of functions that return `Result` then have a `match` at the outer layer
-* Unstable `?` operator coming soon to make this even nicer and chainable
+* Coming someday: ability to use `?` on `Option` and other types, in fns that don't return `Result`
 
 ---
 class: middle, left
