@@ -553,6 +553,81 @@ match game {
 ---
 class: middle, left
 
+## Tests
+
+```rust
+#[test]
+fn new_person_setup() {
+    let p1 = Person::new();
+
+    assert!(p1.is_valid());
+    assert_eq!(p1.email, None);
+
+    let p2 = Person::new();
+    assert_ne!(p1.id, p2.id);
+}
+```
+
+- Run with `cargo test`
+
+???
+
+- Order doesn't matter in the arguments to assert_eq/assert_ne
+- Try writing a test that will fail and see what the failure message looks like
+
+---
+class: middle, left
+
+## Ignoring tests
+
+```rust
+#[test]
+#[ignore]
+fn not_implemented_yet() {
+    assert_eq!(true, false);
+}
+```
+
+???
+
+- Test still has to compile, but doesn't have to pass
+
+---
+class: middle, left
+
+## Exercism break!
+
+- [exercism.io](http://exercism.io/)
+- `exercism fetch --all rust` if you want
+- Functions have to be marked `pub` to be visible to these tests:
+  `pub fn whatever`
+
+???
+
+- We'll talk about pub and visibility after the break, adding pub is all you need right now
+
+---
+class: middle, left
+
+## Exercism break!
+
+Best exercises right now:
+
+- leap
+- difference-of-squares
+- grains
+- nth-prime (maybe, ask about/look up `Result`)
+
+Recommended strategy:
+
+1. Do the simplest thing that will get the code to compile
+2. Do the simplest thing that will get the tests to pass
+3. Unignore the next test
+4. Repeat!
+
+---
+class: middle, left
+
 ## Syntax + Concepts particular to Rust
 
 ---
