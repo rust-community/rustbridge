@@ -21,23 +21,13 @@ class: middle, center
 ---
 class: middle, center
 
-## 2ND RUSTBRIDGE IN THE WORLD!
+## NTH RUSTBRIDGE IN THE WORLD!
 
 <iframe src="globe.html" style="width: 100%; height: 100% ; border: none" />
 
 ???
 
-* Welcome to the 2nd Rustbridge IN THE WORLD
-
----
-class: middle, center
-
-![experiment](img/experiment.jpg)
-
-???
-
-* This curriculum is an experiment. It's disorganized and untested.
-* Please take notes about what you liked, didn't like, wished we spent more or less time on, etc -- there will be a survey!
+* Welcome to the Nth Rustbridge IN THE WORLD
 
 ---
 class: middle, left
@@ -563,6 +553,81 @@ match game {
 ---
 class: middle, left
 
+## Tests
+
+```rust
+#[test]
+fn new_person_setup() {
+    let p1 = Person::new();
+
+    assert!(p1.is_valid());
+    assert_eq!(p1.email, None);
+
+    let p2 = Person::new();
+    assert_ne!(p1.id, p2.id);
+}
+```
+
+- Run with `cargo test`
+
+???
+
+- Order doesn't matter in the arguments to assert_eq/assert_ne
+- Try writing a test that will fail and see what the failure message looks like
+
+---
+class: middle, left
+
+## Ignoring tests
+
+```rust
+#[test]
+#[ignore]
+fn not_implemented_yet() {
+    assert_eq!(true, false);
+}
+```
+
+???
+
+- Test still has to compile, but doesn't have to pass
+
+---
+class: middle, left
+
+## Exercism break!
+
+- [exercism.io](http://exercism.io/)
+- `exercism fetch --all rust` if you want
+- Functions have to be marked `pub` to be visible to these tests:
+  `pub fn whatever`
+
+???
+
+- We'll talk about pub and visibility after the break, adding pub is all you need right now
+
+---
+class: middle, left
+
+## Exercism break!
+
+Best exercises right now:
+
+- leap
+- difference-of-squares
+- grains
+- nth-prime (maybe, ask about/look up `Result`)
+
+Recommended strategy:
+
+1. Do the simplest thing that will get the code to compile
+2. Do the simplest thing that will get the tests to pass
+3. Unignore the next test
+4. Repeat!
+
+---
+class: middle, left
+
 ## Syntax + Concepts particular to Rust
 
 ---
@@ -724,7 +789,7 @@ println!("Answer is {}", answer);
 ---
 class: middle, left
 
-## `try!` macro to propagate errors up
+## `?` operator to propagate errors up
 
 * Can only be used in methods/functions that return `Result`!!!!
 
@@ -732,7 +797,7 @@ class: middle, left
 fn add_five_to_string(s: String) ->
     Result<i32, std::num::ParseIntError> {
 
-    let ans = try!(s.parse::<i32>()) + 5;
+    let ans = s.parse::<i32>()? + 5;
     Ok(ans)
 }
 ```
@@ -740,7 +805,7 @@ fn add_five_to_string(s: String) ->
 ???
 
 * Typical to have lots of functions that return `Result` then have a `match` at the outer layer
-* Unstable `?` operator coming soon to make this even nicer and chainable
+* Coming someday: ability to use `?` on `Option` and other types, in fns that don't return `Result`
 
 ---
 class: middle, left
@@ -973,7 +1038,6 @@ class: middle, left
 ### Syntax + Concepts we didn't cover but that are things
 
 .pull-left[
-* Tests
 * Lifetimes
 * Tuples
 * Structs
@@ -988,6 +1052,16 @@ class: middle, left
 * Threads
 * Composition over inheritance
 ]
+
+---
+class: middle, left
+
+## Resources
+
+* [The Rust Programming Language Book](https://doc.rust-lang.org/book/second-edition/)
+* [Rust by Example](http://rustbyexample.com/)
+* [Rust learning](https://github.com/ctjhoa/rust-learning/)
+* [into_rust() screencasts](http://intorust.com/)
 
 ---
 class: middle, left
