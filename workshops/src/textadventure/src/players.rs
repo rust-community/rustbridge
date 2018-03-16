@@ -138,15 +138,15 @@ pub fn exp_eat_food(exp: &mut ExplorerData) {
 }
 
 fn is_explorer(player: &Player) -> bool {
-    match *player {
-        Player::Explorer(_) => true,
+    match player {
+        &Player::Explorer(_) => true,
         _ => false
     }
 }
 
 fn is_dead(player: &Player) -> bool {
-    match *player {
-        Player::Explorer(ref data) => data.energy <= 0,
+    match player {
+        &Player::Explorer(ref data) => data.energy <= 0,
         _ => false
     }
 }
