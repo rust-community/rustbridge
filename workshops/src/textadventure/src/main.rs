@@ -22,5 +22,5 @@ fn main() {
         }
     }
 
-    println!("GAME OVER");
+    println!("GAME OVER")
 }

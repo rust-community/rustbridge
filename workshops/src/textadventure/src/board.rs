@@ -10,18 +10,26 @@ use std::io;
 // 5 by 5 room game board
 pub type Board = [[Room; 5]; 5];
 
-enum Wall {
-    Solid,
-    Opening,
-    Magical { word: String }
-}
-
-struct Room {
+#[derive(Clone, Debug)]
+pub struct Room {
     north: Wall,
     east: Wall,
     south: Wall,
     west: Wall,
     contents: Vec<Thing>
+}
+
+impl Room {
+    fn pick_up_thing(&mut self, index: usize) -> Thing {
+        self.contents.remove(index)
+    }
+}
+
+#[derive(Clone, Debug)]
+enum Wall {
+    Solid,
+    Opening,
+    Magical { word: String }
 }
 
 // A hard-coded maze definition.  A maze generator would be a lot cooler.
@@ -33,18 +41,18 @@ pub fn build_board() -> Board {
 
     [[Room {north: Solid, east: Solid, south: Opening, west: Solid,
             contents: vec![]},
-      Room {north: Solid, east: Opening, south: Opening, west: Opening,
+      Room {north: Solid, east: Opening, south: Opening, west: Solid,
             contents: vec![]},
       Room {north: Solid, east: Opening, south: Solid, west: Opening,
             contents: vec![GoldCoin { denom: 5 }, GoldCoin { denom: 10 }]},
       Room {north: Solid, east: Opening, south: Solid, west: Opening,
             contents: vec![]},
-      Room {north: Solid, east: Solid, south: Opening, west: Solid,
+      Room {north: Solid, east: Solid, south: Opening, west: Opening,
             contents: vec![Food { name: String::from("chicken"), energy: 8 }]}
      ],
      [Room {north: Opening, east: Opening, south: Magical { word: String::from("aberto") }, west: Solid,
             contents: vec![]},
-      Room {north: Magical { word: String::from("aberto") }, east: Solid, south: Solid, west: Opening,
+      Room {north: Opening, east: Solid, south: Solid, west: Opening,
             contents: vec![Torch, Food { name: String::from("ham"), energy: 9 }]},
       Room {north: Solid, east: Opening, south: Opening, west: Solid,
             contents: vec![]},
@@ -53,7 +61,7 @@ pub fn build_board() -> Board {
       Room {north: Opening, east: Solid, south: Opening, west: Opening,
             contents: vec![GoldCoin { denom: 10 }, GoldCoin { denom: 25 }]}
      ],
-     [Room {north: Solid, east: Opening, south: Opening, west: Solid,
+     [Room {north: Magical { word: String::from("aberto") }, east: Opening, south: Opening, west: Solid,
             contents: vec![]},
       Room {north: Solid, east: Solid, south: Opening, west: Opening,
             contents: vec![GoldCoin { denom: 10 }, GoldCoin { denom: 10 }]},
@@ -93,7 +101,7 @@ pub fn display_map(board: &Board, players: &Players) {
     for room in board[0].iter() {
         match room.north {
             Wall::Solid => print!(" ----"),
-            Wall::Magical{ref word} => print!(" ++++"),
+            Wall::Magical{ .. } => print!(" ++++"),
             Wall::Opening => print!("     ")
         }
     }
@@ -103,7 +111,7 @@ pub fn display_map(board: &Board, players: &Players) {
             if col == 0 {
                 match board[row][col].west {
                     Wall::Solid => print!("|"),
-                    Wall::Magical { ref word } => print!("+"),
+                    Wall::Magical { .. } => print!("+"),
                     Wall::Opening => print!(" ")
                 }
             }
@@ -119,7 +127,7 @@ pub fn display_map(board: &Board, players: &Players) {
             };
             match board[row][col].east {
                 Wall::Solid => print!("  {} |", character),
-                Wall::Magical { ref word } => print!("  {} +", character),
+                Wall::Magical { .. } => print!("  {} +", character),
                 Wall::Opening => print!("  {}  ", character)
             }
         }
@@ -127,7 +135,7 @@ pub fn display_map(board: &Board, players: &Players) {
         for room in board[row].iter() {
             match room.south {
                 Wall::Solid => print!(" ----"),
-                Wall::Magical { ref word } => print!(" ++++"),
+                Wall::Magical { .. } => print!(" ++++"),
                 Wall::Opening => print!("     ")
             }
         }
@@ -188,7 +196,7 @@ pub fn scavenge(player: Player, board: &mut Board) -> Player {
 }
 
 // TODO
-pub fn is_opening(room: &Position, wall: &players::Direction, board: &Board) -> bool {
+pub fn is_opening(pos: &Position, direction: &players::Direction, board: &Board) -> bool {
     false
 }
 
@@ -197,8 +205,8 @@ pub fn open_sesame(word: &String, source: &Position, target: &Position, board: &
     false
 }
 
-fn pos_to_room<'a, 'b>(pos: &'a Position, board: &'b Board) -> &'b Room {
-    &board[pos.y as usize][pos.x as usize]
+fn pos_to_room(pos: &Position, board: &Board) -> Room {
+    board[pos.y as usize][pos.x as usize].clone()
 }
 
 fn display_room_contents(room: &Room) {
@@ -238,7 +246,7 @@ fn exp_scavenge(data: ExplorerData, board: &mut Board) -> ExplorerData {
 
         while !empty {
             inventory::display_exp_things(&exp);
-            display_room_contents(pos_to_room(&pos, board));
+            display_room_contents(&pos_to_room(&pos, board));
 
             println!("Enter letter command: Pick up [F]ood [C]oins tele[P]orter [T]orch or [D]one");
             
@@ -254,7 +262,7 @@ fn exp_scavenge(data: ExplorerData, board: &mut Board) -> ExplorerData {
             match input.trim().to_uppercase().chars().nth(0) {
                 Some(command) => {
                     match command {
-                        'F' => { exp_pick_up_food(&mut exp, board); exp_eat_food(&mut exp) },
+                        'F' => { exp_pick_up_food(&mut exp, board); players::exp_eat_food(&mut exp) },
                         'C' => exp_pick_up_coins(&mut exp, board),
                         'P' => exp_pick_up_teleporter(&mut exp, board),
                         'T' => exp_pick_up_torch(&mut exp, board),
@@ -280,6 +288,13 @@ fn last_occupant<'a, 'b>(pos: &'a Position, players: &'b Players) -> Option<&'b 
            .last()
 }
 
+fn pick_up_thing(board: &Board, pos: &Position, index: usize) -> (Thing, Room) {
+    let mut room = board[pos.y as usize][pos.x as usize].clone();
+    let thing = room.pick_up_thing(index);
+
+    (thing, room)
+}
+
 // TODO
 fn gnome_scavenge(data: GnomeData, board: &mut Board) -> GnomeData {
     let mut gnome = data;
@@ -296,11 +311,6 @@ fn room_has_torch(pos: &Position, board: &Board) -> bool {
 
 // TODO
 fn exp_pick_up_food(exp: &mut ExplorerData, board: &mut Board) {
-    println!("Feature not implemented.")
-}
-
-// TODO
-fn exp_eat_food(exp: &mut ExplorerData) {
     println!("Feature not implemented.")
 }
 

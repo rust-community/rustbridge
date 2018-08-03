@@ -132,16 +132,21 @@ pub fn get_lep_pos(data: &LeprechaunData) -> Position {
     data.pos
 }
 
+// TODO
+pub fn exp_eat_food(exp: &mut ExplorerData) {
+    println!("Feature not implemented.")
+}
+
 fn is_explorer(player: &Player) -> bool {
-    match *player {
-        Player::Explorer(_) => true,
+    match player {
+        &Player::Explorer(_) => true,
         _ => false
     }
 }
 
 fn is_dead(player: &Player) -> bool {
-    match *player {
-        Player::Explorer(ref data) => data.energy <= 0,
+    match player {
+        &Player::Explorer(ref data) => data.energy <= 0,
         _ => false
     }
 }
@@ -165,10 +170,10 @@ fn move_exp(data: ExplorerData, board: &Board) -> ExplorerData {
         match input.trim().to_uppercase().chars().nth(0) {
             Some(command) => {
                 match command {
-                    'N' => { move_exp_north(&mut _data, board); break },
-                    'S' => { move_exp_south(&mut _data, board); break },
-                    'E' => { move_exp_east(&mut _data, board); break },
-                    'W' => { move_exp_west(&mut _data, board); break },
+                    'N' => { move_exp_direction(&mut _data, board, Direction::North); break },
+                    'S' => { move_exp_direction(&mut _data, board, Direction::South); break },
+                    'E' => { move_exp_direction(&mut _data, board, Direction::East); break },
+                    'W' => { move_exp_direction(&mut _data, board, Direction::West); break },
                     'T' => if teleport_exp(&mut _data, board) { break }
                            else { println!("Cannot teleport") },
                     _ => println!("Invalid command")
@@ -187,8 +192,8 @@ fn dir_to_dx_dy(direction: &Direction) -> (i32, i32) {
     use self::Direction::*;
 
     match *direction {
-        North => (0, 1),
-        South => (0, -1),
+        North => (0, -1),
+        South => (0, 1),
         East => (1, 0),
         West => (-1, 0)
     }
@@ -235,19 +240,7 @@ fn teleport_exp(data: &mut ExplorerData, board: &Board) -> bool {
 }
 
 // TODO
-fn move_exp_north(data: &mut ExplorerData, board: &Board) {
-}
-
-// TODO
-fn move_exp_south(data: &mut ExplorerData, board: &Board) {
-}
-
-// TODO
-fn move_exp_east(data: &mut ExplorerData, board: &Board) {
-}
-
-// TODO
-fn move_exp_west(data: &mut ExplorerData, board: &Board) {
+fn move_exp_direction(data: &mut ExplorerData, board: &Board, direction: Direction) {
 }
 
 // TODO

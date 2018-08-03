@@ -5,10 +5,8 @@ use players::ExplorerData;
 use players::GnomeData;
 use players::LeprechaunData;
 use players::Direction;
-use board;
 use board::Board;
 use board::Position;
-use std::io;
 
 #[derive(Clone, PartialEq, Eq, Debug)]
 pub enum Thing {
@@ -34,6 +32,11 @@ pub fn display_exp_things(exp: &ExplorerData) {
     }
 
     println!()
+}
+
+// TODO
+pub fn exp_has_teleporter(exp: &ExplorerData) -> bool {
+    false
 }
 
 // TODO
